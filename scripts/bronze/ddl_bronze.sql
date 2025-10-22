@@ -42,8 +42,9 @@ CREATE TABLE bronze.ons_locations
     objectId INT,
     beginDate DATE,
     endDate DATE,
-    name NVARCHAR(50),
+    [name] NVARCHAR(250),
     parentObjectId INT,
     materializedPath NVARCHAR(50)
 );
 GO
+
