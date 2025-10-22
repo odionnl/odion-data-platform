@@ -82,9 +82,13 @@ BEGIN
         PRINT 'Laden van Bronze-laag voltooid.';
 
     END TRY
-    BEGIN CATCH
-        PRINT '!!! FOUT tijdens laden van Bronze-laag !!!';
-        PRINT ERROR_MESSAGE();
-    END CATCH
+	BEGIN CATCH
+		PRINT '=========================================='
+		PRINT 'FOUT OPGETREDEN TIJDENS HET LADEN VAN DE BRONZE-LAAG'
+		PRINT 'Foutmelding: ' + ERROR_MESSAGE();
+		PRINT 'Foutnummer: ' + CAST (ERROR_NUMBER() AS NVARCHAR);
+		PRINT 'Foutstatus: ' + CAST (ERROR_STATE() AS NVARCHAR);
+		PRINT '=========================================='
+	END CATCH
 END;
 GO
