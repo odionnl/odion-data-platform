@@ -47,3 +47,19 @@ CREATE TABLE silver.ons_locations
     materializedPath NVARCHAR(50)
 );
 GO
+
+-- silver.ons_location_assignments
+IF OBJECT_ID('silver.ons_locations', 'U') IS NOT NULL
+    DROP TABLE silver.ons_locations;
+GO
+
+CREATE TABLE silver.ons_locations
+(
+    objectId INT,
+    beginDate DATE,
+    endDate DATE,
+    [name] NVARCHAR(250),
+    parentObjectId INT,
+    materializedPath NVARCHAR(50)
+);
+GO
