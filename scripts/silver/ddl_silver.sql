@@ -49,17 +49,29 @@ CREATE TABLE silver.ons_locations
 GO
 
 -- silver.ons_location_assignments
-IF OBJECT_ID('silver.ons_locations', 'U') IS NOT NULL
-    DROP TABLE silver.ons_locations;
+IF OBJECT_ID('silver.ons_location_assignments', 'U') IS NOT NULL
+    DROP TABLE silver.ons_location_assignments;
 GO
 
-CREATE TABLE silver.ons_locations
+CREATE TABLE silver.ons_location_assignments
 (
-    objectId INT,
+    clientObjectId INT,
+    locationObjectId INT,
     beginDate DATE,
     endDate DATE,
-    [name] NVARCHAR(250),
-    parentObjectId INT,
-    materializedPath NVARCHAR(50)
+    locationType NVARCHAR(50),
+);
+GO
+
+-- silver.ons_care_allocations
+IF OBJECT_ID('silver.ons_care_allocations', 'U') IS NOT NULL
+    DROP TABLE silver.ons_care_allocations;
+GO
+
+CREATE TABLE silver.ons_care_allocations
+(
+    clientObjectId INT,
+    dateBegin DATE,
+    dateEnd DATE
 );
 GO

@@ -104,7 +104,6 @@ BEGIN
 		PRINT '>> Data invoegen in: silver.ons_location_assignments';
 		INSERT INTO silver.ons_location_assignments
         (
-        objectId,
         clientObjectId,
         locationObjectId,
         beginDate,
@@ -112,13 +111,33 @@ BEGIN
         locationType
         )
     SELECT
-        objectId,
         clientObjectId,
         locationObjectId,
         beginDate,
         endDate,
         locationType
     FROM Ons_Plan_2.dbo.location_assignments;
+
+		SET @end_time = GETDATE();
+        PRINT '>> Laadtijd: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconden';
+        PRINT '>> -------------';
+
+		-- Laden van silver.ons_care_allocations
+        SET @start_time = GETDATE();
+		PRINT '>> Leegmaken van tabel: silver.ons_care_allocations';
+		TRUNCATE TABLE silver.ons_care_allocations;
+		PRINT '>> Data invoegen in: silver.ons_care_allocations';
+		INSERT INTO silver.ons_care_allocations
+        (
+        clientObjectId,
+        dateBegin,
+        dateEnd
+        )
+    SELECT
+        clientObjectId,
+        dateBegin,
+        dateEnd
+    FROM Ons_Plan_2.dbo.care_allocations;
 
 		SET @end_time = GETDATE();
         PRINT '>> Laadtijd: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconden';
