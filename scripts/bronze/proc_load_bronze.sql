@@ -18,6 +18,8 @@ Gebruik:
     EXEC bronze.load_bronze;
 ===============================================================================
 */
+USE OdionDataPlatform;
+GO
 
 CREATE OR ALTER PROCEDURE bronze.load_bronze
 AS
