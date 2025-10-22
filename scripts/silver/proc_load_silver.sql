@@ -1,20 +1,21 @@
 /*
 ===============================================================================
-Stored Procedure: Load Silver Layer (Bronze -> Silver)
+Stored Procedure: Laad Silver-laag (Bronze -> Silver)
 ===============================================================================
-Script Purpose:
-    This stored procedure performs the ETL (Extract, Transform, Load) process to 
-    populate the 'silver' schema tables from the 'bronze' schema.
-	Actions Performed:
-		- Truncates Silver tables.
-		- Inserts transformed and cleansed data from Bronze into Silver tables.
+Doel van het script:
+    Deze stored procedure voert het ETL-proces (Extract, Transform, Load) uit 
+    om de tabellen in het 'silver'-schema te vullen met gegevens uit het 
+    'bronze'-schema.
+	Uitgevoerde acties:
+		- Leegt (trunct) de Silver-tabellen.
+		- Voegt getransformeerde en opgeschoonde gegevens uit Bronze in Silver-tabellen in.
 		
 Parameters:
-    None. 
-	  This stored procedure does not accept any parameters or return any values.
+    Geen. 
+	Deze stored procedure accepteert geen parameters en retourneert geen waarden.
 
-Usage Example:
-    EXEC Silver.load_silver;
+Gebruik:
+    EXEC silver.load_silver;
 ===============================================================================
 */
 USE OdionDataPlatform;
@@ -27,18 +28,18 @@ BEGIN
     BEGIN TRY
         SET @batch_start_time = GETDATE();
         PRINT '================================================';
-        PRINT 'Loading Silver Layer';
+        PRINT 'Laden van Silver-laag';
         PRINT '================================================';
 
 		PRINT '------------------------------------------------';
-		PRINT 'Loading ONS Tables';
+		PRINT 'Laden van ONS-tabellen';
 		PRINT '------------------------------------------------';
 
-		-- Loading silver.crm_cust_info
+		-- Laden van silver.ons_clients
         SET @start_time = GETDATE();
-		PRINT '>> Truncating Table: silver.ons_clients';
+		PRINT '>> Leegmaken van tabel: silver.ons_clients';
 		TRUNCATE TABLE silver.ons_clients;
-		PRINT '>> Inserting Data Into: silver.ons_clients';
+		PRINT '>> Data invoegen in: silver.ons_clients';
 		INSERT INTO silver.ons_clients
         (
         objectId,
@@ -66,23 +67,23 @@ BEGIN
     FROM OdionDataPlatform.bronze.ons_clients;
 
 		SET @end_time = GETDATE();
-        PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '>> Laadtijd: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconden';
         PRINT '>> -------------';
 
 
 		SET @batch_end_time = GETDATE();
 		PRINT '=========================================='
-		PRINT 'Loading Silver Layer is Completed';
-        PRINT '   - Total Load Duration: ' + CAST(DATEDIFF(SECOND, @batch_start_time, @batch_end_time) AS NVARCHAR) + ' seconds';
+		PRINT 'Laden van Silver-laag is voltooid';
+        PRINT '   - Totale laadtijd: ' + CAST(DATEDIFF(SECOND, @batch_start_time, @batch_end_time) AS NVARCHAR) + ' seconden';
 		PRINT '=========================================='
 		
 	END TRY
 	BEGIN CATCH
 		PRINT '=========================================='
-		PRINT 'ERROR OCCURED DURING LOADING SILVER LAYER'
-		PRINT 'Error Message' + ERROR_MESSAGE();
-		PRINT 'Error Message' + CAST (ERROR_NUMBER() AS NVARCHAR);
-		PRINT 'Error Message' + CAST (ERROR_STATE() AS NVARCHAR);
+		PRINT 'FOUT OPGETREDEN TIJDENS HET LADEN VAN DE SILVER-LAAG'
+		PRINT 'Foutmelding: ' + ERROR_MESSAGE();
+		PRINT 'Foutnummer: ' + CAST (ERROR_NUMBER() AS NVARCHAR);
+		PRINT 'Foutstatus: ' + CAST (ERROR_STATE() AS NVARCHAR);
 		PRINT '=========================================='
 	END CATCH
 END
