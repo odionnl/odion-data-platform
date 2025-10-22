@@ -39,7 +39,7 @@ BEGIN
         PRINT 'Laden van ONS-tabellen';
         PRINT '------------------------------------------------';
 
-        -- Starttijd voor tabel
+        -- bronze.ons_clients
         SET @start_time = GETDATE();
 
         PRINT '>> Leegmaken van tabel: bronze.ons_clients';
@@ -77,6 +77,37 @@ BEGIN
         PRINT '>> Laadtijd: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconden';
         PRINT '>> -------------';
 
+        -- bronze.ons_locations
+        SET @start_time = GETDATE();
+
+        PRINT '>> Leegmaken van tabel: bronze.ons_locations';
+        TRUNCATE TABLE bronze.ons_locations;
+
+        PRINT '>> Data invoegen in: bronze.ons_locations vanuit Ons_Plan_2.dbo.locations';
+        INSERT INTO bronze.ons_locations
+        (
+        objectId,
+        beginDate,
+        endDate,
+        [name],
+        parentObjectId,
+        materializedPath
+        )
+    SELECT
+        objectId,
+        beginDate,
+        endDate,
+        [name],
+        parentObjectId,
+        materializedPath
+    FROM Ons_Plan_2.dbo.locations;
+
+        SET @end_time = GETDATE();
+
+        PRINT '>> Laadtijd: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconden';
+        PRINT '>> -------------';
+
+    -- Einde batch tijdmeting
         SET @batch_end_time = GETDATE();
         PRINT 'Totale laadtijd (batch): ' + CAST(DATEDIFF(second, @batch_start_time, @batch_end_time) AS NVARCHAR) + ' seconden';
         PRINT 'Laden van Bronze-laag voltooid.';

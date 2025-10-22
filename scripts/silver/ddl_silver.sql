@@ -12,6 +12,7 @@ Doel van het script:
 USE OdionDataPlatform;
 GO
 
+-- silver.ons_clients
 IF OBJECT_ID('silver.ons_clients', 'U') IS NOT NULL
     DROP TABLE silver.ons_clients;
 GO
@@ -28,5 +29,21 @@ CREATE TABLE silver.ons_clients
     initials NVARCHAR(50),
     prefix NVARCHAR(50),
     [name] NVARCHAR(50)
+);
+GO
+
+-- silver.ons_locations
+IF OBJECT_ID('silver.ons_locations', 'U') IS NOT NULL
+    DROP TABLE silver.ons_locations;
+GO
+
+CREATE TABLE silver.ons_locations
+(
+    objectId INT,
+    beginDate DATE,
+    endDate DATE,
+    [name] NVARCHAR(250),
+    parentObjectId INT,
+    materializedPath NVARCHAR(50)
 );
 GO

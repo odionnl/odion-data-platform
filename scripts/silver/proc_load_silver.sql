@@ -70,7 +70,39 @@ BEGIN
         PRINT '>> Laadtijd: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconden';
         PRINT '>> -------------';
 
+		-- Laden van silver.ons_locations
+        SET @start_time = GETDATE();
+		PRINT '>> Leegmaken van tabel: silver.ons_locations';
+		TRUNCATE TABLE silver.ons_locations;
+		PRINT '>> Data invoegen in: silver.ons_locations';
+		INSERT INTO silver.ons_locations
+        (
+        objectId,
+        beginDate,
+        endDate,
+        [name],
+        parentObjectId,
+        materializedPath
+        )
+    SELECT
+        objectId,
+        beginDate,
+        endDate,
+        [name],
+        parentObjectId,
+        materializedPath
+    FROM OdionDataPlatform.bronze.ons_locations;
 
+		SET @end_time = GETDATE();
+        PRINT '>> Laadtijd: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconden';
+        PRINT '>> -------------';
+
+
+    /*
+    ===============================================================================
+    END OF BATCH: ONS-tabellen
+    ===============================================================================
+    */
 		SET @batch_end_time = GETDATE();
 		PRINT '=========================================='
 		PRINT 'Laden van Silver-laag is voltooid';
