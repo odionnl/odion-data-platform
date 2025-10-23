@@ -143,25 +143,59 @@ BEGIN
         PRINT '>> Laadtijd: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconden';
         PRINT '>> -------------';
 
+    -- Laden van silver.dim_date
+        SET @start_time = GETDATE();
+		PRINT '>> Leegmaken van tabel: silver.dim_date';
+		TRUNCATE TABLE silver.dim_date;
+		PRINT '>> Data invoegen in: silver.dim_date';
+WITH
+        DateSeries
+        AS
+        (
+                            SELECT CAST('2020-01-01' AS DATE) AS d
+            UNION ALL
+                SELECT DATEADD(DAY, 1, d)
+                FROM DateSeries
+                WHERE d < '2030-12-31'
+        )
+    INSERT INTO silver.dim_date
+        (date_key, full_date, [day], [month], month_name, [quarter], [year], day_of_week, day_name, is_weekend)
+    SELECT
+        YEAR(d) * 10000 + MONTH(d) * 100 + DAY(d) AS date_key,
+        d AS full_date,
+        DAY(d) AS [day],
+        MONTH(d) AS [month],
+        DATENAME(MONTH, d) AS month_name,
+        DATEPART(QUARTER, d) AS [quarter],
+        YEAR(d) AS [year],
+        DATEPART(WEEKDAY, d) AS day_of_week, -- 1 = Sunday by default
+        DATENAME(WEEKDAY, d) AS day_name,
+        CASE WHEN DATENAME(WEEKDAY, d) IN ('Saturday','Sunday') THEN 1 ELSE 0 END AS is_weekend
+    FROM DateSeries
+    OPTION
+    (MAXRECURSION
+    0);
 
-    /*
+
+/*
     ===============================================================================
     END OF BATCH: ONS-tabellen
     ===============================================================================
     */
-		SET @batch_end_time = GETDATE();
-		PRINT '=========================================='
-		PRINT 'Laden van Silver-laag is voltooid';
-        PRINT '   - Totale laadtijd: ' + CAST(DATEDIFF(SECOND, @batch_start_time, @batch_end_time) AS NVARCHAR) + ' seconden';
-		PRINT '=========================================='
-		
-	END TRY
+SET @batch_end_time = GETDATE();
+PRINT '=========================================='
+PRINT 'Laden van Silver-laag is voltooid';
+PRINT '   - Totale laadtijd: ' + CAST(DATEDIFF(SECOND, @batch_start_time, @batch_end_time) AS NVARCHAR) + ' seconden';
+PRINT '=========================================='
+
+END
+    TRY
 	BEGIN CATCH
-		PRINT '=========================================='
-		PRINT 'FOUT OPGETREDEN TIJDENS HET LADEN VAN DE SILVER-LAAG'
-		PRINT 'Foutmelding: ' + ERROR_MESSAGE();
-		PRINT 'Foutnummer: ' + CAST (ERROR_NUMBER() AS NVARCHAR);
-		PRINT 'Foutstatus: ' + CAST (ERROR_STATE() AS NVARCHAR);
-		PRINT '=========================================='
-	END CATCH
+PRINT '=========================================='
+PRINT 'FOUT OPGETREDEN TIJDENS HET LADEN VAN DE SILVER-LAAG'
+PRINT 'Foutmelding: ' + ERROR_MESSAGE();
+PRINT 'Foutnummer: ' + CAST (ERROR_NUMBER() AS NVARCHAR);
+PRINT 'Foutstatus: ' + CAST (ERROR_STATE() AS NVARCHAR);
+PRINT '=========================================='
+END CATCH
 END

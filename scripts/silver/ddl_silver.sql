@@ -75,3 +75,30 @@ CREATE TABLE silver.ons_care_allocations
     dateEnd DATE
 );
 GO
+
+
+-- =============================================================================
+-- Create Dimension: silver.dim_date
+-- =============================================================================
+
+-- silver.dim_date
+IF OBJECT_ID('silver.dim_date', 'U') IS NOT NULL
+    DROP TABLE silver.dim_date;
+GO
+
+CREATE TABLE silver.dim_date
+(
+    date_key INT PRIMARY KEY,
+    -- e.g., 20251023
+    full_date DATE NOT NULL,
+    day INT,
+    month INT,
+    month_name VARCHAR(20),
+    quarter INT,
+    year INT,
+    day_of_week INT,
+    day_name VARCHAR(20),
+    is_weekend INT
+    --BOOL?
+);
+GO
