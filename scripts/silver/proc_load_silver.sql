@@ -48,6 +48,7 @@ BEGIN
         objectId,
         identificationNo,
         dateOfBirth,
+        deathDate,
         lastName,
         birthName,
         givenName,
@@ -60,6 +61,7 @@ BEGIN
         objectId,
         identificationNo,
         dateOfBirth,
+        deathDate,
         lastName,
         birthName,
         givenName,
@@ -168,7 +170,7 @@ WITH
         DateSeries
         AS
         (
-                            SELECT CAST('2020-01-01' AS DATE) AS d
+                            SELECT CAST('2018-01-01' AS DATE) AS d
             UNION ALL
                 SELECT DATEADD(DAY, 1, d)
                 FROM DateSeries

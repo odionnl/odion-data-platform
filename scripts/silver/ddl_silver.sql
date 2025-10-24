@@ -25,6 +25,7 @@ CREATE TABLE silver.ons_clients
     objectId INT,
     identificationNo NVARCHAR(50),
     dateOfBirth DATE,
+    deathDate DATE,
     lastName NVARCHAR(50),
     birthName NVARCHAR(50),
     givenName NVARCHAR(50),

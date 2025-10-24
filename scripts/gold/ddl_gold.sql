@@ -15,7 +15,8 @@ AS
         ROW_NUMBER() OVER (ORDER BY c.objectId) AS client_key, -- Surrogate key
         c.objectId AS clientObjectId,
         c.identificationNo AS clientnummer,
-        c.dateOfBirth AS geboortedatum
+        c.dateOfBirth AS geboortedatum,
+        c.deathDate AS overlijdingsdatum
     FROM silver.ons_clients c;
 GO
 
@@ -29,13 +30,12 @@ GO
 CREATE VIEW gold.fact_clients_in_care_per_year
 AS
     SELECT
+        ROW_NUMBER() OVER (ORDER BY c.client_key, d.full_date) AS age_key, -- Surrogate key
         d.full_date AS datum,
-        d.day AS dag,
-        d.month AS maand,
-        d.year AS jaar,
-        c.identificationNo AS clientnummer,
-        c.dateOfBirth AS geboortedatum,
-        DATEDIFF(YEAR, c.dateOfBirth, d.full_date) AS leeftijd
+        c.clientnummer,
+        c.geboortedatum,
+        c.overlijdingsdatum,
+        DATEDIFF(YEAR, c.geboortedatum, d.full_date) AS leeftijd
     FROM silver.dim_date d
         LEFT JOIN silver.ons_care_allocations ca
         ON ca.dateBegin <= d.full_date
