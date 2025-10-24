@@ -67,7 +67,8 @@ BEGIN
         initials,
         prefix,
         [name]
-    FROM OdionDataPlatform.bronze.ons_clients;
+    FROM OdionDataPlatform.bronze.ons_clients
+    WHERE dateOfBirth IS NOT NULL AND identificationNo NOT LIKE '%[^0-9]%';
 
 		SET @end_time = GETDATE();
         PRINT '>> Laadtijd: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconden';
