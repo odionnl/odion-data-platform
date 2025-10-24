@@ -89,3 +89,29 @@ AS
     FROM gold.fact_leeftijd_clienten_per_dag
     WHERE DATEPART(DAY,   peildatum) = 1;
 GO
+
+-- =============================================================================
+-- gold.fact_clienten_overleden
+-- =============================================================================
+
+
+CREATE OR ALTER VIEW gold.fact_clienten_overleden
+AS
+    SELECT
+        ROW_NUMBER() OVER (ORDER BY overlijdensdatum, c.clientObjectId) AS client_overleden_key,
+        c.client_key,
+        c.clientnummer,
+        c.geboortedatum,
+        c.overlijdensdatum,
+        DATEDIFF(YEAR, c.geboortedatum, c.overlijdensdatum)
+        - CASE
+            WHEN DATEADD(YEAR, DATEDIFF(YEAR, c.geboortedatum, c.overlijdensdatum), c.geboortedatum) > c.overlijdensdatum
+            THEN 1 ELSE 0
+        END AS leeftijd_bij_overlijden
+    FROM gold.dim_clienten c
+        INNER JOIN silver.ons_care_allocations ca
+        ON ca.clientObjectId = c.clientObjectId
+            AND ca.dateBegin <= c.overlijdensdatum
+            AND (ca.dateEnd >= c.overlijdensdatum OR ca.dateEnd IS NULL)
+    WHERE c.overlijdensdatum IS NOT NULL;
+GO
