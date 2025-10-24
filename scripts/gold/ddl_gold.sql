@@ -2,7 +2,7 @@ USE OdionDataPlatform;
 GO
 
 -- =============================================================================
--- Create Dimension: gold.dim_clients
+-- gold.dim_clients
 -- =============================================================================
 IF OBJECT_ID('gold.dim_clients', 'V') IS NOT NULL
     DROP VIEW gold.dim_clients;
@@ -14,13 +14,13 @@ AS
     SELECT
         ROW_NUMBER() OVER (ORDER BY c.objectId) AS client_key, -- Surrogate key
         c.objectId AS clientObjectId,
-        c.identificationNo,
-        c.dateOfBirth
+        c.identificationNo AS clientnummer,
+        c.dateOfBirth AS geboortedatum
     FROM silver.ons_clients c;
 GO
 
 -- =============================================================================
--- Create Fact Table: gold.fact_clients_in_care_per_year
+-- gold.fact_clients_in_care_per_year
 -- =============================================================================
 IF OBJECT_ID('gold.fact_clients_in_care_per_year', 'V') IS NOT NULL
     DROP VIEW gold.fact_clients_in_care_per_year;
@@ -29,13 +29,13 @@ GO
 CREATE VIEW gold.fact_clients_in_care_per_year
 AS
     SELECT
-        d.full_date,
-        d.day,
-        d.month,
-        d.year,
-        c.identificationNo,
-        c.dateOfBirth,
-        DATEDIFF(YEAR, c.dateOfBirth, d.full_date) AS age
+        d.full_date AS datum,
+        d.day AS dag,
+        d.month AS maand,
+        d.year AS jaar,
+        c.identificationNo AS clientnummer,
+        c.dateOfBirth AS geboortedatum,
+        DATEDIFF(YEAR, c.dateOfBirth, d.full_date) AS leeftijd
     FROM silver.dim_date d
         LEFT JOIN silver.ons_care_allocations ca
         ON ca.dateBegin <= d.full_date
