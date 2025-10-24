@@ -12,7 +12,10 @@ Doel van het script:
 USE OdionDataPlatform;
 GO
 
+-- =============================================================================
 -- silver.ons_clients
+-- =============================================================================
+
 IF OBJECT_ID('silver.ons_clients', 'U') IS NOT NULL
     DROP TABLE silver.ons_clients;
 GO
@@ -32,7 +35,10 @@ CREATE TABLE silver.ons_clients
 );
 GO
 
+-- =============================================================================
 -- silver.ons_locations
+-- =============================================================================
+
 IF OBJECT_ID('silver.ons_locations', 'U') IS NOT NULL
     DROP TABLE silver.ons_locations;
 GO
@@ -48,7 +54,10 @@ CREATE TABLE silver.ons_locations
 );
 GO
 
+-- =============================================================================
 -- silver.ons_location_assignments
+-- =============================================================================
+
 IF OBJECT_ID('silver.ons_location_assignments', 'U') IS NOT NULL
     DROP TABLE silver.ons_location_assignments;
 GO
@@ -63,7 +72,10 @@ CREATE TABLE silver.ons_location_assignments
 );
 GO
 
+-- =============================================================================
 -- silver.ons_care_allocations
+-- =============================================================================
+
 IF OBJECT_ID('silver.ons_care_allocations', 'U') IS NOT NULL
     DROP TABLE silver.ons_care_allocations;
 GO
@@ -78,10 +90,9 @@ GO
 
 
 -- =============================================================================
--- Create Dimension: silver.dim_date
+-- silver.dim_date
 -- =============================================================================
 
--- silver.dim_date
 IF OBJECT_ID('silver.dim_date', 'U') IS NOT NULL
     DROP TABLE silver.dim_date;
 GO
@@ -91,14 +102,13 @@ CREATE TABLE silver.dim_date
     date_key INT PRIMARY KEY,
     -- e.g., 20251023
     full_date DATE NOT NULL,
-    day INT,
-    month INT,
+    [day] INT,
+    [month] INT,
     month_name VARCHAR(20),
-    quarter INT,
-    year INT,
+    [quarter] INT,
+    [year] INT,
     day_of_week INT,
     day_name VARCHAR(20),
-    is_weekend INT
-    --BOOL?
+    is_weekend BIT
 );
 GO

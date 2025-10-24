@@ -35,7 +35,10 @@ BEGIN
 		PRINT 'Laden van ONS-tabellen';
 		PRINT '------------------------------------------------';
 
-		-- Laden van silver.ons_clients
+-- =============================================================================
+-- silver.ons_clients
+-- =============================================================================
+
         SET @start_time = GETDATE();
 		PRINT '>> Leegmaken van tabel: silver.ons_clients';
 		TRUNCATE TABLE silver.ons_clients;
@@ -70,7 +73,10 @@ BEGIN
         PRINT '>> Laadtijd: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconden';
         PRINT '>> -------------';
 
-		-- Laden van silver.ons_locations
+-- =============================================================================
+-- silver.ons_locations
+-- =============================================================================
+
         SET @start_time = GETDATE();
 		PRINT '>> Leegmaken van tabel: silver.ons_locations';
 		TRUNCATE TABLE silver.ons_locations;
@@ -97,7 +103,10 @@ BEGIN
         PRINT '>> Laadtijd: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconden';
         PRINT '>> -------------';
 
-		-- Laden van silver.ons_location_assignments
+-- =============================================================================
+-- silver.ons_location_assignments
+-- =============================================================================
+
         SET @start_time = GETDATE();
 		PRINT '>> Leegmaken van tabel: silver.ons_location_assignments';
 		TRUNCATE TABLE silver.ons_location_assignments;
@@ -122,7 +131,10 @@ BEGIN
         PRINT '>> Laadtijd: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconden';
         PRINT '>> -------------';
 
-		-- Laden van silver.ons_care_allocations
+-- =============================================================================
+-- silver.ons_care_allocations
+-- =============================================================================
+
         SET @start_time = GETDATE();
 		PRINT '>> Leegmaken van tabel: silver.ons_care_allocations';
 		TRUNCATE TABLE silver.ons_care_allocations;
@@ -143,7 +155,10 @@ BEGIN
         PRINT '>> Laadtijd: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconden';
         PRINT '>> -------------';
 
-    -- Laden van silver.dim_date
+-- =============================================================================
+-- silver.dim_date
+-- =============================================================================
+
         SET @start_time = GETDATE();
 		PRINT '>> Leegmaken van tabel: silver.dim_date';
 		TRUNCATE TABLE silver.dim_date;

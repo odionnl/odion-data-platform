@@ -29,6 +29,10 @@ BEGIN
             @batch_start_time DATETIME, 
             @batch_end_time DATETIME;
 
+    -- =============================================================================
+    -- Logging van start laadtijd
+    -- =============================================================================
+
     BEGIN TRY
         SET @batch_start_time = GETDATE();
         PRINT '================================================';
@@ -39,7 +43,10 @@ BEGIN
         PRINT 'Laden van ONS-tabellen';
         PRINT '------------------------------------------------';
 
-        -- bronze.ons_clients
+-- =============================================================================
+-- bronze.ons_clients
+-- =============================================================================
+
         SET @start_time = GETDATE();
 
         PRINT '>> Leegmaken van tabel: bronze.ons_clients';
@@ -77,7 +84,10 @@ BEGIN
         PRINT '>> Laadtijd: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconden';
         PRINT '>> -------------';
 
-        -- bronze.ons_locations
+-- =============================================================================
+-- bronze.ons_locations
+-- =============================================================================
+
         SET @start_time = GETDATE();
 
         PRINT '>> Leegmaken van tabel: bronze.ons_locations';
@@ -107,10 +117,17 @@ BEGIN
         PRINT '>> Laadtijd: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconden';
         PRINT '>> -------------';
 
-    -- Einde batch tijdmeting
+-- =============================================================================
+-- Logging van totale laadtijd
+-- =============================================================================
+
         SET @batch_end_time = GETDATE();
         PRINT 'Totale laadtijd (batch): ' + CAST(DATEDIFF(second, @batch_start_time, @batch_end_time) AS NVARCHAR) + ' seconden';
         PRINT 'Laden van Bronze-laag voltooid.';
+
+-- =============================================================================
+-- Foutmeldingen
+-- =============================================================================
 
     END TRY
 	BEGIN CATCH
