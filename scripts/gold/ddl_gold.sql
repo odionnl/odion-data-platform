@@ -9,7 +9,6 @@ CREATE OR ALTER VIEW gold.dim_clienten
 AS
 
     SELECT
-        ROW_NUMBER() OVER (ORDER BY c.objectId) AS client_key, -- Surrogate key
         c.objectId AS clientObjectId,
         c.identificationNo AS clientnummer,
         c.dateOfBirth AS geboortedatum,
@@ -224,27 +223,51 @@ AS
 GO
 
 
-
-
 -- =============================================================================
 -- gold.fact_clienten_locaties_per_dag
 -- =============================================================================
 
+CREATE OR ALTER VIEW gold.fact_clienten_locaties_per_dag
+AS
+    SELECT
+        d.full_date AS peildatum,
+        CASE 
+         WHEN d.full_date > GETDATE() THEN 1
+         ELSE 0
+     END AS is_toekomst,
+        la.clientObjectId,
+        c.clientnummer,
+        la.locationObjectId,
+        la.locationType
+    FROM silver.dim_date d
+        LEFT JOIN silver.ons_location_assignments la
+        ON la.beginDate <= d.full_date
+            AND (la.endDate IS NULL OR la.endDate >= d.full_date)
+        INNER JOIN gold.dim_clienten c ON la.clientObjectId=c.clientObjectId;
+GO
 
--- SELECT TOP(1000)
---     d.full_date AS peildatum,
---     CASE 
---         WHEN d.full_date > GETDATE() THEN 1
---         ELSE 0
---     END AS is_toekomst,
---     c.clientnummer,
---     l.name,
---     l.materializedPath,
---     la.locationType
--- FROM silver.dim_date d
---     LEFT JOIN silver.ons_location_assignments la
---     ON la.beginDate <= d.full_date
---         AND (la.endDate IS NULL OR la.endDate >= d.full_date)
---     INNER JOIN gold.dim_clienten c ON la.clientObjectId=c.clientObjectId
---     LEFT JOIN silver.ons_locations l ON l.objectId=la.locationObjectId
--- WHERE d.full_date = CAST(GETDATE() AS date);
+
+-- =============================================================================
+-- gold.fact_clienten_locaties_per_jaar
+-- =============================================================================
+
+CREATE OR ALTER VIEW gold.fact_clienten_locaties_per_jaar
+AS
+    SELECT
+        *
+    FROM gold.fact_clienten_locaties_per_dag
+    WHERE DATEPART(DAY,   peildatum) = 1
+        AND DATEPART(MONTH, peildatum) = 1;
+GO
+
+-- =============================================================================
+-- gold.fact_clienten_locaties_per_maand
+-- =============================================================================
+
+CREATE OR ALTER VIEW gold.fact_clienten_locaties_per_maand
+AS
+    SELECT
+        *
+    FROM gold.fact_clienten_locaties_per_dag
+    WHERE DATEPART(DAY,   peildatum) = 1;
+GO
