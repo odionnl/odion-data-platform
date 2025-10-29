@@ -128,7 +128,7 @@ BEGIN
         beginDate,
         endDate,
         locationType
-    FROM Ons_Plan_2.dbo.location_assignments;
+    FROM bronze.ons_location_assignments;
 
 		SET @end_time = GETDATE();
         PRINT '>> Laadtijd: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconden';

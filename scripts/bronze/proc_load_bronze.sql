@@ -120,6 +120,34 @@ BEGIN
         PRINT '>> -------------';
 
 -- =============================================================================
+-- bronze.ons_location_assignments
+-- =============================================================================
+
+        SET @start_time = GETDATE();
+		PRINT '>> Leegmaken van tabel: bronze.ons_location_assignments';
+		TRUNCATE TABLE bronze.ons_location_assignments;
+		PRINT '>> Data invoegen in: bronze.ons_location_assignments';
+		INSERT INTO bronze.ons_location_assignments
+        (
+        clientObjectId,
+        locationObjectId,
+        beginDate,
+        endDate,
+        locationType
+        )
+    SELECT
+        clientObjectId,
+        locationObjectId,
+        beginDate,
+        endDate,
+        locationType
+    FROM Ons_Plan_2.dbo.location_assignments;
+
+		SET @end_time = GETDATE();
+        PRINT '>> Laadtijd: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconden';
+        PRINT '>> -------------';
+
+-- =============================================================================
 -- Logging van totale laadtijd
 -- =============================================================================
 

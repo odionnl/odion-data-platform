@@ -55,3 +55,20 @@ CREATE TABLE bronze.ons_locations
 );
 GO
 
+-- =============================================================================
+-- bronze.ons_location_assignments
+-- =============================================================================
+
+IF OBJECT_ID('bronze.ons_location_assignments', 'U') IS NOT NULL
+    DROP TABLE bronze.ons_location_assignments;
+GO
+
+CREATE TABLE bronze.ons_location_assignments
+(
+    clientObjectId INT,
+    locationObjectId INT,
+    beginDate DATE,
+    endDate DATE,
+    locationType NVARCHAR(50),
+);
+GO
