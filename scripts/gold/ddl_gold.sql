@@ -188,14 +188,37 @@ AS
         H.niveau5,
         H.niveau6,
         CASE
-        WHEN H.niveau3 LIKE '%Wonen%'
-            OR H.niveau3 LIKE '%Dagbesteding%'
-            OR H.niveau3 LIKE '%Ambulant%'
-            OR H.niveau3 LIKE '%Kind en gezin%'
-            OR H.niveau3 LIKE '%Logeren%'
-        THEN TRIM(SUBSTRING(H.niveau3, 5, LEN(H.niveau3)))
-        ELSE 'Overig'
-    END AS cluster
+            -- Ambulant
+            WHEN LOWER(ISNULL(H.locatienaam, '')) LIKE '%in de wijk%' THEN N'Ambulant'
+
+            -- Dagbesteding
+            WHEN LOWER(ISNULL(H.locatienaam, '')) LIKE '%dagbesteding%' THEN N'Dagbesteding'
+
+            -- Logeren
+            WHEN LOWER(ISNULL(H.locatienaam, '')) LIKE '%logeren%' THEN N'Logeren'
+
+            -- niveau2
+            WHEN ISNULL(H.niveau2,'') LIKE '%Externe aanbieder%'
+            OR ISNULL(H.niveau2,'') LIKE '%Aanmeldingen%'
+            OR ISNULL(H.niveau2,'') LIKE '%Wachtlijsten%'
+            OR ISNULL(H.niveau2,'') LIKE '%Archief%'
+            OR ISNULL(H.niveau2,'') LIKE '%Overige%'
+            THEN TRIM(SUBSTRING(H.niveau2, 5, LEN(H.niveau2)))
+
+            -- niveau3
+            WHEN ISNULL(H.niveau3,'') LIKE '%Wonen%'
+            OR ISNULL(H.niveau3,'') LIKE '%Dagbesteding%'
+            OR ISNULL(H.niveau3,'') LIKE '%Ambulant%'
+            OR ISNULL(H.niveau3,'') LIKE '%Kind en gezin%'
+            OR ISNULL(H.niveau3,'') LIKE '%Logeren%'
+            OR ISNULL(H.niveau3,'') LIKE '%Multidisciplinair Team%'
+            THEN TRIM(SUBSTRING(H.niveau3, 5, LEN(H.niveau3)))
+
+
+            ELSE N'Overige'
+        END AS cluster
+
+
     FROM H
     WHERE H.niveau >= 2;
 GO
