@@ -17,18 +17,35 @@ AS
 GO
 
 -- =============================================================================
+-- gold.dim_clienten_actueel
+-- =============================================================================
+
+CREATE OR ALTER VIEW gold.dim_clienten_actueel
+AS
+
+    SELECT
+        c.*
+    FROM gold.dim_clienten c
+        INNER JOIN silver.ons_care_allocations ca
+        ON c.clientObjectId = ca.clientObjectId
+            AND ca.dateBegin <= GETDATE()
+            AND (ca.dateEnd IS NULL OR ca.dateEnd >= GETDATE());
+GO
+
+-- =============================================================================
 -- gold.fact_leeftijd_clienten_per_dag
 -- =============================================================================
 
 CREATE OR ALTER VIEW gold.fact_leeftijd_clienten_per_dag
 AS
     SELECT
-        ROW_NUMBER() OVER (ORDER BY c.client_key, d.full_date) AS fact_leeftijd_client_dag_key, -- Surrogate key
+        d.date_key,
         d.full_date AS peildatum,
         CASE 
             WHEN d.full_date > GETDATE() THEN 1
             ELSE 0
         END AS is_toekomst,
+        c.clientObjectId,
         c.clientnummer,
         c.geboortedatum,
         c.overlijdensdatum,
@@ -68,7 +85,6 @@ GO
 CREATE OR ALTER VIEW gold.fact_leeftijd_clienten_per_jaar
 AS
     SELECT
-        ROW_NUMBER() OVER (ORDER BY fact_leeftijd_client_dag_key, peildatum) AS fact_leeftijd_client_jaar_key,
         *
     FROM gold.fact_leeftijd_clienten_per_dag
     WHERE DATEPART(DAY,   peildatum) = 1
@@ -83,11 +99,24 @@ GO
 CREATE OR ALTER VIEW gold.fact_leeftijd_clienten_per_maand
 AS
     SELECT
-        ROW_NUMBER() OVER (ORDER BY fact_leeftijd_client_dag_key, peildatum) AS fact_leeftijd_client_jaar_key,
         *
     FROM gold.fact_leeftijd_clienten_per_dag
     WHERE DATEPART(DAY,   peildatum) = 1;
 GO
+
+-- =============================================================================
+-- gold.fact_leeftijd_clienten_actueel
+-- =============================================================================
+
+
+CREATE OR ALTER VIEW gold.fact_leeftijd_clienten_actueel
+AS
+    SELECT
+        *
+    FROM gold.fact_leeftijd_clienten_per_dag
+    WHERE peildatum = CAST(GETDATE() AS date);
+GO
+
 
 -- =============================================================================
 -- gold.fact_clienten_overleden
@@ -97,23 +126,36 @@ GO
 CREATE OR ALTER VIEW gold.fact_clienten_overleden
 AS
     SELECT
-        ROW_NUMBER() OVER (ORDER BY overlijdensdatum, c.clientObjectId) AS client_overleden_key,
-        c.client_key,
+        c.clientObjectId,
         c.clientnummer,
         c.geboortedatum,
         c.overlijdensdatum,
+        d_overlijden.date_key AS date_key_overlijden,
         DATEDIFF(YEAR, c.geboortedatum, c.overlijdensdatum)
-        - CASE
-            WHEN DATEADD(YEAR, DATEDIFF(YEAR, c.geboortedatum, c.overlijdensdatum), c.geboortedatum) > c.overlijdensdatum
+      - CASE
+          WHEN DATEADD(
+                 YEAR,
+                 DATEDIFF(YEAR, c.geboortedatum, c.overlijdensdatum),
+                 c.geboortedatum
+               ) > c.overlijdensdatum
             THEN 1 ELSE 0
         END AS leeftijd_bij_overlijden
-    FROM gold.dim_clienten c
-        INNER JOIN silver.ons_care_allocations ca
-        ON ca.clientObjectId = c.clientObjectId
+    FROM gold.dim_clienten AS c
+        -- only clients with a death date
+        LEFT JOIN silver.dim_date AS d_overlijden
+        ON d_overlijden.full_date = CAST(c.overlijdensdatum AS date)
+    WHERE c.overlijdensdatum IS NOT NULL
+        -- ensure the client had an active care allocation on the death date,
+        -- without duplicating rows if multiple allocations overlap
+        AND EXISTS (
+        SELECT 1
+        FROM silver.ons_care_allocations AS ca
+        WHERE ca.clientObjectId = c.clientObjectId
             AND ca.dateBegin <= c.overlijdensdatum
-            AND (ca.dateEnd >= c.overlijdensdatum OR ca.dateEnd IS NULL)
-    WHERE c.overlijdensdatum IS NOT NULL;
+            AND (ca.dateEnd  >= c.overlijdensdatum OR ca.dateEnd IS NULL)
+      );
 GO
+
 
 
 -- =============================================================================
@@ -167,7 +209,6 @@ AS
                 WHERE h.niveau < 6
         )
     SELECT
-        ROW_NUMBER() OVER (ORDER BY H.objectId) AS locatie_key, -- Surrogate key
         H.objectId           AS locationObjectId,
         H.locatienaam, -- Huidige locatie
         H.startdatum,
@@ -187,31 +228,51 @@ AS
         H.niveau5,
         H.niveau6,
         CASE
+            -- Externe aanbieder
+            WHEN LOWER(ISNULL(H.locatienaam, '')) LIKE '%externe aanbieder%'
+            OR ISNULL(H.niveau2,'') LIKE '%Externe aanbieder%'
+            THEN N'Externe aanbieder'
+
+            -- Aanmeldingen
+            WHEN ISNULL(H.niveau2,'') LIKE '%Aanmeldingen%' THEN N'Aanmeldingen'
+
+            -- Wachtlijsten
+            WHEN LOWER(ISNULL(H.locatienaam, '')) LIKE '%wachtlijsten%'
+            OR ISNULL(H.niveau2,'') LIKE '%Wachtlijsten%'
+            THEN N'Wachtlijsten'
+
+            -- Archief
+            WHEN ISNULL(H.niveau2,'') LIKE '%Archief%' THEN N'Archief'
+
+            -- Overige
+            WHEN ISNULL(H.niveau2,'') LIKE '%Overige%' THEN N'Overige'
+
             -- Ambulant
-            WHEN LOWER(ISNULL(H.locatienaam, '')) LIKE '%in de wijk%' THEN N'Ambulant'
+            WHEN LOWER(ISNULL(H.locatienaam, '')) LIKE '%in de wijk%'
+            OR ISNULL(H.niveau3,'') LIKE '%Ambulant%'
+            THEN N'Ambulant'
 
             -- Dagbesteding
-            WHEN LOWER(ISNULL(H.locatienaam, '')) LIKE '%dagbesteding%' THEN N'Dagbesteding'
+            WHEN LOWER(ISNULL(H.locatienaam, '')) LIKE '%dagbesteding%'
+            OR ISNULL(H.niveau3,'') LIKE '%Dagbesteding%'
+            THEN N'Dagbesteding'
 
             -- Logeren
-            WHEN LOWER(ISNULL(H.locatienaam, '')) LIKE '%logeren%' THEN N'Logeren'
-
-            -- niveau2
-            WHEN ISNULL(H.niveau2,'') LIKE '%Externe aanbieder%'
-            OR ISNULL(H.niveau2,'') LIKE '%Aanmeldingen%'
-            OR ISNULL(H.niveau2,'') LIKE '%Wachtlijsten%'
-            OR ISNULL(H.niveau2,'') LIKE '%Archief%'
-            OR ISNULL(H.niveau2,'') LIKE '%Overige%'
-            THEN TRIM(SUBSTRING(H.niveau2, 5, LEN(H.niveau2)))
-
-            -- niveau3
-            WHEN ISNULL(H.niveau3,'') LIKE '%Wonen%'
-            OR ISNULL(H.niveau3,'') LIKE '%Dagbesteding%'
-            OR ISNULL(H.niveau3,'') LIKE '%Ambulant%'
-            OR ISNULL(H.niveau3,'') LIKE '%Kind en gezin%'
+            WHEN LOWER(ISNULL(H.locatienaam, '')) LIKE '%logeren%'
             OR ISNULL(H.niveau3,'') LIKE '%Logeren%'
-            OR ISNULL(H.niveau3,'') LIKE '%Multidisciplinair Team%'
-            THEN TRIM(SUBSTRING(H.niveau3, 5, LEN(H.niveau3)))
+            THEN N'Logeren'
+
+            -- Wonen
+            WHEN ISNULL(H.niveau3,'') LIKE '%Wonen%' THEN N'Wonen'
+
+            -- Behandeling
+            WHEN ISNULL(H.niveau3,'') LIKE '%Behandeling%' THEN N'Behandeling'
+
+            -- Kind en gezin
+            WHEN ISNULL(H.niveau3,'') LIKE '%Kind en gezin%'  THEN N'Kind en gezin'
+
+            -- Multidisciplinair Team
+            WHEN ISNULL(H.niveau3,'') LIKE '%Multidisciplinair Team%'  THEN N'Multidisciplinair Team'
 
 
             ELSE N'Overige'
@@ -230,6 +291,7 @@ GO
 CREATE OR ALTER VIEW gold.fact_clienten_locaties_per_dag
 AS
     SELECT
+        d.date_key,
         d.full_date AS peildatum,
         CASE 
          WHEN d.full_date > GETDATE() THEN 1
@@ -271,3 +333,25 @@ AS
     FROM gold.fact_clienten_locaties_per_dag
     WHERE DATEPART(DAY,   peildatum) = 1;
 GO
+
+-- =============================================================================
+-- gold.fact_clienten_locaties_actueel
+-- =============================================================================
+
+CREATE OR ALTER VIEW gold.fact_clienten_locaties_actueel
+AS
+    -- SELECT
+    --     *
+    -- FROM gold.fact_clienten_locaties_per_dag
+    -- WHERE peildatum = CAST(GETDATE() AS date);
+    SELECT
+        la.clientObjectId,
+        c.clientnummer,
+        la.locationObjectId,
+        la.locationType
+    FROM silver.ons_location_assignments la
+        INNER JOIN gold.dim_clienten c ON la.clientObjectId=c.clientObjectId
+    WHERE la.beginDate <= GETDATE()
+        AND (la.endDate IS NULL OR la.endDate >= GETDATE())
+GO
+
