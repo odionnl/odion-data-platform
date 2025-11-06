@@ -16,13 +16,19 @@ SELECT
         WHEN a.leeftijd BETWEEN 18 AND 49 THEN '18-49'
         WHEN a.leeftijd >= 50 THEN '50+'
         ELSE 'Onbekend'
-    END AS leeftijdsgroep
+    END AS leeftijdsgroep,
+    cl.locationObjectId AS hoofdlocatie_peildatum
 FROM {{ source('silver', 'dim_date') }} AS d
-LEFT JOIN {{ source('silver', 'ons_care_allocations') }} AS ca
-    ON ca.dateBegin <= d.full_date
-   AND (ca.dateEnd IS NULL OR ca.dateEnd >= d.full_date)
-LEFT JOIN {{ ref('dim_clienten') }} AS c
-    ON c.clientObjectId = ca.clientObjectId
+    LEFT JOIN {{ source('silver', 'ons_care_allocations') }} AS ca
+        ON ca.dateBegin <= d.full_date
+        AND (ca.dateEnd IS NULL OR ca.dateEnd >= d.full_date)
+    LEFT JOIN {{ ref('dim_clienten') }} AS c
+        ON c.clientObjectId = ca.clientObjectId
+    LEFT JOIN {{ ref('fact_clienten_locaties_per_dag') }} AS cl 
+        ON c.clientObjectId = cl.clientObjectId 
+        AND cl.peildatum = d.full_date
+        AND locationType='MAIN'
+
 CROSS APPLY (
     -- Leeftijd berekenen, rekening houdend met maand en dag
     SELECT
