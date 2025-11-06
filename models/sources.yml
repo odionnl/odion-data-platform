@@ -4,5 +4,8 @@ sources:
   - name: silver
     schema: silver
     tables:
+      - name: dim_date
       - name: ons_clients
       - name: ons_care_allocations
+      - name: ons_locations
+      - name: ons_location_assignments
