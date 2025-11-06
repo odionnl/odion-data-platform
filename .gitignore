@@ -1,0 +1,9 @@
+# Poetry virtualenv & cache
+.venv/
+__pycache__/
+*.pyc
+
+# dbt
+target/
+dbt_packages/
+logs/
