@@ -6,10 +6,6 @@
 SELECT
     d.date_key,
     d.full_date AS peildatum,
-    CASE 
-        WHEN d.full_date > getdate() THEN 1
-        ELSE 0
-    END AS is_toekomst,
     c.clientObjectId,
     c.clientnummer,
     c.geboortedatum,
@@ -37,7 +33,8 @@ CROSS APPLY (
               THEN 1 ELSE 0
           END
 ) AS a(leeftijd)
-WHERE c.geboortedatum IS NOT NULL
-  AND d.full_date >= c.geboortedatum
-  -- Geen leeftijd berekenen na overlijden
-  AND (c.overlijdensdatum IS NULL OR d.full_date <= c.overlijdensdatum);
+WHERE d.full_date <= getdate()
+    AND c.geboortedatum IS NOT NULL
+    AND d.full_date >= c.geboortedatum
+    -- Geen leeftijd berekenen na overlijden
+    AND (c.overlijdensdatum IS NULL OR d.full_date <= c.overlijdensdatum);
