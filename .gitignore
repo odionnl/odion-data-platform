@@ -7,3 +7,7 @@ __pycache__/
 target/
 dbt_packages/
 logs/
+
+# drawio
+*.drawio.bkp
+*.drawio.dtmp
