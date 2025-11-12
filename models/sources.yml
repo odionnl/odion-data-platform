@@ -1,7 +1,25 @@
 version: 2
 
 sources:
+  - name: ons_plan_2
+    database: Ons_Plan_2
+    schema: dbo
+    tables:
+      - name: care_allocations
+      - name: clients
+      - name: locations
+      - name: location_assignments
+
+  - name: bronze
+    database: OdionDataPlatform
+    schema: bronze
+    tables:
+      - name: ons_clients
+      - name: ons_locations
+      - name: ons_location_assignments
+
   - name: silver
+    database: OdionDataPlatform
     schema: silver
     tables:
       - name: dim_date
