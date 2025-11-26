@@ -6,8 +6,9 @@ with H as (
     select
         l.locatie_id,                         -- Uniek ID van de locatie
         l.ouder_locatie_id,                   -- Bovenliggende locatie
-        l.startdatum_locatie  as startdatum,  -- Startdatum van locatie
-        l.einddatum_locatie   as einddatum,   -- Einddatum van locatie
+
+        cast(l.startdatum_locatie as date) as startdatum,
+        cast(l.einddatum_locatie   as date) as einddatum,
 
         cast(l.locatienaam as nvarchar(255)) collate database_default as locatienaam,
 
@@ -21,8 +22,13 @@ with H as (
 
         1 as niveau,   -- huidig niveau (root = 1)
 
-        cast('.' + cast(l.locatie_id as nvarchar(50)) + '.' as nvarchar(1000)) as pad
-    from {{ ref('stg_ons__locations') }} l
+        cast('.' + cast(l.locatie_id as nvarchar(50)) + '.' as nvarchar(1000)) as pad,
+
+        -- verrijking uit int_locations direct meenemen
+        l.aantal_kindlocaties,
+        l.is_leaf_locatie,
+        l.is_actief_vandaag
+    from {{ ref('int_locations') }} l
     where l.ouder_locatie_id is null
 
     union all
@@ -31,8 +37,9 @@ with H as (
     select
         c.locatie_id,
         c.ouder_locatie_id,
-        c.startdatum_locatie  as startdatum,
-        c.einddatum_locatie   as einddatum,
+
+        cast(c.startdatum_locatie as date) as startdatum,
+        cast(c.einddatum_locatie   as date) as einddatum,
 
         cast(c.locatienaam as nvarchar(255)) collate database_default as locatienaam,
 
@@ -81,42 +88,15 @@ with H as (
 
         h.niveau + 1 as niveau,
 
-        cast(h.pad + cast(c.locatie_id as nvarchar(50)) + '.' as nvarchar(1000)) as pad
-    from {{ ref('stg_ons__locations') }} c
+        cast(h.pad + cast(c.locatie_id as nvarchar(50)) + '.' as nvarchar(1000)) as pad,
+
+        c.aantal_kindlocaties,
+        c.is_leaf_locatie,
+        c.is_actief_vandaag
+    from {{ ref('int_locations') }} c
     join H
       on c.ouder_locatie_id = H.locatie_id
     where h.niveau < 6
-),
-
-enriched as (
-    select
-        h.locatie_id,
-        h.locatienaam,
-        h.ouder_locatie_id,
-        h.startdatum,
-        h.einddatum,
-
-        -- jouw eigen, canonieke pad
-        h.pad          as locatie_pad,
-
-        -- 1 kolom voor niveau (vanuit de CTE)
-        h.niveau       as locatie_niveau,
-
-        -- verrijking uit int_locations (zonde om weg te gooien)
-        l.aantal_kindlocaties,
-        l.is_leaf_locatie,
-        l.is_actief_vandaag,
-
-        -- namen per niveau (handig voor marts)
-        h.niveau1,
-        h.niveau2,
-        h.niveau3,
-        h.niveau4,
-        h.niveau5,
-        h.niveau6
-    from H
-    left join {{ ref('int_locations') }} l
-      on l.locatie_id = h.locatie_id
 )
 
 select
@@ -125,8 +105,8 @@ select
     ouder_locatie_id,
     startdatum,
     einddatum,
-    locatie_pad,
-    locatie_niveau,
+    pad              as locatie_pad,
+    niveau           as locatie_niveau,
     aantal_kindlocaties,
     is_leaf_locatie,
     is_actief_vandaag,
@@ -136,4 +116,4 @@ select
     niveau4,
     niveau5,
     niveau6
-from enriched;
+from H;
