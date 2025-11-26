@@ -1,0 +1,18 @@
+version: 2
+
+sources:
+  - name: ons_plan_2
+    database: Ons_Plan_2
+    schema: dbo
+    tables:
+      - name: care_allocations
+      - name: care_orders
+      - name: care_order_products
+      - name: clients
+      - name: dossier_medical_policies
+      - name: locations
+      - name: location_assignments
+      - name: products
+      - name: finance_types
+      - name: debtors
+
