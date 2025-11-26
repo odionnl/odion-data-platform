@@ -28,7 +28,7 @@ models:
       +materialized: view
 
     intermediate:
-      +materialized: view
+      +materialized: ephemeral
 
     marts:
       +materialized: view

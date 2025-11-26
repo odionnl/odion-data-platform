@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: dim_locaties
+    description: "Dimensietabel met locatie-hiërarchie en clusterindeling."
+    columns:
+      - name: cluster
+        description: >
+          Locatiecluster (Ambulant, Wonen, Dagbesteding, etc.), bepaald via
+          de macro `get_location_cluster` op basis van locatienaam en
+          hiërarchieniveaus.
