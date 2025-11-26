@@ -7,5 +7,11 @@ models:
       - name: cluster
         description: >
           Locatiecluster (Ambulant, Wonen, Dagbesteding, etc.), bepaald via
-          de macro `get_location_cluster` op basis van locatienaam en
+          de macro `get_locatiecluster` op basis van locatienaam en
           hiërarchieniveaus.
+  - name: dim_clienten
+    description: "Dimensietabel met cliënten."
+    columns:
+      - name: leeftijdsgroep
+        description: >
+          Leeftijdsgroep bepaald via de macro `get_leeftijdsgroep`.

@@ -15,7 +15,7 @@ with src as (
         locatie_niveau,
         aantal_kindlocaties,
         is_leaf_locatie,
-        is_actief,
+        is_actief_vandaag,
 
         -- Generieke niveaus
         niveau1,
@@ -38,7 +38,7 @@ select
     -- Hierarchiegegevens
     locatie_pad,
     locatie_niveau,
-    is_actief,
+    is_actief_vandaag,
     is_leaf_locatie,
 
     -- Generieke niveaus
@@ -50,6 +50,6 @@ select
     niveau6,
 
     -- Clusterbepaling op basis van locatienaam, niveau2 en niveau3 (macro)
-    {{ get_location_cluster('locatienaam', 'niveau2', 'niveau3') }} as cluster
+    {{ get_locatiecluster('locatienaam', 'niveau2', 'niveau3') }} as cluster
 
 from src;

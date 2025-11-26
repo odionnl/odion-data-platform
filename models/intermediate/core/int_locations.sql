@@ -63,7 +63,7 @@ enriched as (
             when l.startdatum_locatie <= cast(getdate() as date)
              and (l.einddatum_locatie is null or l.einddatum_locatie >= cast(getdate() as date))
             then 1 else 0
-        end as is_actief
+        end as is_actief_vandaag
 
     from locations l
     left join child_counts c

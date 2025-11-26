@@ -105,7 +105,7 @@ enriched as (
         -- verrijking uit int_locations (zonde om weg te gooien)
         l.aantal_kindlocaties,
         l.is_leaf_locatie,
-        l.is_actief,
+        l.is_actief_vandaag,
 
         -- namen per niveau (handig voor marts)
         h.niveau1,
@@ -129,7 +129,7 @@ select
     locatie_niveau,
     aantal_kindlocaties,
     is_leaf_locatie,
-    is_actief,
+    is_actief_vandaag,
     niveau1,
     niveau2,
     niveau3,

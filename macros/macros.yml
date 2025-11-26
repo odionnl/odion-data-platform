@@ -1,0 +1,23 @@
+version: 2
+
+macros:
+
+  - name: get_leeftijdsgroep
+    description: Bepaalt de leeftijdsgroep op basis van een leeftijd in jaren.
+    arguments:
+      - name: leeftijd_col
+        type: column
+        description: Kolomnaam met de leeftijd in jaren (bijv. leeftijd_vandaag).
+
+  - name: get_locatiecluster
+    description: Bepaalt het locatiecluster op basis van locatienamen in de hiërarchie.
+    arguments:
+      - name: locatienaam
+        type: column
+        description: Kolom met de naam van de locatie.
+      - name: niveau2
+        type: column
+        description: Kolom met de naam in niveau 2 van de locatiehiërarchie.
+      - name: niveau3
+        type: column
+        description: Kolom met de naam in niveau 3 van de locatiehiërarchie.
