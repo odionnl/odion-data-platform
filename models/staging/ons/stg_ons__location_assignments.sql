@@ -9,6 +9,7 @@ source as (
 renamed as (
 
     select
+        objectId as locatietoewijzing_id,
         clientObjectId as client_id,
         locationObjectId as locatie_id,
         beginDate as startdatum_locatie,
@@ -19,6 +20,7 @@ renamed as (
 )
 
 select 
+    locatietoewijzing_id,
     client_id,
     locatie_id,
     startdatum_locatie,
