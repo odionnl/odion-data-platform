@@ -3,7 +3,8 @@
 WITH numbers AS (
     SELECT TOP (DATEDIFF(day, '2015-01-01', '2035-12-31') + 1)
         ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) - 1 AS n
-    FROM sys.all_objects
+    FROM sys.all_objects a
+    CROSS JOIN sys.all_objects b   -- 🔹 gives you plenty of rows
 ),
 
 spine AS (
@@ -25,24 +26,18 @@ dim AS (
 
         -- Nederlandse weekdag
         FORMAT(datum, 'dddd', 'nl-NL') AS weekdag_naam,
-        DATEPART(weekday, datum) AS weekdag_nummer, -- standaard, begin zondag
-        DATEPART(isowk, datum) AS weeknummer,       -- ISO weeknummer (ma-zo)
+        DATEPART(weekday, datum) AS weekdag_nummer,
+        DATEPART(isowk, datum) AS weeknummer,
 
-        -- Datum als YYYY-WW sleutel
         CONCAT(YEAR(datum), '-W', FORMAT(DATEPART(isowk, datum), '00')) AS jaar_week,
 
-        -- Kwartaal
         DATEPART(quarter, datum) AS kwartaal,
         CONCAT('Q', DATEPART(quarter, datum)) AS kwartaal_label,
 
-        -- Dag van het jaar (1–366)
         DATEPART(dayofyear, datum) AS dag_van_jaar,
 
-        -- Werkdag / weekend
-        CASE WHEN DATEPART(weekday, datum) IN (2,3,4,5,6) THEN 1 ELSE 0 END AS is_werkdag,  
+        CASE WHEN DATEPART(weekday, datum) IN (2,3,4,5,6) THEN 1 ELSE 0 END AS is_werkdag,
         CASE WHEN DATEPART(weekday, datum) IN (1,7) THEN 1 ELSE 0 END AS is_weekend
-
-
     FROM spine
 )
 
