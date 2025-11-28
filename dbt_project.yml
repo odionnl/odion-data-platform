@@ -21,7 +21,6 @@ clean-targets:
 
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
-
 models:
   odion_data_platform:
     staging:
@@ -32,4 +31,12 @@ models:
 
     marts:
       +materialized: view
+
+vars:
+  dbt_date:
+    calendar:
+      default_last_day: '2040-12-31'
+    time_zone: Europe/Amsterdam
+    first_day_of_week: 1
+
 
