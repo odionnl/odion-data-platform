@@ -12,7 +12,7 @@ jaren as (
 
     select
         d.jaar,
-        min(d.datum) as peildatum_jaar
+        min(d.datum) as peildatum
     from {{ ref('dim_datum') }} d
     join params p
       on d.jaar between p.start_jaar and p.eind_jaar
@@ -36,13 +36,13 @@ client_jaar_in_zorg as (
     select distinct
         c.client_id,
         c.clientnummer,
-        c.startdatum_zorg,
-        c.einddatum_zorg,
+        cast(c.startdatum_zorg as date) as startdatum_zorg,
+        cast(c.einddatum_zorg as date) as einddatum_zorg,
         j.jaar,
-        j.peildatum_jaar as peildatum
+        j.peildatum as peildatum
     from clienten_met_zorgtoewijzingen c
     join jaren j
-      on j.peildatum_jaar between c.startdatum_zorg and c.einddatum_zorg
+      on j.peildatum between c.startdatum_zorg and c.einddatum_zorg
 
 )
 
