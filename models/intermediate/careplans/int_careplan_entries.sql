@@ -32,7 +32,12 @@ joined as (
         careplan_entries.*,
         careplan_target_definitions.doel_naam,
         careplan_demand_definitions.aandachtspunt_naam,
-        careplan_domain_definitions.domein_naam
+        careplan_domain_definitions.domein_naam,
+        CASE
+            WHEN careplan_domain_definitions.verborgen = 1 THEN 'Oud'
+            WHEN careplan_domain_definitions.verborgen = 0 THEN 'Nieuw'
+            ELSE 'Onbekend'
+        END AS domein_versie
     from careplan_entries
     left join careplan_target_definitions
         on careplan_target_definitions.doel_definitie_id=careplan_entries.doel_definitie_id
