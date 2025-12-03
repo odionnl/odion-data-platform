@@ -8,10 +8,12 @@ sources:
       - name: care_allocations
       - name: care_orders
       - name: care_order_products
+      - name: careplans
       - name: clients
       - name: dossier_medical_policies
       - name: locations
       - name: location_assignments
+      - name: lst_care_plan_statuses
       - name: products
       - name: finance_types
       - name: debtors
