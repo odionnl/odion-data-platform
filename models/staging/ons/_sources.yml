@@ -8,6 +8,10 @@ sources:
       - name: care_allocations
       - name: care_orders
       - name: care_order_products
+      - name: careplan_demand_definitions
+      - name: careplan_domain_definitions
+      - name: careplan_entries
+      - name: careplan_target_definitions
       - name: careplans
       - name: clients
       - name: dossier_medical_policies
