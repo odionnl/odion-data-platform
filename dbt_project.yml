@@ -34,9 +34,6 @@ models:
 
       clienten:
         +schema: clienten
-
-      clientnetwerk:
-        +schema: clientnetwerk
       
       locaties:
         +schema: locaties
