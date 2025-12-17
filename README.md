@@ -1,7 +1,6 @@
 # 🧱 Odion Data Platform
 
 Dit project bevat de dbt-modellen en scripts voor het **Odion Data Platform**.  
-Het doel is om ruwe data om te zetten naar bruikbare informatie via het `bronze → silver → gold`-model.
 
 ---
 
@@ -55,13 +54,15 @@ poetry run dbt run
 
 ## 📁 Projectstructuur
 
+De dbt-modellen zijn georganiseerd volgens een layered architecture (*staging → intermediate → marts*), met domeinen als extra indeling.
+
 ```text
 .
 ├── models/
-│   ├── silver/        # Gekwalificeerde ruwe data
-│   └── gold/          # Samenvattingen, dimensies en feiten
+│   ├── staging/       # Ruwe data
+│   └── intermediate/  # Businesslogica & verrijkingen
+│   └── marts/         # Analytische eindmodellen (dimensies en feiten)
 ├── tests/             # Eventuele dbt tests
-├── scripts/           # Overige hulpscripts
 ├── dbt_project.yml    # dbt projectconfiguratie
 ├── pyproject.toml     # Poetry dependency management
 └── README.md
