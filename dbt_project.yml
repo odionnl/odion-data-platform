@@ -32,6 +32,18 @@ models:
     marts:
       +materialized: view
 
+      clienten:
+        +schema: clienten
+      
+      locaties:
+        +schema: locaties
+      
+      shared:
+        +schema: shared
+      
+      zorgplannen:
+        +schema: zorgplannen
+
 vars:
   dbt_date:
     calendar:

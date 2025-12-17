@@ -1,3 +1,12 @@
+-- wachtlijst
+{% macro is_wachtlijst(locatienaam_col, locatie_pad_col) %}
+(
+    {{ locatienaam_col }} like '%Wachtlijst%'
+    or {{ locatie_pad_col }} like '.1.593%'
+)
+{% endmacro %}
+
+-- locatiecluster
 {% macro get_locatiecluster(locatienaam, niveau2, niveau3) %}
     case
         when lower(isnull({{ locatienaam }}, '')) like '%externe aanbieder%'

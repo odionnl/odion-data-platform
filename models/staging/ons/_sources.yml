@@ -5,6 +5,7 @@ sources:
     database: Ons_Plan_2
     schema: dbo
     tables:
+      - name: addresses
       - name: care_allocations
       - name: care_orders
       - name: care_order_products
@@ -14,11 +15,17 @@ sources:
       - name: careplan_target_definitions
       - name: careplans
       - name: clients
-      - name: dossier_medical_policies
-      - name: locations
-      - name: location_assignments
-      - name: lst_care_plan_statuses
-      - name: products
-      - name: finance_types
+      - name: clients_addresses
       - name: debtors
-
+      - name: dossier_medical_policies
+      - name: finance_types
+      - name: location_assignments
+      - name: locations
+      - name: lst_address_types
+      - name: lst_care_plan_statuses
+      - name: lst_relation_social_types
+      - name: nexus_client_contact_relation_types
+      - name: nexus_relation_type_categories
+      - name: products
+      - name: relations
+      - name: relations_addresses

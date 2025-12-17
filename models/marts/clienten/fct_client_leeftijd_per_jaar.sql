@@ -3,7 +3,7 @@
 with clienten_in_zorg_per_jaar as (
 
     select *
-    from {{ ref('fact_client_in_zorg_per_jaar') }}
+    from {{ ref('fct_client_in_zorg_per_jaar') }}
 
 ),
 
