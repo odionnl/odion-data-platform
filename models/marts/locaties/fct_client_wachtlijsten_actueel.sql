@@ -2,7 +2,7 @@
 
 with client_locaties as (
 
-    select * from {{ ref('fact_client_locatie_actueel') }}
+    select * from {{ ref('fct_client_locaties_actueel') }}
 
 ),
 

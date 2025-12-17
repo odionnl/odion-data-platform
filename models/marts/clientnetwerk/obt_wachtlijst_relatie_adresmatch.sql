@@ -2,13 +2,13 @@
 
 with client_wachtlijst as (
 
-    select * from {{ ref('fact_client_wachtlijsten_actueel') }}
+    select * from {{ ref('fct_client_wachtlijsten_actueel') }}
 
 ),
 
 client_hoofdlocatie as (
 
-    select * from {{ ref('fact_client_hoofdlocatie_actueel') }}
+    select * from {{ ref('fct_client_hoofdlocatie_actueel') }}
 
 ),
 
