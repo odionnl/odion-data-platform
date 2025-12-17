@@ -12,25 +12,41 @@ care_allocations as (
 
 ),
 
-care_allocations_most_recent as (
-
-    select *
-    from (
-        select
-            ca.*,
-            row_number() over (
-                partition by ca.client_id
-                order by
-                    -- meest recente eerst
-                    ca.startdatum_zorg desc,
-                    -- als startdatum gelijk is: einddatum (laatste/NULL) als tie-breaker
-                    coalesce(ca.einddatum_zorg, cast('9999-12-31' as date)) desc
-            ) as rn
-        from care_allocations ca
-    ) x
-    where rn = 1
-
+care_allocations_relevant as (
+  select *
+  from (
+    select
+      ca.*,
+      row_number() over (
+        partition by ca.client_id
+        order by
+          case
+            when ca.startdatum_zorg <= getdate()
+             and (ca.einddatum_zorg is null or ca.einddatum_zorg > getdate())
+            then 1 else 0
+          end desc,              -- eerst lopend
+          ca.startdatum_zorg desc,
+          coalesce(ca.einddatum_zorg, cast('9999-12-31' as date)) desc
+      ) as rn
+    from care_allocations ca
+  ) x
+  where rn = 1
 ),
+
+
+clienten_met_leeftijd as (
+
+    select 
+        clients.client_id,
+        datediff(year, clients.geboortedatum, getdate())
+        -- correctie voor verjaardag al geweest of niet dit jaar
+        - case
+            when dateadd(year, datediff(year, clients.geboortedatum, getdate()), clients.geboortedatum) > getdate()
+            then 1 else 0
+          end as leeftijd
+    from clients
+),
+
 
 final as (
 
@@ -47,12 +63,11 @@ final as (
         clients.prefix,
         clients.naam,
 
-        datediff(year, clients.geboortedatum, getdate())
-        - case
-            when dateadd(year, datediff(year, clients.geboortedatum, getdate()), clients.geboortedatum) > getdate()
-            then 1 else 0
-          end as leeftijd,
+        -- leeftijd & leeftijdsgroep
+        clienten_met_leeftijd.leeftijd,
+        {{ get_leeftijdsgroep('clienten_met_leeftijd.leeftijd') }} as leeftijdsgroep,
 
+        -- in zorg
         case
             when ca.startdatum_zorg <= getdate()
              and (ca.einddatum_zorg is null or ca.einddatum_zorg > getdate())
@@ -60,8 +75,10 @@ final as (
         end as in_zorg
 
     from clients
-    left join care_allocations_most_recent ca
+    left join care_allocations_relevant ca
         on ca.client_id = clients.client_id
+    left join clienten_met_leeftijd
+        on clients.client_id=clienten_met_leeftijd.client_id
 
     where clients.clientnummer is not null
       and clients.clientnummer not in ('onbekend')
