@@ -8,10 +8,8 @@ clienten as (
     select
         c.*,
         p.vandaag
-    from {{ ref('int_clients_and_care_allocations_joined') }} c
+    from {{ ref('int_clients') }} c
     cross join params p
-    where c.startdatum_zorg <= p.vandaag
-      and c.einddatum_zorg > p.vandaag
 ),
 
 locaties as (
@@ -30,10 +28,20 @@ locatie_toewijzingen as (
 final as (
     select
         c.client_id,
+        c.clientnummer,
+        c.in_zorg,
         l.locatie_id,
+        l.locatienaam,
         la.startdatum_locatie,
         la.einddatum_locatie,
-        la.locatie_type
+        la.locatie_type,
+        l.locatie_pad,
+        l.niveau1,
+        l.niveau2,
+        l.niveau3,
+        l.niveau4,
+        l.niveau5,
+        l.niveau6
     from locatie_toewijzingen la
     inner join clienten c on la.client_id=c.client_id
     inner join locaties l on la.locatie_id=l.locatie_id
