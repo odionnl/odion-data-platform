@@ -20,15 +20,22 @@ jaren as (
 
 ),
 
-clienten_met_zorgtoewijzingen as (
+clienten as (
 
     select
         client_id,
-        clientnummer,
+        clientnummer
+    from {{ ref('int_clients') }}
+
+),
+
+zorgtoewijzingen as (
+
+    select
+        client_id,
         startdatum_zorg,
         einddatum_zorg
-    from {{ ref('int_clients_and_care_allocations_joined') }}
-
+    from {{ ref('int_care_allocations') }}
 ),
 
 client_jaar_in_zorg as (
@@ -36,13 +43,14 @@ client_jaar_in_zorg as (
     select distinct
         c.client_id,
         c.clientnummer,
-        cast(c.startdatum_zorg as date) as startdatum_zorg,
-        cast(c.einddatum_zorg as date) as einddatum_zorg,
+        cast(z.startdatum_zorg as date) as startdatum_zorg,
+        cast(z.einddatum_zorg as date) as einddatum_zorg,
         j.jaar,
         j.peildatum as peildatum
-    from clienten_met_zorgtoewijzingen c
+    from clienten c
+    left join zorgtoewijzingen z on c.client_id=z.client_id
     join jaren j
-      on j.peildatum between c.startdatum_zorg and c.einddatum_zorg
+      on j.peildatum between z.startdatum_zorg and z.einddatum_zorg
 
 )
 
