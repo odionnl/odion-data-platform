@@ -44,17 +44,19 @@ final as (
         -- sociaal type (bv. vader/moeder etc.)
         rst.relatie_sociaal_type as relatie,
 
-        -- "volgorde" proxy (zoals in je originele query: objectId)
-        nrt.client_contact_relatie_type_id as relatie_volgorde,
 
-        nrt.relatie_type as relatie_type,
-        nrtc.relatie_type_categorie as relatie_categorie,
+        -- relatie type en categorie
+        nrt.client_contact_relatie_type_id,
+        nrt.relatie_type,
+        nrtc.relatie_type_categorie,
 
         -- adresgegevens relatie
-        a.straatnaam       as relatie_straatnaam,
-        a.huisnummer   as relatie_huisnummer,
-        a.woonplaats         as relatie_woonplaats,
-        a.gemeente as relatie_gemeente
+        a.straatnaam,
+        a.huisnummer,
+        a.woonplaats,
+        a.gemeente,
+        a.startdatum_adres,
+        a.einddatum_adres
 
     from relations r
     left join lst_relation_social_types rst
@@ -67,12 +69,6 @@ final as (
         on nrt.client_contact_relatie_type_id = r.client_contact_relatie_id
     left join nexus_relation_type_categories nrtc
         on nrtc.relatie_type_categorie_id = nrt.relatie_type_categorie_id
-
-    where a.straatnaam is not null
-      and a.straatnaam != ''
-      and a.startdatum_adres < getdate()
-      and (a.einddatum_adres is null or a.einddatum_adres > getdate())
-
 )
 
 select * from final

@@ -24,10 +24,10 @@ client_adres as (
     *,
 
     -- normalisatie van adres
-    lower(ltrim(rtrim(client_straatnaam)))                   AS n_straat,
-    ltrim(rtrim(client_huisnummer))                      AS n_huisnr,
-    lower(ltrim(rtrim(isnull(client_woonplaats,''))))          AS n_plaats,
-    lower(ltrim(rtrim(isnull(client_gemeente,''))))  AS n_gemeente
+    lower(ltrim(rtrim(straatnaam)))                   AS n_straatnaam,
+    ltrim(rtrim(huisnummer))                      AS n_huisnummer,
+    lower(ltrim(rtrim(isnull(woonplaats,''))))          AS n_woonplaats,
+    lower(ltrim(rtrim(isnull(gemeente,''))))  AS n_gemeente
 
     from {{ ref('int_clients_addresses') }}
 
@@ -39,11 +39,16 @@ relatie_detail as (
     *,
 
     -- normalisatie van adres
-    lower(ltrim(rtrim(relatie_straatnaam)))                   AS n_straat,
-    ltrim(rtrim(relatie_huisnummer))                      AS n_huisnr,
-    lower(ltrim(rtrim(isnull(relatie_woonplaats,''))))          AS n_plaats,
-    lower(ltrim(rtrim(isnull(relatie_gemeente,''))))  AS n_gemeente
+    lower(ltrim(rtrim(straatnaam)))                   AS n_straatnaam,
+    ltrim(rtrim(huisnummer))                      AS n_huisnummer,
+    lower(ltrim(rtrim(isnull(woonplaats,''))))          AS n_woonplaats,
+    lower(ltrim(rtrim(isnull(gemeente,''))))  AS n_gemeente
     from {{ ref('int_relations') }}
+
+    where straatnaam is not null
+        and straatnaam != ''
+        and startdatum_adres < getdate()
+        and (einddatum_adres is null or einddatum_adres > getdate())
 
 ),
 
@@ -56,35 +61,40 @@ final as (
         c.leeftijd,
         c.in_zorg,
 
+        -- hoofdlocatie
         ch.locatienaam as hoofdlocatie,
         ch.locatie_id as locatie_id_hoofdlocatie,
 
+        -- wachtlijst
         cw.locatienaam as wachtlijst,
         cw.locatie_id as locatie_id_wachtlijst,
 
         case
-            when rd.n_straat = ca.n_straat
-             and isnull(rd.n_huisnr,'') = isnull(ca.n_huisnr,'')
+            when rd.n_straatnaam = ca.n_straatnaam
+             and isnull(rd.n_huisnummer,'') = isnull(ca.n_huisnummer,'')
              and (
-                  rd.n_plaats = ca.n_plaats or rd.n_gemeente = ca.n_gemeente
-               or rd.n_gemeente = ca.n_plaats or rd.n_plaats = ca.n_gemeente
+                  rd.n_woonplaats = ca.n_woonplaats or rd.n_gemeente = ca.n_gemeente
+               or rd.n_gemeente = ca.n_woonplaats or rd.n_woonplaats = ca.n_gemeente
              )
             then 1 else 0
         end as match_adres_relatie,
 
-        coalesce(rd.relatie_categorie, 'onbekend') as relatie_categorie,
+        -- relatie-gegevens
+        coalesce(rd.relatie_type_categorie, 'onbekend') as relatie_type_categorie,
         coalesce(rd.relatie_type, 'onbekend')      as relatie_type,
         coalesce(rd.relatie, 'onbekend')           as relatie,
 
-        ca.client_straatnaam,
-        ca.client_huisnummer,
-        ca.client_woonplaats,
-        ca.client_gemeente,
+        -- client adres
+        ca.straatnaam as client_straatnaam,
+        ca.huisnummer as client_huisnummer,
+        ca.woonplaats as client_woonplaats,
+        ca.gemeente as client_gemeente,
 
-        rd.relatie_straatnaam,
-        rd.relatie_huisnummer,
-        rd.relatie_woonplaats,
-        rd.relatie_gemeente
+        -- relatie adres
+        rd.straatnaam as relatie_straatnaam,
+        rd.huisnummer as relatie_huisnummer,
+        rd.woonplaats as relatie_woonplaats,
+        rd.gemeente as relatie_gemeente
 
     from client_wachtlijst cw
     left join client_info c
@@ -101,19 +111,20 @@ final as (
         where rd.client_id = cw.client_id
         order by
             case
-                when rd.n_straat = ca.n_straat
-                 and isnull(rd.n_huisnr,'') = isnull(ca.n_huisnr,'')
-                 and rd.n_plaats = ca.n_plaats
+                when rd.n_straatnaam = ca.n_straatnaam
+                 and isnull(rd.n_huisnummer,'') = isnull(ca.n_huisnummer,'')
+                 and rd.n_woonplaats = ca.n_woonplaats
                  and rd.n_gemeente = ca.n_gemeente then 0
 
-                when rd.n_straat = ca.n_straat
-                 and isnull(rd.n_huisnr,'') = isnull(ca.n_huisnr,'') then 1
+                when rd.n_straatnaam = ca.n_straatnaam
+                 and isnull(rd.n_huisnummer,'') = isnull(ca.n_huisnummer,'') then 1
 
-                when rd.n_straat = ca.n_straat then 2
-                when isnull(rd.n_huisnr,'') = isnull(ca.n_huisnr,'') then 3
+                when rd.n_straatnaam = ca.n_straatnaam then 2
+                when isnull(rd.n_huisnummer,'') = isnull(ca.n_huisnummer,'') then 3
                 else 9
             end,
-            rd.relatie_volgorde asc
+            -- "volgorde" proxy
+            rd.client_contact_relatie_type_id asc
     ) rd
 
     where c.leeftijd >= 18

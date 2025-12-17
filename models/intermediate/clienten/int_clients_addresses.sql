@@ -15,11 +15,11 @@ lst_address_types as (
 final as (
     select
         ca.client_id,
-        a.straatnaam       AS client_straatnaam,
-        a.huisnummer   AS client_huisnummer,
-        a.woonplaats         AS client_woonplaats,
-        a.gemeente AS client_gemeente,
-        lst_at.adrestype AS client_adrestype,
+        a.straatnaam,
+        a.huisnummer,
+        a.woonplaats,
+        a.gemeente,
+        lst_at.adrestype,
 
         -- bij verschillende adressen: kies meest relevante
         ROW_NUMBER() OVER (
