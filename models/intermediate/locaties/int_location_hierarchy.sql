@@ -69,12 +69,18 @@ select
     ouder_locatie_id,
     startdatum,
     einddatum,
+
+    -- hierarchie informatie
     pad as locatie_pad,
     niveau as locatie_niveau,
-
     aantal_kindlocaties,
     is_leaf_locatie,
     is_actief_vandaag,
 
-    niveau1, niveau2, niveau3, niveau4, niveau5, niveau6
+    -- niveaus
+    niveau1, niveau2, niveau3, niveau4, niveau5, niveau6,
+
+    -- Clusterbepaling
+    {{ get_locatiecluster('locatienaam', 'niveau2', 'niveau3') }} as cluster
+
 from H;

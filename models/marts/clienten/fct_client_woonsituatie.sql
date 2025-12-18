@@ -57,15 +57,30 @@ relatie_adres as (
       and (ra.einddatum_adres is null or ra.einddatum_adres > getdate())
 ),
 
+client_hoofdlocatie_cluster as (
+    select
+        client_id,
+        locatie_id,
+        locatienaam as hoofdlocatie,
+        cluster
+    from {{ ref('fct_client_hoofdlocatie_actueel') }}
+),
+
 final as (
     select
         c.client_id,
         c.clientnummer,
         c.in_zorg,
 
+        -- hoofdlocatie
+        chc.locatie_id,
+        chc.hoofdlocatie,
+        chc.cluster,
+
         -- Woonsituatie
         case
             when ca.client_id is null then 'Clientadres onbekend'
+            when chc.cluster = 'Wonen' then 'Woont bij Odion'
             when
                 ra.n_straatnaam = ca.n_straatnaam
                 and isnull(ra.n_huisnummer,'') = isnull(ca.n_huisnummer,'')
@@ -74,11 +89,11 @@ final as (
                   or ra.n_gemeente = ca.n_plaats or ra.n_plaats = ca.n_gemeente
                 )
             then 'Woont bij relatie'
-            else 'Woont op zichzelf'
+            else 'Woont zelfstandig'
         end as woonsituatie,
 
         -- Relatie-informatie
-        coalesce(ra.relatie_type_categorie, 'onbekend') as relatie_type_categorie,
+        coalesce(ra.contactpersoon_relatietype_categorie, 'onbekend') as contactpersoon_relatietype_categorie,
         coalesce(ra.relatie_type, 'onbekend') as relatie_type,
         coalesce(ra.relatie, 'onbekend') as relatie,
 
@@ -98,6 +113,8 @@ final as (
     from client_info c
     left join client_adres ca
         on ca.client_id = c.client_id
+    left join client_hoofdlocatie_cluster chc
+        on chc.client_id = c.client_id
 
     outer apply (
         select top (1) ra.*
@@ -115,7 +132,7 @@ final as (
                 when isnull(ra.n_huisnummer,'') = isnull(ca.n_huisnummer,'') then 3
                 else 9
             end,
-            ra.client_contact_relatie_type_id asc
+            ra.contactpersoon_relatietype_id asc
     ) ra
 )
 

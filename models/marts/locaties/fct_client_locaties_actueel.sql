@@ -36,6 +36,7 @@ final as (
         la.einddatum_locatie,
         la.locatie_type,
         l.locatie_pad,
+        l.cluster,
         l.niveau1,
         l.niveau2,
         l.niveau3,

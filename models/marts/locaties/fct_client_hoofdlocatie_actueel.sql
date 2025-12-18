@@ -18,6 +18,7 @@ final as (
         startdatum_locatie,
         einddatum_locatie,
         locatie_pad,
+        cluster,
         niveau1,
         niveau2,
         niveau3,

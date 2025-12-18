@@ -33,14 +33,14 @@ select
     hierarchy.niveau5,
     hierarchy.niveau6,
 
+    -- Cluster
+    hierarchy.cluster,
+
     -- Adres
     locations.straatnaam,
     locations.huisnummer,
     locations.postcode,
-    locations.plaats,
-
-    -- Clusterbepaling
-    {{ get_locatiecluster('locations.locatienaam', 'hierarchy.niveau2', 'hierarchy.niveau3') }} as cluster
+    locations.plaats
 
 from locations
 left join hierarchy
