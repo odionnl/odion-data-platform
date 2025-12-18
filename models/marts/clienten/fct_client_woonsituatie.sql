@@ -30,8 +30,7 @@ client_adres_ranked as (
                 ca.adres_id desc
         ) as rn
     from {{ ref('int_clients_addresses') }} ca
-    where ca.adrestype in ('GBA adres (woonadres)', 'Verblijfadres', 'Tijdelijk verblijfadres')
-      and ca.startdatum_adres < getdate()
+    where ca.startdatum_adres < getdate()
       and (ca.einddatum_adres is null or ca.einddatum_adres > getdate())
       and ca.straatnaam is not null
       and ca.straatnaam <> ''
@@ -79,7 +78,7 @@ final as (
 
         -- Woonsituatie
         case
-            when ca.client_id is null then 'Clientadres onbekend'
+            -- woont bij Odion
             when chc.cluster = 'Wonen' then 'Woont bij Odion'
             -- vergelijken van adres met meest relevante relatie
             when
@@ -90,6 +89,11 @@ final as (
                   or r.n_gemeente = ca.n_plaats or r.n_plaats = ca.n_gemeente
                 )
             then 'Woont bij relatie'
+            -- adres cliënt onbekend
+            when ca.client_id is null then 'Adres cliënt onbekend'
+            -- aanname bij adres relatie onbekend = zelfstandig wonen
+            when (r.straatnaam is null or r.straatnaam = '') then 'Woont zelfstandig'
+            -- overig: aanname = zelfstandig wonen
             else 'Woont zelfstandig'
         end as woonsituatie,
 
