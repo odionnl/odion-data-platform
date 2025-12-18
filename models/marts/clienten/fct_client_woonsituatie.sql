@@ -94,7 +94,7 @@ final as (
 
         -- Relatie-informatie
         coalesce(ra.contactpersoon_relatietype_categorie, 'onbekend') as contactpersoon_relatietype_categorie,
-        coalesce(ra.relatie_type, 'onbekend') as relatie_type,
+        coalesce(ra.contactpersoon_relatietype, 'onbekend') as contactpersoon_relatietype,
         coalesce(ra.relatie, 'onbekend') as relatie,
 
         -- Adresgegevens cliënt

@@ -24,6 +24,12 @@ lst_relation_social_types as (
 
 ),
 
+nexus_personal_relation_types as (
+
+    select * from {{ ref('stg_ons__nexus_personal_relation_types') }}
+    
+),
+
 nexus_client_contact_relation_types as (
 
     select * from {{ ref('stg_ons__nexus_client_contact_relation_types') }}
@@ -44,11 +50,14 @@ final as (
         -- sociaal type (bv. vader/moeder etc.)
         rst.relatie_sociaal_type as relatie,
 
+        -- persoonlijke relatie
+        prt.persoonlijke_relatietype_id,
+        prt.persoonlijke_relatietype,
 
-        -- relatie type en categorie
-        nrt.client_contact_relatie_type_id,
-        nrt.relatie_type,
-        nrtc.relatie_type_categorie,
+        -- contactpersoon relatie type en categorie
+        nrt.contactpersoon_relatietype_id,
+        nrt.contactpersoon_relatietype,
+        nrtc.relatietype_categorie as contactpersoon_relatietype_categorie,
 
         -- adresgegevens relatie
         a.straatnaam,
@@ -60,15 +69,17 @@ final as (
 
     from relations r
     left join lst_relation_social_types rst
-        on r.persoonlijke_relatie_id = rst.relatie_sociaal_type_id
+        on r.persoonlijke_relatietype_id = rst.relatie_sociaal_type_id
     left join relations_addresses ra
         on ra.relatie_id = r.relatie_id
     left join addresses a
         on a.adres_id = ra.adres_id
+    left join nexus_personal_relation_types prt
+        on prt.persoonlijke_relatietype_id = r.persoonlijke_relatietype_id
     left join nexus_client_contact_relation_types nrt
-        on nrt.client_contact_relatie_type_id = r.client_contact_relatie_id
+        on nrt.contactpersoon_relatietype_id = r.contactpersoon_relatietype_id
     left join nexus_relation_type_categories nrtc
-        on nrtc.relatie_type_categorie_id = nrt.relatie_type_categorie_id
+        on nrtc.relatietype_categorie_id = nrt.contactpersoon_relatietype_categorie_id
 )
 
 select * from final

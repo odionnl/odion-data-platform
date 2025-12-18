@@ -9,15 +9,17 @@ source as (
 renamed as (
 
     select
-        objectId as client_contact_relatie_type_id,
-        name as relatie_type,
-        categoryObjectId as relatie_type_categorie_id
+        objectId as contactpersoon_relatietype_id,
+        name as contactpersoon_relatietype,
+        categoryObjectId as contactpersoon_relatietype_categorie_id,
+        active as is_actief
     from source
 
 )
 
 select 
-    client_contact_relatie_type_id,
-    relatie_type,
-    relatie_type_categorie_id
+    contactpersoon_relatietype_id,
+    contactpersoon_relatietype,
+    contactpersoon_relatietype_categorie_id,
+    is_actief
 from renamed
