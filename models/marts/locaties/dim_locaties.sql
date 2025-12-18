@@ -1,55 +1,47 @@
--- models/marts/core/dim_locaties.sql
 {{ config(materialized='view') }}
 
-with src as (
+with locations as (
     select
-        -- Sleutels & basis
-        locatie_id,
-        locatienaam,
-        ouder_locatie_id,
-        startdatum,
-        einddatum,
+        *
+    from {{ ref('int_locations_base') }}
+),
 
-        -- Hierarchiegegevens
-        locatie_pad,
-        locatie_niveau,
-        aantal_kindlocaties,
-        is_leaf_locatie,
-        is_actief_vandaag,
-
-        -- Generieke niveaus
-        niveau1,
-        niveau2,
-        niveau3,
-        niveau4,
-        niveau5,
-        niveau6
+hierarchy as (
+    select
+        *
     from {{ ref('int_location_hierarchy') }}
 )
 
 select
     -- Sleutels & basis
-    locatie_id,
-    locatienaam,
-    ouder_locatie_id,
-    startdatum        as startdatum_locatie,
-    einddatum         as einddatum_locatie,
+    locations.locatie_id,
+    locations.locatienaam,
+    locations.startdatum_locatie,
+    locations.einddatum_locatie,
 
     -- Hierarchiegegevens
-    locatie_pad,
-    locatie_niveau,
-    is_actief_vandaag,
-    is_leaf_locatie,
+    hierarchy.locatie_pad,
+    hierarchy.locatie_niveau,
+    hierarchy.is_actief_vandaag,
+    hierarchy.aantal_kindlocaties,
 
     -- Generieke niveaus
-    niveau1,
-    niveau2,
-    niveau3,
-    niveau4,
-    niveau5,
-    niveau6,
+    hierarchy.niveau1,
+    hierarchy.niveau2,
+    hierarchy.niveau3,
+    hierarchy.niveau4,
+    hierarchy.niveau5,
+    hierarchy.niveau6,
 
-    -- Clusterbepaling op basis van locatienaam, niveau2 en niveau3 (macro)
-    {{ get_locatiecluster('locatienaam', 'niveau2', 'niveau3') }} as cluster
+    -- Adres
+    locations.straatnaam,
+    locations.huisnummer,
+    locations.postcode,
+    locations.plaats,
 
-from src;
+    -- Clusterbepaling
+    {{ get_locatiecluster('locations.locatienaam', 'hierarchy.niveau2', 'hierarchy.niveau3') }} as cluster
+
+from locations
+left join hierarchy
+  on hierarchy.locatie_id = locations.locatie_id;

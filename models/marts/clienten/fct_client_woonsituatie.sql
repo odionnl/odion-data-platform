@@ -57,13 +57,6 @@ relatie_adres as (
       and (ra.einddatum_adres is null or ra.einddatum_adres > getdate())
 ),
 
-client_hoofdlocatie as (
-    select 
-        *
-    from {{ ref('fct_client_hoofdlocatie_actueel')}}
-
-)
-
 final as (
     select
         c.client_id,

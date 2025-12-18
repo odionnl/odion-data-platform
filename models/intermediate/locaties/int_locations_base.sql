@@ -15,6 +15,16 @@ addresses as (
     from {{ ref('stg_ons__addresses') }}
 ),
 
+-- directe kinderen (alle kinderen, historisch)
+child_counts_all as (
+    select
+        ouder_locatie_id as locatie_id,
+        count(*) as aantal_kindlocaties
+    from locations
+    where ouder_locatie_id is not null
+    group by ouder_locatie_id
+),
+
 enriched as (
 
     select
@@ -26,13 +36,13 @@ enriched as (
         a.postcode,
         a.plaats,
 
-        -- locatie-niveau (op basis van pad)
+        -- afgeleide kolommen over hierarchische gegevens 
         len(l.locatie_hierarchie_pad)
           - len(replace(l.locatie_hierarchie_pad, '.', ''))
           as locatie_niveau,
-
-        -- toplocatie of niet
         case when l.ouder_locatie_id is null then 1 else 0 end as is_toplocatie,
+        coalesce(c.aantal_kindlocaties, 0) as aantal_kindlocaties,
+        case when coalesce(c.aantal_kindlocaties, 0) = 0 then 1 else 0 end as is_leaf_locatie,
 
         -- locatie actief of niet
         case
@@ -44,6 +54,8 @@ enriched as (
     from locations l
     left join addresses a
       on a.adres_id = l.adres_id
+    left join child_counts_all c
+      on c.locatie_id = l.locatie_id
 )
 
 select * from enriched;
