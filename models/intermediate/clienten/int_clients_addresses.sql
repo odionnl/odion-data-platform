@@ -18,7 +18,7 @@ final as (
         a.adres_id,
         a.straatnaam,
         a.huisnummer,
-        a.woonplaats,
+        a.plaats,
         a.gemeente,
         a.startdatum_adres,
         a.einddatum_adres,

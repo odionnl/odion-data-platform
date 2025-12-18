@@ -13,7 +13,7 @@ client_adres_ranked as (
         -- normalisatie van adres
         lower(ltrim(rtrim(ca.straatnaam)))                as n_straatnaam,
         ltrim(rtrim(ca.huisnummer))                       as n_huisnummer,
-        lower(ltrim(rtrim(isnull(ca.woonplaats,''))))     as n_woonplaats,
+        lower(ltrim(rtrim(isnull(ca.plaats,''))))     as n_plaats,
         lower(ltrim(rtrim(isnull(ca.gemeente,''))))       as n_gemeente,
 
         -- bij verschillende adressen: kies meest relevante
@@ -48,7 +48,7 @@ relatie_adres as (
         -- normalisatie van adres
         lower(ltrim(rtrim(ra.straatnaam)))                as n_straatnaam,
         ltrim(rtrim(ra.huisnummer))                       as n_huisnummer,
-        lower(ltrim(rtrim(isnull(ra.woonplaats,''))))     as n_woonplaats,
+        lower(ltrim(rtrim(isnull(ra.plaats,''))))     as n_plaats,
         lower(ltrim(rtrim(isnull(ra.gemeente,''))))       as n_gemeente
     from {{ ref('int_relations') }} ra
     where ra.straatnaam is not null
@@ -56,6 +56,13 @@ relatie_adres as (
       and ra.startdatum_adres < getdate()
       and (ra.einddatum_adres is null or ra.einddatum_adres > getdate())
 ),
+
+client_hoofdlocatie as (
+    select 
+        *
+    from {{ ref('fct_client_hoofdlocatie_actueel')}}
+
+)
 
 final as (
     select
@@ -70,8 +77,8 @@ final as (
                 ra.n_straatnaam = ca.n_straatnaam
                 and isnull(ra.n_huisnummer,'') = isnull(ca.n_huisnummer,'')
                 and (
-                     ra.n_woonplaats = ca.n_woonplaats or ra.n_gemeente = ca.n_gemeente
-                  or ra.n_gemeente = ca.n_woonplaats or ra.n_woonplaats = ca.n_gemeente
+                     ra.n_plaats = ca.n_plaats or ra.n_gemeente = ca.n_gemeente
+                  or ra.n_gemeente = ca.n_plaats or ra.n_plaats = ca.n_gemeente
                 )
             then 'Woont bij relatie'
             else 'Woont op zichzelf'
@@ -85,14 +92,14 @@ final as (
         -- Adresgegevens cliënt
         ca.straatnaam as client_straatnaam,
         ca.huisnummer as client_huisnummer,
-        ca.woonplaats as client_woonplaats,
+        ca.plaats as client_plaats,
         ca.gemeente as client_gemeente,
         ca.adrestype  as client_adrestype,
 
         -- Adresgegevens relatie
         ra.straatnaam as relatie_straatnaam,
         ra.huisnummer as relatie_huisnummer,
-        ra.woonplaats as relatie_woonplaats,
+        ra.plaats as relatie_plaats,
         ra.gemeente as relatie_gemeente
 
     from client_info c
@@ -107,7 +114,7 @@ final as (
             case
                 when ra.n_straatnaam = ca.n_straatnaam
                  and isnull(ra.n_huisnummer,'') = isnull(ca.n_huisnummer,'')
-                 and ra.n_woonplaats = ca.n_woonplaats
+                 and ra.n_plaats = ca.n_plaats
                  and ra.n_gemeente = ca.n_gemeente then 0
                 when ra.n_straatnaam = ca.n_straatnaam
                  and isnull(ra.n_huisnummer,'') = isnull(ca.n_huisnummer,'') then 1
