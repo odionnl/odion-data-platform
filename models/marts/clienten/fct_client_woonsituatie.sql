@@ -94,10 +94,11 @@ final as (
         end as woonsituatie,
 
         -- Relatie-informatie
-        coalesce(r.contactpersoon_relatietype_categorie, 'onbekend') as contactpersoon_relatietype_categorie,
+        --coalesce(r.contactpersoon_relatietype_categorie, 'onbekend') as contactpersoon_relatietype_categorie,
         coalesce(r.contactpersoon_relatietype, 'onbekend') as contactpersoon_relatietype,
-        coalesce(r.relatie_sociaal_type, 'onbekend') as relatie_sociaal_type,
+        --coalesce(r.relatie_sociaal_type, 'onbekend') as relatie_sociaal_type,
         coalesce(r.persoonlijke_relatietype, 'onbekend') as persoonlijke_relatietype,
+        --coalesce(r.persoonlijke_relatietype_categorie, 'onbekend') as persoonlijke_relatietype_categorie,
 
         -- Adresgegevens cliënt
         ca.straatnaam as client_straatnaam,

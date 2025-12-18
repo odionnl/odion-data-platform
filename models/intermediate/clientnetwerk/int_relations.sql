@@ -53,11 +53,12 @@ final as (
         -- persoonlijke relatie
         prt.persoonlijke_relatietype_id,
         prt.persoonlijke_relatietype,
+        nrtc_p.relatietype_categorie as persoonlijke_relatietype_categorie,
 
         -- contactpersoon relatie type en categorie
         nrt.contactpersoon_relatietype_id,
         nrt.contactpersoon_relatietype,
-        nrtc.relatietype_categorie as contactpersoon_relatietype_categorie,
+        nrtc_c.relatietype_categorie as contactpersoon_relatietype_categorie,
 
         -- adresgegevens relatie
         a.straatnaam,
@@ -68,18 +69,26 @@ final as (
         a.einddatum_adres
 
     from relations r
-    left join lst_relation_social_types rst
-        on r.persoonlijke_relatietype_id = rst.relatie_sociaal_type_id
     left join relations_addresses ra
         on ra.relatie_id = r.relatie_id
     left join addresses a
         on a.adres_id = ra.adres_id
+
+    -- sociale relatie (type)
+    left join lst_relation_social_types rst
+        on r.persoonlijke_relatietype_id = rst.relatie_sociaal_type_id
+
+    -- persoonlijke relaties (type & categorie)
     left join nexus_personal_relation_types prt
         on prt.persoonlijke_relatietype_id = r.persoonlijke_relatietype_id
+    left join nexus_relation_type_categories nrtc_p
+        on nrtc_p.relatietype_categorie_id = prt.persoonlijke_relatietype_categorie_id
+    
+    -- contactpersoon relaties (type & categorie)
     left join nexus_client_contact_relation_types nrt
         on nrt.contactpersoon_relatietype_id = r.contactpersoon_relatietype_id
-    left join nexus_relation_type_categories nrtc
-        on nrtc.relatietype_categorie_id = nrt.contactpersoon_relatietype_categorie_id
+    left join nexus_relation_type_categories nrtc_c
+        on nrtc_c.relatietype_categorie_id = nrt.contactpersoon_relatietype_categorie_id
 )
 
 select * from final
