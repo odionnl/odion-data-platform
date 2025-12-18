@@ -41,20 +41,20 @@ client_adres as (
     select * from client_adres_ranked where rn = 1
 ),
 
-relatie_adres as (
+relatie_info as (
     select
-        ra.*,
+        r.*,
 
         -- normalisatie van adres
-        lower(ltrim(rtrim(ra.straatnaam)))                as n_straatnaam,
-        ltrim(rtrim(ra.huisnummer))                       as n_huisnummer,
-        lower(ltrim(rtrim(isnull(ra.plaats,''))))     as n_plaats,
-        lower(ltrim(rtrim(isnull(ra.gemeente,''))))       as n_gemeente
-    from {{ ref('int_relations') }} ra
-    where ra.straatnaam is not null
-      and ra.straatnaam <> ''
-      and ra.startdatum_adres < getdate()
-      and (ra.einddatum_adres is null or ra.einddatum_adres > getdate())
+        lower(ltrim(rtrim(r.straatnaam)))                as n_straatnaam,
+        ltrim(rtrim(r.huisnummer))                       as n_huisnummer,
+        lower(ltrim(rtrim(isnull(r.plaats,''))))     as n_plaats,
+        lower(ltrim(rtrim(isnull(r.gemeente,''))))       as n_gemeente
+    from {{ ref('int_relations') }} r
+    where r.straatnaam is not null
+      and r.straatnaam <> ''
+      and r.startdatum_adres < getdate()
+      and (r.einddatum_adres is null or r.einddatum_adres > getdate())
 ),
 
 client_hoofdlocatie_cluster as (
@@ -81,21 +81,23 @@ final as (
         case
             when ca.client_id is null then 'Clientadres onbekend'
             when chc.cluster = 'Wonen' then 'Woont bij Odion'
+            -- vergelijken van adres met meest relevante relatie
             when
-                ra.n_straatnaam = ca.n_straatnaam
-                and isnull(ra.n_huisnummer,'') = isnull(ca.n_huisnummer,'')
+                r.n_straatnaam = ca.n_straatnaam
+                and isnull(r.n_huisnummer,'') = isnull(ca.n_huisnummer,'')
                 and (
-                     ra.n_plaats = ca.n_plaats or ra.n_gemeente = ca.n_gemeente
-                  or ra.n_gemeente = ca.n_plaats or ra.n_plaats = ca.n_gemeente
+                     r.n_plaats = ca.n_plaats or r.n_gemeente = ca.n_gemeente
+                  or r.n_gemeente = ca.n_plaats or r.n_plaats = ca.n_gemeente
                 )
             then 'Woont bij relatie'
             else 'Woont zelfstandig'
         end as woonsituatie,
 
         -- Relatie-informatie
-        coalesce(ra.contactpersoon_relatietype_categorie, 'onbekend') as contactpersoon_relatietype_categorie,
-        coalesce(ra.contactpersoon_relatietype, 'onbekend') as contactpersoon_relatietype,
-        coalesce(ra.relatie, 'onbekend') as relatie,
+        coalesce(r.contactpersoon_relatietype_categorie, 'onbekend') as contactpersoon_relatietype_categorie,
+        coalesce(r.contactpersoon_relatietype, 'onbekend') as contactpersoon_relatietype,
+        coalesce(r.relatie_sociaal_type, 'onbekend') as relatie_sociaal_type,
+        coalesce(r.persoonlijke_relatietype, 'onbekend') as persoonlijke_relatietype,
 
         -- Adresgegevens cliënt
         ca.straatnaam as client_straatnaam,
@@ -105,10 +107,10 @@ final as (
         ca.adrestype  as client_adrestype,
 
         -- Adresgegevens relatie
-        ra.straatnaam as relatie_straatnaam,
-        ra.huisnummer as relatie_huisnummer,
-        ra.plaats as relatie_plaats,
-        ra.gemeente as relatie_gemeente
+        r.straatnaam as relatie_straatnaam,
+        r.huisnummer as relatie_huisnummer,
+        r.plaats as relatie_plaats,
+        r.gemeente as relatie_gemeente
 
     from client_info c
     left join client_adres ca
@@ -116,24 +118,26 @@ final as (
     left join client_hoofdlocatie_cluster chc
         on chc.client_id = c.client_id
 
+    -- best match: tie break met contactpersoon_relatietype_id als proxy 
+    -- (eerste contactpersoon, tweede contactpersoon, etc.)
     outer apply (
-        select top (1) ra.*
-        from relatie_adres ra
-        where ra.client_id = c.client_id
+        select top (1) r.*
+        from relatie_info r
+        where r.client_id = c.client_id
         order by
             case
-                when ra.n_straatnaam = ca.n_straatnaam
-                 and isnull(ra.n_huisnummer,'') = isnull(ca.n_huisnummer,'')
-                 and ra.n_plaats = ca.n_plaats
-                 and ra.n_gemeente = ca.n_gemeente then 0
-                when ra.n_straatnaam = ca.n_straatnaam
-                 and isnull(ra.n_huisnummer,'') = isnull(ca.n_huisnummer,'') then 1
-                when ra.n_straatnaam = ca.n_straatnaam then 2
-                when isnull(ra.n_huisnummer,'') = isnull(ca.n_huisnummer,'') then 3
+                when r.n_straatnaam = ca.n_straatnaam
+                 and isnull(r.n_huisnummer,'') = isnull(ca.n_huisnummer,'')
+                 and r.n_plaats = ca.n_plaats
+                 and r.n_gemeente = ca.n_gemeente then 0
+                when r.n_straatnaam = ca.n_straatnaam
+                 and isnull(r.n_huisnummer,'') = isnull(ca.n_huisnummer,'') then 1
+                when r.n_straatnaam = ca.n_straatnaam then 2
+                when isnull(r.n_huisnummer,'') = isnull(ca.n_huisnummer,'') then 3
                 else 9
             end,
-            ra.contactpersoon_relatietype_id asc
-    ) ra
+            r.contactpersoon_relatietype_id asc
+    ) r
 )
 
 select * from final;

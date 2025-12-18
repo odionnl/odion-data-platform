@@ -48,7 +48,7 @@ final as (
         r.client_id,
 
         -- sociaal type (bv. vader/moeder etc.)
-        rst.relatie_sociaal_type as relatie,
+        rst.relatie_sociaal_type,
 
         -- persoonlijke relatie
         prt.persoonlijke_relatietype_id,
