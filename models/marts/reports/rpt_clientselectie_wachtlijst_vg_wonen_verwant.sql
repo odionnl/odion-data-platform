@@ -24,6 +24,7 @@ woonsituatie as (
         client_id,
         clientnummer,
         in_zorg,
+        locatie_id,
         hoofdlocatie,
         cluster,
         woonsituatie,
@@ -41,13 +42,14 @@ select
     client_info.clientnummer,
     client_info.in_zorg,
     client_info.leeftijd,
+    woonsituatie.locatie_id,
     woonsituatie.hoofdlocatie,
     woonsituatie.cluster,
     woonsituatie.woonsituatie,
-    woonsituatie.contactpersoon_relatietype,
-    woonsituatie.persoonlijke_relatietype,
-    woonsituatie.client_plaats,
-    woonsituatie.client_gemeente
+    woonsituatie.contactpersoon_relatietype as contactpersoon_relatie,
+    woonsituatie.persoonlijke_relatietype as persoonlijke_relatie, 
+    woonsituatie.client_plaats as woonplaats,
+    woonsituatie.client_gemeente as gemeente
 from client_info
 inner join wachtlijst_vg_bw_giw
     on wachtlijst_vg_bw_giw.client_id = client_info.client_id
