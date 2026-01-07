@@ -25,24 +25,24 @@ models:
   odion_data_platform:
     staging:
       +materialized: view
+      +schema: staging
 
     intermediate:
-      +materialized: ephemeral
+      +materialized: view
+      +schema: intermediate
 
     marts:
       +materialized: view
+      +schema: marts
 
-      clienten:
-        +schema: clienten
+      # dimensions:
+      #  +schema: dimensions
       
-      locaties:
-        +schema: locaties
+      # facts:
+      #   +schema: facts
       
-      shared:
-        +schema: shared
-      
-      zorgplannen:
-        +schema: zorgplannen
+      # reports:
+      #   +schema: reports
 
 vars:
   dbt_date:
