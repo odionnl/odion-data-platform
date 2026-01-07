@@ -9,14 +9,10 @@ client_info as (
 client_adres_ranked as (
     select
         ca.*,
-
-        -- normalisatie van adres
-        lower(ltrim(rtrim(ca.straatnaam)))                as n_straatnaam,
-        ltrim(rtrim(ca.huisnummer))                       as n_huisnummer,
+        lower(ltrim(rtrim(ca.straatnaam)))            as n_straatnaam,
+        ltrim(rtrim(ca.huisnummer))                   as n_huisnummer,
         lower(ltrim(rtrim(isnull(ca.plaats,''))))     as n_plaats,
-        lower(ltrim(rtrim(isnull(ca.gemeente,''))))       as n_gemeente,
-
-        -- bij verschillende adressen: kies meest relevante
+        lower(ltrim(rtrim(isnull(ca.gemeente,''))))   as n_gemeente,
         row_number() over (
             partition by ca.client_id
             order by
@@ -43,12 +39,10 @@ client_adres as (
 relatie_info as (
     select
         r.*,
-
-        -- normalisatie van adres
-        lower(ltrim(rtrim(r.straatnaam)))                as n_straatnaam,
-        ltrim(rtrim(r.huisnummer))                       as n_huisnummer,
+        lower(ltrim(rtrim(r.straatnaam)))            as n_straatnaam,
+        ltrim(rtrim(r.huisnummer))                   as n_huisnummer,
         lower(ltrim(rtrim(isnull(r.plaats,''))))     as n_plaats,
-        lower(ltrim(rtrim(isnull(r.gemeente,''))))       as n_gemeente
+        lower(ltrim(rtrim(isnull(r.gemeente,''))))   as n_gemeente
     from {{ ref('int_relations') }} r
     where r.straatnaam is not null
       and r.straatnaam <> ''
@@ -65,22 +59,35 @@ client_hoofdlocatie_cluster as (
     from {{ ref('fct_client_hoofdlocatie_actueel') }}
 ),
 
-final as (
+base as (
     select
         c.client_id,
         c.clientnummer,
         c.in_zorg,
 
-        -- hoofdlocatie
         chc.locatie_id,
         chc.hoofdlocatie,
         chc.cluster,
 
-        -- Woonsituatie
+        -- Adres cliënt
+        ca.straatnaam as client_straatnaam,
+        ca.huisnummer as client_huisnummer,
+        ca.plaats as client_plaats,
+        ca.gemeente as client_gemeente,
+        ca.adrestype  as client_adrestype,
+
+        -- kandidaat-relatie (best match)
+        r.straatnaam as relatie_straatnaam,
+        r.huisnummer as relatie_huisnummer,
+        r.plaats as relatie_plaats,
+        r.gemeente as relatie_gemeente,
+
+        r.contactpersoon_relatietype,
+        r.persoonlijke_relatietype,
+
+        -- woonsituatie
         case
-            -- woont bij Odion
             when chc.cluster = 'Wonen' then 'Woont bij Odion'
-            -- vergelijken van adres met meest relevante relatie
             when
                 r.n_straatnaam = ca.n_straatnaam
                 and isnull(r.n_huisnummer,'') = isnull(ca.n_huisnummer,'')
@@ -88,34 +95,11 @@ final as (
                      r.n_plaats = ca.n_plaats or r.n_gemeente = ca.n_gemeente
                   or r.n_gemeente = ca.n_plaats or r.n_plaats = ca.n_gemeente
                 )
-            then 'Woont bij relatie'
-            -- adres cliënt onbekend
+            then 'Woont bij verwant'
             when ca.client_id is null then 'Adres cliënt onbekend'
-            -- aanname bij adres relatie onbekend = zelfstandig wonen
             when (r.straatnaam is null or r.straatnaam = '') then 'Woont zelfstandig'
-            -- overig: aanname = zelfstandig wonen
             else 'Woont zelfstandig'
-        end as woonsituatie,
-
-        -- Relatie-informatie
-        --coalesce(r.contactpersoon_relatietype_categorie, 'onbekend') as contactpersoon_relatietype_categorie,
-        coalesce(r.contactpersoon_relatietype, 'onbekend') as contactpersoon_relatietype,
-        --coalesce(r.relatie_sociaal_type, 'onbekend') as relatie_sociaal_type,
-        coalesce(r.persoonlijke_relatietype, 'onbekend') as persoonlijke_relatietype,
-        --coalesce(r.persoonlijke_relatietype_categorie, 'onbekend') as persoonlijke_relatietype_categorie,
-
-        -- Adresgegevens cliënt
-        ca.straatnaam as client_straatnaam,
-        ca.huisnummer as client_huisnummer,
-        ca.plaats as client_plaats,
-        ca.gemeente as client_gemeente,
-        ca.adrestype  as client_adrestype,
-
-        -- Adresgegevens relatie
-        r.straatnaam as relatie_straatnaam,
-        r.huisnummer as relatie_huisnummer,
-        r.plaats as relatie_plaats,
-        r.gemeente as relatie_gemeente
+        end as woonsituatie
 
     from client_info c
     left join client_adres ca
@@ -123,8 +107,6 @@ final as (
     left join client_hoofdlocatie_cluster chc
         on chc.client_id = c.client_id
 
-    -- best match: tie break met contactpersoon_relatietype_id als proxy 
-    -- (eerste contactpersoon, tweede contactpersoon, etc.)
     outer apply (
         select top (1) r.*
         from relatie_info r
@@ -143,6 +125,34 @@ final as (
             end,
             r.contactpersoon_relatietype_id asc
     ) r
+),
+
+final as (
+    select
+        client_id,
+        clientnummer,
+        in_zorg,
+        locatie_id,
+        hoofdlocatie,
+        cluster,
+        woonsituatie,
+
+        -- Relatie-info alleen als 'Woont bij verwant'
+        case when woonsituatie = 'Woont bij verwant'
+             then coalesce(contactpersoon_relatietype, 'onbekend')
+        end as contactpersoon_relatietype,
+
+        case when woonsituatie = 'Woont bij verwant'
+             then coalesce(persoonlijke_relatietype, 'onbekend')
+        end as persoonlijke_relatietype,
+
+        -- Adres cliënt
+        client_straatnaam,
+        client_huisnummer,
+        client_plaats,
+        client_gemeente
+
+    from base
 )
 
 select * from final;
