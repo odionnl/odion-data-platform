@@ -54,19 +54,36 @@ poetry run dbt run
 
 ## 📁 Projectstructuur
 
-De dbt-modellen zijn georganiseerd volgens een layered architecture (*staging → intermediate → marts*), met domeinen als extra indeling.
+De dbt-modellen zijn georganiseerd volgens een layered architecture (*staging → intermediate → marts*). Binnen marts zijn de analytische eindmodellen verder ingedeeld in dimensions, facts en reports.
 
 ```text
 .
 ├── models/
-│   ├── staging/       # Ruwe data
-│   └── intermediate/  # Businesslogica & verrijkingen
-│   └── marts/         # Analytische eindmodellen (dimensies en feiten)
-├── tests/             # Eventuele dbt tests
-├── dbt_project.yml    # dbt projectconfiguratie
-├── pyproject.toml     # Poetry dependency management
+│   ├── staging/            # Ruwe data (bron-nabij, opschoning/normalisatie)
+│   ├── intermediate/       # Businesslogica & verrijkingen (herbruikbare tussenlagen)
+│   └── marts/              # Analytische eindmodellen (consumptielaag)
+│       ├── dimensions/     # Dimensionele tabellen (beschrijvende entiteiten)
+│       ├── facts/          # Feitentabellen (metingen/gebeurtenissen op een duidelijke grain)
+│       └── reports/        # Rapportage-/selectieviews (BI-ready, met filters/joins)
+├── tests/                  # Eventuele dbt tests
+├── dbt_project.yml         # dbt projectconfiguratie
+├── pyproject.toml          # Poetry dependency management
 └── README.md
+
 ```
 
 ---
 
+## 🧭 Datamodel (overzicht)
+
+Onderstaande afbeelding geeft een globaal overzicht van de marts-laag (dimensions, facts en reports) en hun onderlinge relaties.
+
+ℹ️ Dit overzicht is indicatief.
+Voor de actuele en volledige documentatie (incl. lineage, kolommen en afhankelijkheden) gebruik je:
+
+```
+dbt docs generate
+dbt docs serve
+```
+
+![Overzicht van de marts-laag (dimensions, facts en reports)](docs/overview_marts.png)
