@@ -35,14 +35,6 @@ models:
       +materialized: view
       +schema: marts
 
-      # dimensions:
-      #  +schema: dimensions
-      
-      # facts:
-      #   +schema: facts
-      
-      # reports:
-      #   +schema: reports
 
 vars:
   dbt_date:
