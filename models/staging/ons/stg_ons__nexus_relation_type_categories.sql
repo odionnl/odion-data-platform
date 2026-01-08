@@ -9,13 +9,13 @@ source as (
 renamed as (
 
     select
-        objectId as relatie_type_categorie_id,
-        name as relatie_type_categorie
+        objectId as relatietype_categorie_id,
+        name as relatietype_categorie
     from source
 
 )
 
 select 
-    relatie_type_categorie_id,
-    relatie_type_categorie
+    relatietype_categorie_id,
+    relatietype_categorie
 from renamed

@@ -68,11 +68,15 @@ final as (
         {{ get_leeftijdsgroep('clienten_met_leeftijd.leeftijd') }} as leeftijdsgroep,
 
         -- in zorg
-        case
-            when ca.startdatum_zorg <= getdate()
-             and (ca.einddatum_zorg is null or ca.einddatum_zorg > getdate())
-            then 1 else 0
-        end as in_zorg
+        cast(
+            case
+                when ca.startdatum_zorg <= getdate()
+                and (ca.einddatum_zorg is null or ca.einddatum_zorg > getdate())
+                then 1
+                else 0
+            end
+        as bit) as in_zorg
+
 
     from clients
     left join care_allocations_relevant ca
