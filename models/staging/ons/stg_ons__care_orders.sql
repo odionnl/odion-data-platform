@@ -14,7 +14,7 @@ renamed as (
         clientObjectId as client_id,
         id as legitimatie_nummer,
         beginDateClipped as startdatum_legitimatie,
-        endDateClipped as einddatum_legitimatie,
+        coalesce(endDateClipped, cast('9999-12-31' as date)) as einddatum_legitimatie,
         financeTypeObjectId as finance_type_id
     from source
 
