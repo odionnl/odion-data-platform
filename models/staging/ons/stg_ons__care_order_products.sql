@@ -12,7 +12,7 @@ renamed as (
         objectId as legitimatie_product_id,
         careOrderObjectId as legitimatie_id,
         beginDateClipped as startdatum_legitimatie_product,
-        endDateClipped as einddatum_legitimatie_product,
+        coalesce(endDateClipped, cast('9999-12-31' as date)) as einddatum_legitimatie_product,
         productObjectId as product_id,
         debtorObjectId as debiteur_id
     from source
