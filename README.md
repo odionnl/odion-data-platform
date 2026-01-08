@@ -86,4 +86,4 @@ dbt docs generate
 dbt docs serve
 ```
 
-![Overzicht van de marts-laag (dimensions, facts en reports)](docs/overview_marts.png)
+![Overzicht van de marts-laag (dimensions, facts en reports)](docs/marts_overview.png)
