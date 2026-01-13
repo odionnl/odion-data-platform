@@ -1,8 +1,36 @@
+/* 
+Deze query levert een overzicht van cliënten met een geldige JW-legitimatie
+die in de opgegeven periode in zorg zijn geweest. Deze wordt gebruikt door
+Cliëntservice.
+
+Per cliënt wordt getoond:
+- Basisgegevens (cliëntnummer, naam, geboortedatum)
+- De zorgperiode (start- en einddatum van zorgtoewijzing)
+- De geldige legitimatie
+- Het aantal en de lijst van actieve producten in de periode
+- Het aantal en de lijst van actieve jeugdzorgtrajecten in de periode
+
+Selectiecriteria:
+- Alleen cliënten met een legitimatie die 'JW' bevat
+- Alleen zorgtoewijzingen die overlappen met de geselecteerde periode
+- Alleen producten waarvan de product- en legitimatieperiode overlapt met de periode
+- Alleen jeugdzorgtrajecten die (deels) actief zijn in de periode
+
+Periode:
+De periode wordt dynamisch bepaald op basis van de startdatum & einddatum. Deze
+is altijd voor de periode van een halfjaar (eerste halfjaar of tweede halfjaar).
+
+Instructies:
+1. Pas bovenaan de query de variabelen @startdatum en @einddatum aan
+   om de gewenste rapportageperiode te bepalen.
+2. Sla op als Excel en deel met cliëntservice.
+*/
+
+
 USE Ons_Plan_2;
 
-DECLARE @jaar INT = 2025;
-DECLARE @startdatum DATE = CAST(CONCAT(@jaar, '-01-01') AS DATE);
-DECLARE @einddatum DATE  = CAST(CONCAT(@jaar, '-06-30') AS DATE);
+DECLARE @startdatum DATE = '2025-07-01';
+DECLARE @einddatum  DATE = '2025-12-31';
 
 SELECT DISTINCT
     l.clientno,
