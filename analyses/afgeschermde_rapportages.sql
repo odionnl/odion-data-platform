@@ -23,6 +23,4 @@ FROM careplan_reports cr
     ON crar.educationObjectId = ep.objectId
     LEFT JOIN expertise_groups eg
     ON eg.objectId = crar.expertiseGroupObjectId
-WHERE 
-    (ep.objectId IS NOT NULL OR eg.objectId IS NOT NULL)
-    AND cr.reportingDate >= '2025-01-01' --yyyymmdd
+WHERE cr.reportingDate >= '2025-01-01' --yyyymmdd

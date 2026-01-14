@@ -1,3 +1,5 @@
+USE Ons_Plan_2;
+
 SELECT
     de.clientObjectId AS client_id,
     c.identificationNo AS clientnummer,
@@ -32,4 +34,4 @@ FROM dossier_episodes de
     ON eg.objectId = dega.expertiseGroupId
     LEFT JOIN clients c
     ON c.objectId=de.clientObjectId
-WHERE de.createdAt >= '2025-01-01'
+WHERE de.createdAt >= '2025-01-01';
