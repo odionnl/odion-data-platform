@@ -6,6 +6,7 @@ sources:
     schema: dbo
     tables:
       - name: addresses
+      - name: administration_agreements
       - name: care_allocations
       - name: care_orders
       - name: care_order_products
@@ -27,9 +28,12 @@ sources:
       - name: lst_care_plan_report_types
       - name: lst_care_plan_statuses
       - name: lst_relation_social_types
+      - name: medication_administrations
+      - name: medication_charts
       - name: nexus_client_contact_relation_types
       - name: nexus_personal_relation_types
       - name: nexus_relation_type_categories
       - name: products
       - name: relations
       - name: relations_addresses
+      - name: status_updates
