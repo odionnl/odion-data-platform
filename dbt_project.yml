@@ -35,6 +35,11 @@ models:
       +materialized: view
       +schema: marts
 
+      reports:
+        rpt_feitelijk_geleverde_zorg:
+          +vars:
+            beoordelingsperiode_in_dagen: 28
+
 
 vars:
   dbt_date:
