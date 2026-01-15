@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: ortec
+    database: ORTEC_BDPReader
+    schema: src
+    tables:
+      - name: dim_employee
+      - name: dim_date
+      - name: dim_time
+      - name: dim_cost_center
+      - name: fact_published_shift
