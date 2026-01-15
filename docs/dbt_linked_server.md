@@ -15,11 +15,11 @@ Deze aanpak is bedoeld als **pragmatische tussenstap** richting een toekomstvast
 
 2. **SQL Server DWH**  
    - Heeft een **Linked Server** (`ORTEC_BDP`) naar Azure SQL  
-   - Bevat **views** in schema `ext_ortec` die data ophalen via `OPENQUERY`
+   - Bevat **views** in schema `src` die data ophalen via `OPENQUERY`
 
 3. **dbt**  
    - Verbindt alleen met het DWH  
-   - Gebruikt `source()` definitions die verwijzen naar `ext_ortec.*`  
+   - Gebruikt `source()` definitions die verwijzen naar `ORTEC_BDPReader.src.*`  
    - Bouwt staging- en verdere modellen bovenop deze views  
 
 dbt maakt **geen directe verbinding** met Azure SQL.
@@ -63,12 +63,14 @@ Deze Linked Server maakt het mogelijk om Azure SQL tabellen te benaderen via:
 
 ### Views in het DWH
 
-Voor elke benodigde Ortec-tabel is een **view** aangemaakt in schema `ext_ortec`.
+Voor elke benodigde Ortec-tabel is een **view** aangemaakt in schema `src`.
 
 Voorbeeld:
 
 ```sql
-CREATE OR ALTER VIEW ext_ortec.fact_published_shift AS
+USE ORTEC_BDPREADER;
+
+CREATE OR ALTER VIEW src.fact_published_shift AS
 SELECT *
 FROM OPENQUERY(
   ORTEC_BDP,
@@ -78,18 +80,18 @@ FROM OPENQUERY(
 
 ## Gebruikte views
 
-De volgende views zijn aangemaakt in het DWH onder schema `ext_ortec` (passthrough naar Ortec/Azure SQL via Linked Server `ORTEC_BDP`):
+De volgende views zijn aangemaakt in het DWH onder schema `src` (passthrough naar Ortec/Azure SQL via Linked Server `ORTEC_BDP`):
 
-- `ext_ortec.fact_published_shift`
-- `ext_ortec.dim_cost_center`
-- `ext_ortec.dim_date`
-- `ext_ortec.dim_time`
-- `ext_ortec.dim_employee`
+- `src.fact_published_shift`
+- `src.dim_cost_center`
+- `src.dim_date`
+- `src.dim_time`
+- `src.dim_employee`
 
 Deze views worden gebruikt als dbt-sources en vormen de “interface” tussen dbt en de externe Ortec-bron.
 
 ---
-
+s
 ## Gebruik in dbt
 
 ### Sources (`sources.yml`)
@@ -98,8 +100,8 @@ Definieer de views als sources in dbt:
 ```yaml
 sources:
   - name: ortec
-    database: OdionDataPlatform
-    schema: ext_ortec
+    database: ORTEC_BDPReader
+    schema: src
     tables:
       - name: fact_published_shift
       - name: dim_cost_center
@@ -127,4 +129,4 @@ Deze aanpak is bedoeld als tussenstap. Overstappen op ingestie (bijv. Azure Data
 - governance en auditing vereist zijn
 
 **Voordeel van deze opzet:**
-Als later wordt overgestapt op ingestie, kunnen dezelfde namen (`ext_ortec.*`) behouden blijven (als tabellen of views), waardoor dbt-modellen meestal niet hoeven te worden aangepast.
+Als later wordt overgestapt op ingestie, kunnen dezelfde namen (`src.*`) behouden blijven (als tabellen of views), waardoor dbt-modellen meestal niet hoeven te worden aangepast.
