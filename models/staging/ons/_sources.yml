@@ -23,6 +23,7 @@ sources:
       - name: locations
       - name: lst_address_types
       - name: lst_care_plan_statuses
+      - name: lst_location_types
       - name: lst_relation_social_types
       - name: nexus_client_contact_relation_types
       - name: nexus_personal_relation_types

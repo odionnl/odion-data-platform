@@ -14,7 +14,8 @@ renamed as (
         name                        as locatienaam,
         parentObjectId              as ouder_locatie_id,
         materializedPath            as locatie_hierarchie_pad,
-        addressObjectId             as adres_id
+        addressObjectId             as adres_id,
+        type                        as locatie_type_code
     from source
 
 )
@@ -26,5 +27,6 @@ select
     locatienaam,
     ouder_locatie_id,
     locatie_hierarchie_pad,
-    adres_id
+    adres_id,
+    locatie_type_code
 from renamed;

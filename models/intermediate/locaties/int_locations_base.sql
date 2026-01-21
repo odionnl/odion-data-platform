@@ -15,6 +15,14 @@ addresses as (
     from {{ ref('stg_ons__addresses') }}
 ),
 
+lst_location_types as (
+
+    select
+        *
+    from {{ ref('stg_ons__lst_location_types') }}
+),
+
+
 -- directe kinderen (alle kinderen, historisch)
 child_counts_all as (
     select
@@ -36,6 +44,9 @@ enriched as (
         a.postcode,
         a.plaats,
 
+        -- locatietype (kamer of locatie)
+        lt.locatie_type,
+
         -- afgeleide kolommen over hierarchische gegevens 
         len(l.locatie_hierarchie_pad)
           - len(replace(l.locatie_hierarchie_pad, '.', ''))
@@ -54,6 +65,8 @@ enriched as (
     from locations l
     left join addresses a
       on a.adres_id = l.adres_id
+    left join lst_location_types lt
+        on lt.locatie_type_code = l.locatie_type_code
     left join child_counts_all c
       on c.locatie_id = l.locatie_id
 )
