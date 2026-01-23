@@ -6,12 +6,15 @@ sources:
     schema: dbo
     tables:
       - name: addresses
+      - name: administration_agreements
       - name: care_allocations
       - name: care_orders
       - name: care_order_products
       - name: careplan_demand_definitions
       - name: careplan_domain_definitions
       - name: careplan_entries
+      - name: careplan_report_types
+      - name: careplan_reports
       - name: careplan_target_definitions
       - name: careplans
       - name: clients
@@ -22,12 +25,16 @@ sources:
       - name: location_assignments
       - name: locations
       - name: lst_address_types
+      - name: lst_care_plan_report_types
       - name: lst_care_plan_statuses
       - name: lst_location_types
       - name: lst_relation_social_types
+      - name: medication_administrations
+      - name: medication_charts
       - name: nexus_client_contact_relation_types
       - name: nexus_personal_relation_types
       - name: nexus_relation_type_categories
       - name: products
       - name: relations
       - name: relations_addresses
+      - name: status_updates
