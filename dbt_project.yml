@@ -27,6 +27,10 @@ models:
       +materialized: view
       +schema: staging
 
+      # sources in staging
+      ortec:
+        +enabled: false
+
     intermediate:
       +materialized: view
       +schema: intermediate
