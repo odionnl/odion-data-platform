@@ -2,8 +2,8 @@ version: 2
 
 sources:
   - name: ortec
-    database: ORTEC_BDPReader
-    schema: src
+    database: OdionDataPlatform
+    schema: raw_ortec
     tables:
       - name: dim_employee
       - name: dim_date
