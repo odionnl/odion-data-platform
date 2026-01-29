@@ -29,7 +29,7 @@ models:
 
       # sources in staging
       ortec:
-        +enabled: false
+        +enabled: true
 
     intermediate:
       +materialized: view

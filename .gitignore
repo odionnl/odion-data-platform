@@ -8,6 +8,9 @@ target/
 dbt_packages/
 logs/
 
+# dlt
+.dlt/secrets.toml
+
 # drawio
 *.drawio.bkp
 *.drawio.dtmp
