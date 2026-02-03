@@ -21,6 +21,6 @@ select
     team_id,
     team_naam,
     kostenplaatsnummer,
-    kostenplaats_naam
+    kostenplaats_naam,
     pool_type_code
 from renamed;
