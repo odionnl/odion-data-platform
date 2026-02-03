@@ -9,12 +9,12 @@ renamed as (
 
     select
         objectId as medewerker_id,
-        identificationNo AS mederwerker_nummer
+        identificationNo AS medewerker_nummer
     from source
 
 )
 
 select
     medewerker_id,
-    mederwerker_nummer
+    medewerker_nummer
 from renamed;
