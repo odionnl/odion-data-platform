@@ -9,14 +9,17 @@ renamed as (
 
     select
         objectId as zorgregel_id,
-        clientId AS client_id,
-        startDate AS startdatum,
-        endDate AS einddatum,
-        removed AS is_verwijderd,
-        registration AS is_urenregistratie,
-        payment AS is_voor_verloning,
-        verified AS is_gefiatteerd,
-        verifiedDate AS fiatteringsdatum
+        clientId as client_id,
+        employeeId as medewerker_id,
+        costClusterObjectId as team_id,
+        activityObjectId as uursoort_id,
+        startDate as startdatum,
+        endDate as einddatum,
+        removed as is_verwijderd,
+        registration as is_urenregistratie,
+        payment as is_voor_verloning,
+        verified as is_gefiatteerd,
+        verifiedDate as fiatteringsdatum
     from source
 
 )
@@ -24,6 +27,9 @@ renamed as (
 select
     zorgregel_id,
     client_id,
+    medewerker_id,
+    team_id,
+    uursoort_id,
     startdatum,
     einddatum,
     is_verwijderd,
