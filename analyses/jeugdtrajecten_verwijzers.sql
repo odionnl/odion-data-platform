@@ -1,7 +1,7 @@
 USE Ons_Plan_2;
 
 DECLARE @startdatum DATE = '2025-07-01';
-DECLARE @einddatum  DATE = '2025-12-31';
+DECLARE @einddatum  DATE = '2026-12-31';
 
 SELECT
     j.clientObjectId,
