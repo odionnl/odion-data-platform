@@ -29,6 +29,7 @@ final as (
         -- legitimatie details (finance type op care_order)
         co.legitimatie_id,
         co.legitimatie_nummer,
+        ft.financieringstype_code as legitimatie_financiering_code,
         ft.financieringstype_beschrijving     as legitimatie_financiering,
         co.startdatum_legitimatie,
         co.einddatum_legitimatie,
