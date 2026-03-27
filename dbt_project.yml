@@ -1,9 +1,9 @@
-name: 'odion_data_platform_cc'
+name: 'odion_data_platform'
 version: '1.0.0'
 
 require-dbt-version: [">=1.7.0", "<2.0.0"]
 
-profile: 'odion_data_platform_cc'
+profile: 'odion_data_platform'
 
 model-paths: ["models"]
 analysis-paths: ["analyses"]
