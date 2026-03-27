@@ -3,6 +3,7 @@ version: 2
 sources:
   - name: ortec
     description: "ORTEC roosterdata, geladen door dlt pipeline."
+    database: OdionBrondata
     schema: raw_ortec
     tables:
       - name: diensten

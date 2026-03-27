@@ -3,6 +3,7 @@ version: 2
 sources:
   - name: ons_audits
     description: "Audit-logs uit Nedap Ons, geladen door dlt pipeline."
+    database: OdionBrondata
     schema: raw_ons_audits
     tables:
       - name: audits
