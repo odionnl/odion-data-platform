@@ -80,10 +80,6 @@ models:
         description: "Verwijzing naar de client"
       - name: client_naam
         description: "Volledige naam van de client (roepnaam + voorvoegsel + achternaam)"
-      - name: team_id
-        description: "Verwijzing naar het team"
-      - name: teamnaam
-        description: "Naam van het team"
       - name: financieringstype_id
         description: "Verwijzing naar het financieringstype"
       - name: financieringstype_naam

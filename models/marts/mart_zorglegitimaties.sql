@@ -16,12 +16,6 @@ clienten as (
 
 ),
 
-teams as (
-
-    select * from {{ ref('stg_onsdb__teams') }}
-
-),
-
 financieringstypen as (
 
     select * from {{ ref('stg_onsdb__finance_types') }}
@@ -56,10 +50,6 @@ definitief as (
         zorglegitimaties.client_id,
         clienten.clientnaam                                         as client_naam,
 
-        -- Team
-        zorglegitimaties.team_id,
-        teams.teamnaam,
-
         -- Financiering
         zorglegitimaties.financieringstype_id,
         financieringstypen.financieringstype_naam,
@@ -90,8 +80,6 @@ definitief as (
     from zorglegitimaties
     left join clienten
         on clienten.client_id = zorglegitimaties.client_id
-    left join teams
-        on teams.team_id = zorglegitimaties.team_id
     left join financieringstypen
         on financieringstypen.financieringstype_id = zorglegitimaties.financieringstype_id
     left join product_samenvatting
