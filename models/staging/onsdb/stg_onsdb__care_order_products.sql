@@ -7,7 +7,7 @@ with bron as (
 definitief as (
 
     select
-        objectId                as zorglegitimatieproduct_id,
+        objectId                as zorglegitimatie_product_id,
         careOrderObjectId       as zorglegitimatie_id,
         productObjectId         as product_id,
         beginDate               as startdatum,

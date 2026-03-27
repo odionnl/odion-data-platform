@@ -58,22 +58,90 @@ models:
 
   - name: mart_zorglegitimaties
     description: >
-      Alle zorglegitimaties (historisch + actueel) met clientgegevens, teamnaam
-      en samenvatting van gekoppelde producten. Eén rij per zorglegitimatie.
+      Alle zorglegitimaties (historisch + actueel) met clientgegevens, teamnaam,
+      financieringstype en samenvatting van gekoppelde producten. Eén rij per zorglegitimatie.
     columns:
       - name: zorglegitimatie_id
         description: "Unieke identifier van de zorglegitimatie"
         tests: [unique, not_null]
+      - name: zorglegitimatie_type
+        description: "Type van de zorglegitimatie"
       - name: legitimatienummer
         description: "Nummer van de zorglegitimatie"
+      - name: startdatum
+        description: "Startdatum van de zorglegitimatie"
+      - name: einddatum
+        description: "Einddatum van de zorglegitimatie"
+      - name: ingangsdatum_geldig
+        description: "Geclipte startdatum (overlap-correctie)"
+      - name: einddatum_geldig
+        description: "Geclipte einddatum (overlap-correctie)"
+      - name: client_id
+        description: "Verwijzing naar de client"
       - name: client_naam
         description: "Volledige naam van de client (roepnaam + voorvoegsel + achternaam)"
+      - name: team_id
+        description: "Verwijzing naar het team"
       - name: teamnaam
         description: "Naam van het team"
+      - name: financieringstype_id
+        description: "Verwijzing naar het financieringstype"
+      - name: financieringstype_naam
+        description: "Naam van het financieringstype (bijv. ZZP, WMO, Jeugdwet)"
+      - name: financieringsgroep
+        description: "Groep van het financieringstype"
+      - name: debiteur_id
+        description: "Verwijzing naar de debiteur"
+      - name: uitsluiten_van_facturatie
+        description: "Of de zorglegitimatie uitgesloten is van facturatie (0/1)"
       - name: aantal_producten
         description: "Aantal gekoppelde producten"
       - name: totaal_minuten
         description: "Totaal aantal minuten van gekoppelde producten"
+      - name: is_actief
+        description: "Of de zorglegitimatie vandaag actief is (0/1)"
+
+  - name: mart_zorglegitimatie_producten
+    description: >
+      Alle zorglegitimatie-producten (historisch + actueel) met legitimatie-context,
+      clientgegevens en financieringstype. Eén rij per zorglegitimatie-product.
+    columns:
+      - name: zorglegitimatie_product_id
+        description: "Unieke identifier van het zorglegitimatie-product"
+        tests: [unique, not_null]
+      - name: zorglegitimatie_id
+        description: "Verwijzing naar de zorglegitimatie"
+        tests: [not_null]
+      - name: product_id
+        description: "Verwijzing naar het product"
+      - name: hoeveelheid_in_minuten
+        description: "Aantal minuten van het product"
+      - name: startdatum
+        description: "Startdatum van het product"
+      - name: einddatum
+        description: "Einddatum van het product"
+      - name: ingangsdatum_geldig
+        description: "Geclipte startdatum (overlap-correctie)"
+      - name: einddatum_geldig
+        description: "Geclipte einddatum (overlap-correctie)"
+      - name: awbz_klasse_id
+        description: "Verwijzing naar de AWBZ-klasse"
+      - name: zorglegitimatie_type
+        description: "Type van de bijbehorende zorglegitimatie"
+      - name: legitimatienummer
+        description: "Nummer van de bijbehorende zorglegitimatie"
+      - name: legitimatie_startdatum
+        description: "Startdatum van de bijbehorende zorglegitimatie"
+      - name: legitimatie_einddatum
+        description: "Einddatum van de bijbehorende zorglegitimatie"
+      - name: client_id
+        description: "Verwijzing naar de client"
+      - name: client_naam
+        description: "Volledige naam van de client (roepnaam + voorvoegsel + achternaam)"
+      - name: financieringstype_naam
+        description: "Naam van het financieringstype (bijv. ZZP, WMO, Jeugdwet)"
+      - name: is_actief
+        description: "Of het product vandaag actief is (0/1)"
 
   - name: mart_locaties
     description: >

@@ -20,7 +20,7 @@ definitief as (
         zorglegitimaties.startdatum             as legitimatie_startdatum,
         zorglegitimaties.einddatum              as legitimatie_einddatum,
         zorglegitimaties.team_id,
-        zorglegitimatieproducten.zorglegitimatieproduct_id,
+        zorglegitimatieproducten.zorglegitimatie_product_id,
         zorglegitimatieproducten.product_id,
         zorglegitimatieproducten.hoeveelheid_in_minuten,
         zorglegitimatieproducten.startdatum     as product_startdatum,

@@ -244,8 +244,8 @@ models:
   - name: stg_onsdb__care_order_products
     description: "Producten gekoppeld aan zorglegitimaties."
     columns:
-      - name: zorglegitimatieproduct_id
-        description: "Unieke identifier van het zorglegitimatieproduct"
+      - name: zorglegitimatie_product_id
+        description: "Unieke identifier van het zorglegitimatie-product"
         tests: [unique, not_null]
       - name: zorglegitimatie_id
         description: "Verwijzing naar de zorglegitimatie"

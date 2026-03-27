@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: int_zorglegitimaties_met_producten
-    description: "Zorglegitimaties verrijkt met gekoppelde producten."
+    description: "Zorglegitimaties verrijkt met gekoppelde producten. Eén rij per zorglegitimatie-product combinatie."
     columns:
       - name: zorglegitimatie_id
         description: "Unieke identifier van de zorglegitimatie"
