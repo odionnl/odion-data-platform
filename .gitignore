@@ -1,0 +1,17 @@
+# dbt
+target/
+dbt_packages/
+logs/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# dlt
+.dlt/secrets.toml
+*.pipeline_data/
+
+# Environment / credentials
+.env
+profiles.yml

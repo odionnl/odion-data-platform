@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: ortec
+    description: "ORTEC roosterdata, geladen door dlt pipeline."
+    schema: raw_ortec
+    tables:
+      - name: diensten
+        description: "Gepubliceerde diensten van medewerkers met locatie-informatie."

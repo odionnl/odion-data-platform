@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: stg_ortec__diensten
+    description: "Gestaged overzicht van ORTEC roosterdata."
+    columns:
+      - name: starttijd
+        description: "Starttijd van de dienst"
+      - name: eindtijd
+        description: "Eindtijd van de dienst"
+      - name: medewerker_id
+        description: "Personeelsnummer van de medewerker"
+        tests: [not_null]
+      - name: medewerker_naam
+        description: "Naam van de medewerker"
+      - name: kostenplaats_id
+        description: "Kostenplaats-ID (voor koppeling met OnsDB locaties)"
+      - name: kostenplaats_naam
+        description: "Naam van de kostenplaats"

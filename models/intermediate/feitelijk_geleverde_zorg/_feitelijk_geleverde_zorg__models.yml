@@ -1,0 +1,67 @@
+version: 2
+
+models:
+  - name: int_zorgplan_inzage
+    description: "Gefilterde en getransformeerde audit-logs van zorgplaninzage. Alleen records met geldig medewerkernummer."
+    columns:
+      - name: tijdstip
+        description: "Tijdstip van de inzage"
+        tests: [not_null]
+      - name: medewerker_id
+        description: "Personeelsnummer van de medewerker (afgeleid uit gebruiker_medewerkernummer)"
+        tests: [not_null]
+      - name: clientnummer
+        description: "Clientnummer van de betrokken cliënt"
+
+  - name: int_medewerkers_met_dienst_locaties
+    description: >
+      Unieke combinaties van medewerkers en locaties waar zij diensten
+      hebben gedraaid in de evaluatieperiode (via ORTEC kostenplaatskoppeling).
+    columns:
+      - name: medewerker_id
+        description: "Personeelsnummer van de medewerker"
+        tests: [not_null]
+      - name: locatienaam
+        description: "Naam van de locatie waar de medewerker dienst had"
+        tests: [not_null]
+
+  - name: int_check_geldig_zorgplan
+    description: "Check of client een actief zorgplan heeft op vandaag (GETDATE())."
+    columns:
+      - name: client_id
+        description: "Unieke identifier van de client"
+        tests: [unique, not_null]
+      - name: geldig_zorgplan
+        description: "1 als client een actief zorgplan heeft, anders 0"
+
+  - name: int_check_recente_rapportages
+    description: "Check of client rapportages heeft in de evaluatieperiode (28 dagen)."
+    columns:
+      - name: client_id
+        description: "Unieke identifier van de client"
+        tests: [unique, not_null]
+      - name: recente_rapportages
+        description: "1 als client minstens 1 rapportage heeft in de periode, anders 0"
+
+  - name: int_check_medicatie_toegediend
+    description: >
+      Check of client medicatie heeft die correct is toegediend in de
+      evaluatieperiode. NULL als client geen medicatie heeft.
+    columns:
+      - name: client_id
+        description: "Unieke identifier van de client"
+        tests: [unique, not_null]
+      - name: medicatie_toegediend
+        description: "1 als minstens 1 geldige toediening, 0 als alleen ongeldige, NULL als geen medicatie"
+
+  - name: int_check_zorgplan_ingezien
+    description: >
+      Check of het zorgplan van de client is ingezien door zorgpersoneel
+      dat op diezelfde locatie dienst had. Filtert op expertise-groep
+      'Zorgpersoneel (tbv planning & control)' en locatie-overlap.
+    columns:
+      - name: client_id
+        description: "Unieke identifier van de client"
+        tests: [unique, not_null]
+      - name: zorgplan_ingezien
+        description: "1 als zorgplan is ingezien door relevant zorgpersoneel, anders 0"

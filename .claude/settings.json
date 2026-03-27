@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \":*)",
+      "Bash(python3:*)",
+      "Bash(test -f \"c:/Users/adm-chantals/Projecten/odion-data-platform-cc/models/intermediate/verantwoording/int_clienten_in_zorg.sql\")",
+      "Read(//c/Users/adm-chantals/.claude/skills/onsdb/references/**)",
+      "Bash(sed 's/\"\"table\"\": \"\"//')",
+      "Bash(sed 's/\"\"//')",
+      "Bash(poetry run dbt show --inline \"SELECT TOP 1 * FROM Ons_Plan_2.dbo.survey_answers\")",
+      "Bash(poetry run dbt show --inline \"SELECT c.name FROM Ons_Plan_2.sys.columns c JOIN Ons_Plan_2.sys.tables t ON c.object_id = t.object_id WHERE t.name = ''survey_answers'' ORDER BY c.column_id\")",
+      "Bash(poetry run dbt show --inline \"SELECT c.name as kolom FROM Ons_Plan_2.sys.columns c INNER JOIN Ons_Plan_2.sys.tables t ON c.object_id = t.object_id WHERE t.name = ''survey_answers''\")",
+      "Bash(poetry run dbt show --inline \"SELECT c.name as kolom, c.column_id as nr FROM Ons_Plan_2.sys.columns c INNER JOIN Ons_Plan_2.sys.tables t ON c.object_id = t.object_id WHERE t.name = ''survey_answers'' AND c.column_id > 5\")"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\adm-chantals\\.claude\\projects\\c--Users-adm-chantals-Projecten-odion-data-platform-cc\\memory"
+    ]
+  },
+  "enabledPlugins": {
+    "dbt@dbt-agent-marketplace": true
+  }
+}

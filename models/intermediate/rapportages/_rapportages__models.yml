@@ -1,0 +1,14 @@
+version: 2
+
+models:
+  - name: int_rapportages_met_rechten
+    description: >
+      Toegangsrechtclassificatie per rapportage op basis van deskundigheden en deskundigheidsgroepen.
+      Alleen rechten van het type 'Zichtbaar voor' worden meegenomen.
+      afgeschermd_voor bepaald via EXISTS — geen aggregatie. Grain: één rij per rapportage.
+    columns:
+      - name: rapportage_id
+        description: "Unieke identifier van de rapportage"
+        tests: [unique, not_null]
+      - name: afgeschermd_voor
+        description: "Classificatie: 'deskundigheid', 'deskundigheidsgroep', 'beiden' of 'geen'"

@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  - name: int_zorgplanregels_met_domeinen
+    description: >
+      Zorgplanregels verrijkt met domeinnaam en domein_versie (Oud/Nieuw/Onbekend).
+      domein_versie is 'Oud' als de domeindefinitie hidden=1 heeft, 'Nieuw' als hidden=0.
+      Grain: één rij per zorgplanregel. Geen datumfilter (all-time).
+    columns:
+      - name: zorgplanregel_id
+        description: "Unieke identifier van de zorgplanregel"
+        tests: [unique, not_null]
+      - name: zorgplan_id
+        description: "Verwijzing naar het zorgplan"
+        tests: [not_null]
+      - name: domein_versie
+        description: "Oud, Nieuw of Onbekend — afgeleid van is_oud_domein op de domeindefinitie"
+
+  - name: int_zorgplannen_met_versie
+    description: >
+      Zorgplannen verrijkt met leesbare status, geldigheid en zorgplan_versie.
+      zorgplan_versie is 'Leeg' (geen geldige regels), 'Oud', 'Nieuw' of 'Mix' (combinatie).
+      geldigheid is 'Geldig', 'Verlopen' of 'Nog niet gestart' op basis van GETDATE().
+      Grain: één rij per zorgplan. Geen datumfilter (all-time).
+    columns:
+      - name: zorgplan_id
+        description: "Unieke identifier van het zorgplan"
+        tests: [unique, not_null]
+      - name: client_id
+        description: "Verwijzing naar de client"
+        tests: [not_null]
+      - name: status_omschrijving
+        description: "Leesbare zorgplanstatus (bijv. Actief, Concept)"
+      - name: geldigheid
+        description: "Geldig, Verlopen of Nog niet gestart — op basis van startdatum/einddatum vs GETDATE()"
+      - name: zorgplan_versie
+        description: "Leeg, Oud, Nieuw of Mix — aggregatie van domein_versie van de regels"
+      - name: aantal_regels
+        description: "Totaal aantal zorgplanregels"
+      - name: aantal_geldige_regels
+        description: "Aantal regels met domein_versie Oud of Nieuw"

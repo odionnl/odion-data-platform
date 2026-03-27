@@ -1,0 +1,137 @@
+version: 2
+
+models:
+  - name: int_vragenlijsten_definitie
+    description: >
+      Platte structuur van de volledige vragenlijstopbouw: vragenlijsten → categorieën → groepen → vragen,
+      inclusief optionele koppeling aan multiplechoice antwoordgroep.
+      Grain: één rij per vraag. Geen datumfilter (all-time definitie).
+    columns:
+      - name: vragenlijst_vraag_id
+        description: "Unieke identifier van de vraag"
+        tests: [unique, not_null]
+      - name: vragenlijst_id
+        description: "Verwijzing naar de vragenlijst"
+        tests: [not_null]
+      - name: vragenlijst_titel
+        description: "Titel van de vragenlijst"
+      - name: vragenlijst_actief
+        description: "1 als de vragenlijst in gebruik is"
+      - name: vragenlijst_categorie_id
+        description: "Verwijzing naar de categorie"
+        tests: [not_null]
+      - name: categorie_titel
+        description: "Titel van de categorie"
+      - name: categorie_volgnummer
+        description: "Volgorde van de categorie binnen de vragenlijst"
+      - name: vragenlijst_groep_id
+        description: "Verwijzing naar de groep"
+        tests: [not_null]
+      - name: groep_beschrijving
+        description: "Beschrijving van de groep"
+      - name: groep_volgnummer
+        description: "Volgorde van de groep binnen de categorie"
+      - name: drempelwaarde_score
+        description: "Drempelwaarde waaronder automatisch een aandachtspunt aangemaakt wordt"
+      - name: max_score
+        description: "Maximale score voor deze groep"
+      - name: vraag_volgnummer
+        description: "Volgorde van de vraag binnen de groep"
+      - name: vraagtekst
+        description: "Tekst van de vraag"
+      - name: aanvullende_info
+        description: "Aanvullende toelichting bij de vraag"
+      - name: antwoord_type
+        description: "Type antwoord (integer enum: bijv. tekst, ja/nee, multiplechoice)"
+      - name: is_verplicht
+        description: "1 als het invullen van deze vraag verplicht is"
+      - name: is_inactief
+        description: "1 als de vraag niet meer in gebruik is"
+      - name: antwoord_definitie_groep_id
+        description: "Verwijzing naar de multiplechoice antwoordgroep — null bij tekst/ja-nee vragen"
+      - name: antwoord_groep_beschrijving
+        description: "Naam van de multiplechoice antwoordgroep"
+
+  - name: int_vragenlijst_resultaten
+    description: >
+      Ingevulde vragenlijsten verrijkt met cliëntnaam, vragenlijsttitel, medewerker en leesbare statusomschrijving.
+      Grain: één rij per ingevulde vragenlijst. Geen datumfilter (historisch — Power BI filtert op ingevuld_op).
+    columns:
+      - name: vragenlijst_resultaat_id
+        description: "Unieke identifier van de ingevulde vragenlijst"
+        tests: [unique, not_null]
+      - name: vragenlijst_id
+        description: "Verwijzing naar de vragenlijst-template"
+        tests: [not_null]
+      - name: vragenlijst_titel
+        description: "Titel van de vragenlijst"
+      - name: vragenlijst_actief
+        description: "1 als de vragenlijst nog actief in gebruik is"
+      - name: client_id
+        description: "Verwijzing naar de cliënt"
+        tests: [not_null]
+      - name: client_naam
+        description: "Volledige naam van de cliënt (voornaam + achternaam)"
+      - name: medewerker_id
+        description: "Verwijzing naar de medewerker die de vragenlijst heeft ingevuld"
+      - name: ingevuld_door
+        description: "Naam van de medewerker die de vragenlijst heeft ingevuld"
+      - name: ingevuld_op
+        description: "Datum/tijd waarop de vragenlijst is ingevuld"
+      - name: status_code
+        description: "Ruwe statuscode — resolv naar omschrijving via status_omschrijving"
+      - name: status_omschrijving
+        description: "Leesbare statusomschrijving (via lst_vragenlijst_resultaat_statussen)"
+      - name: is_readonly
+        description: "1 als de vragenlijst afgesloten is voor verdere wijzigingen"
+      - name: aangemaakt_op
+        description: "Tijdstip van aanmaken"
+      - name: gewijzigd_op
+        description: "Tijdstip van laatste wijziging"
+
+  - name: int_vragenlijst_antwoorden
+    description: >
+      Antwoorden op vragen binnen ingevulde vragenlijsten, verrijkt met vraagtekst en antwoordtekst.
+      Grain: één rij per antwoord. Geen datumfilter (historisch).
+    columns:
+      - name: vragenlijst_antwoord_id
+        description: "Unieke identifier van het antwoord"
+        tests: [unique, not_null]
+      - name: vragenlijst_resultaat_id
+        description: "Verwijzing naar de ingevulde vragenlijst"
+        tests: [not_null]
+      - name: vragenlijst_id
+        description: "Verwijzing naar de vragenlijst-template"
+        tests: [not_null]
+      - name: client_id
+        description: "Verwijzing naar de cliënt"
+        tests: [not_null]
+      - name: ingevuld_op
+        description: "Datum/tijd waarop de vragenlijst is ingevuld"
+      - name: vragenlijst_vraag_id
+        description: "Verwijzing naar de vraag"
+        tests: [not_null]
+      - name: vraagtekst
+        description: "Tekst van de vraag"
+      - name: antwoord_type
+        description: "Type antwoord (integer enum)"
+      - name: vraag_volgnummer
+        description: "Volgorde van de vraag binnen de groep"
+      - name: antwoord_definitie_id
+        description: "Verwijzing naar het gekozen multiplechoice-antwoord — null bij tekst/ja-nee"
+      - name: antwoord_tekst
+        description: "Tekst van het gekozen multiplechoice-antwoord"
+      - name: antwoord_waarde
+        description: "Numerieke waarde van het gekozen antwoord"
+      - name: antwoord_score
+        description: "Scorebijdrage van het gekozen antwoord"
+      - name: tekst_antwoord
+        description: "Vrij tekstveld antwoord"
+      - name: ja_nee_antwoord
+        description: "Ja/nee antwoord"
+      - name: is_belangrijk
+        description: "1 als dit antwoord als belangrijk gemarkeerd is"
+      - name: aangemaakt_op
+        description: "Tijdstip van aanmaken"
+      - name: gewijzigd_op
+        description: "Tijdstip van laatste wijziging"

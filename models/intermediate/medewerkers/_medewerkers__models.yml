@@ -1,0 +1,47 @@
+version: 2
+
+models:
+  - name: int_medewerkers_met_deskundigheidsgroepen
+    description: "Medewerkers verrijkt met hun deskundigheidsgroepen (via expertise-profielkoppelingen)."
+    columns:
+      - name: medewerker_id
+        description: "Personeelsnummer van de medewerker"
+        tests: [not_null]
+      - name: deskundigheidsgroep
+        description: "Naam van de deskundigheidsgroep (bijv. Zorgpersoneel)"
+      - name: startdatum
+        description: "startdatum van de deskundigheid-koppeling"
+      - name: einddatum
+        description: "Einddatum van de deskundigheid-koppeling"
+
+  - name: int_medewerkers_met_teams
+    description: "Medewerkers verrijkt met hun teamkoppelingen."
+    columns:
+      - name: medewerker_id
+        description: "Unieke identifier van de medewerker"
+        tests: [not_null]
+      - name: teamnaam
+        description: "Naam van het team"
+
+  - name: int_medewerkers_met_contracten
+    description: "Medewerkers verrijkt met contractgegevens en contracttype."
+    columns:
+      - name: medewerker_id
+        description: "Unieke identifier van de medewerker"
+        tests: [not_null]
+      - name: contracttype_naam
+        description: "Naam van het contracttype"
+
+  - name: int_medewerkers_met_expertisegroepen
+    description: >
+      Medewerkers gekoppeld aan hun expertise-groepen via expertise-profielen.
+    columns:
+      - name: medewerker_id
+        description: "Personeelsnummer van de medewerker"
+        tests: [not_null]
+      - name: expertise_groep
+        description: "Naam van de expertise-groep"
+      - name: startdatum
+        description: "startdatum van de expertise-profielkoppeling"
+      - name: einddatum
+        description: "Einddatum van de expertise-profielkoppeling"

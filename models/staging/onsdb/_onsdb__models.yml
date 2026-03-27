@@ -1,0 +1,1045 @@
+version: 2
+
+models:
+  # -- Clienten --
+  - name: stg_onsdb__clients
+    description: "Gestaged overzicht van clienten uit Nedap Ons. Soft deletes gefilterd."
+    columns:
+      - name: client_id
+        description: "Unieke identifier van de client (objectId)"
+        tests: [unique, not_null]
+      - name: voornaam
+        description: "Voornaam van de client"
+      - name: achternaam
+        description: "Achternaam van de client"
+      - name: geboortedatum
+        description: "Geboortedatum van de client"
+      - name: geslacht
+        description: "Geslacht (integer enum)"
+      - name: burgerlijke_staat
+        description: "Burgerlijke staat (integer enum)"
+      - name: bsn
+        description: "Burgerservicenummer"
+      - name: emailadres
+        description: "E-mailadres van de client"
+      - name: mobiel_telefoonnummer
+        description: "Mobiel telefoonnummer van de client"
+
+  - name: stg_onsdb__relations
+    description: "Contactpersonen en relaties van clienten."
+    columns:
+      - name: relatie_id
+        description: "Unieke identifier van de relatie"
+        tests: [unique, not_null]
+      - name: client_id
+        description: "Verwijzing naar de client"
+        tests: [not_null]
+      - name: naam
+        description: "Naam van de relatie/contactpersoon"
+      - name: is_noodcontact
+        description: "Is dit een noodcontact (ICE)"
+
+  # -- Medewerkers --
+  - name: stg_onsdb__employees
+    description: "Gestaged overzicht van medewerkers uit Nedap Ons. Soft deletes gefilterd."
+    columns:
+      - name: medewerker_id
+        description: "Unieke identifier van de medewerker (objectId)"
+        tests: [unique, not_null]
+      - name: personeelsnummer
+        description: "Identificatienummer van de medewerker (identificationNo)"
+      - name: voornaam
+        description: "Voornaam van de medewerker"
+      - name: achternaam
+        description: "Achternaam van de medewerker"
+      - name: geboortedatum
+        description: "Geboortedatum van de medewerker"
+      - name: is_onderaannemer
+        description: "Geeft aan of de medewerker een onderaannemer is"
+      - name: gefiatteerd_tot_datum
+        description: "Datum tot wanneer de zorgregels van deze medewerker gefiatteerd zijn"
+
+  - name: stg_onsdb__contracts
+    description: "Contracten van medewerkers met uren en looptijd."
+    columns:
+      - name: contract_id
+        description: "Unieke identifier van het contract"
+        tests: [unique, not_null]
+      - name: medewerker_id
+        description: "Verwijzing naar de medewerker"
+        tests: [not_null]
+      - name: startdatum
+        description: "startdatum van het contract"
+      - name: einddatum
+        description: "Einddatum van het contract"
+      - name: normtijd_uren_per_week
+        description: "Normtijd in uren per week (vast)"
+      - name: variabele_uren_per_week
+        description: "Aantal variabele uren per week"
+
+  - name: stg_onsdb__contract_types
+    description: "Contracttypes (vast, variabel, etc.)."
+    columns:
+      - name: contracttype_id
+        description: "Unieke identifier van het contracttype"
+        tests: [unique, not_null]
+      - name: contracttype_naam
+        description: "Naam van het contracttype"
+
+  # -- Teams & Organisatie --
+  - name: stg_onsdb__teams
+    description: "Teams binnen de organisatie."
+    columns:
+      - name: team_id
+        description: "Unieke identifier van het team"
+        tests: [unique, not_null]
+      - name: teamnaam
+        description: "Naam van het team"
+      - name: is_poolteam
+        description: "Wel of geen poolteam"
+
+  - name: stg_onsdb__team_assignments
+    description: "Koppelingen tussen medewerkers en teams."
+    columns:
+      - name: teamkoppeling_id
+        description: "Unieke identifier van de teamkoppeling"
+        tests: [unique, not_null]
+      - name: medewerker_id
+        description: "Verwijzing naar de medewerker"
+        tests: [not_null]
+      - name: team_id
+        description: "Verwijzing naar het team"
+        tests: [not_null]
+      - name: startdatum
+        description: "startdatum van geldigheid"
+      - name: einddatum
+        description: "Einddatum van geldigheid (tot en met)"
+
+  # -- Locaties & Adressen --
+  - name: stg_onsdb__addresses
+    description: "Adressen gebruikt door clienten, medewerkers, locaties en teams."
+    columns:
+      - name: adres_id
+        description: "Unieke identifier van het adres"
+        tests: [unique, not_null]
+      - name: adrestype_code
+        description: "Code van het adrestype (integer enum; koppelt aan stg_onsdb__lst_address_types)"
+      - name: straatnaam
+        description: "Straatnaam"
+      - name: huisnummer
+        description: "Huisnummer"
+      - name: postcode
+        description: "Postcode"
+      - name: plaatsnaam
+        description: "Plaatsnaam"
+
+  - name: stg_onsdb__clients_addresses
+    description: "Koppeltabel tussen clienten en adressen."
+    columns:
+      - name: adres_id
+        description: "Verwijzing naar het adres"
+        tests: [not_null]
+      - name: client_id
+        description: "Verwijzing naar de client"
+        tests: [not_null]
+
+  - name: stg_onsdb__lst_address_types
+    description: "Lookup: adrestypen (GBA adres, Correspondentieadres, Verblijfadres, etc.)."
+    columns:
+      - name: adrestype_code
+        description: "Code van het adrestype"
+        tests: [unique, not_null]
+      - name: adrestype
+        description: "Beschrijving van het adrestype (bijv. GBA adres, Verblijfadres)"
+
+  - name: stg_onsdb__locations
+    description: "Locaties in de hierarchische locatiestructuur (locatiegram)."
+    columns:
+      - name: locatie_id
+        description: "Unieke identifier van de locatie"
+        tests: [unique, not_null]
+      - name: locatienaam
+        description: "Naam van de locatie"
+      - name: ouder_locatie_id
+        description: "Verwijzing naar de bovenliggende locatie (null voor rootlocaties)"
+      - name: locatie_hierarchie_pad
+        description: "Gematerialiseerd pad in de hiërarchie (bijv. .1.593.1234.)"
+      - name: startdatum_locatie
+        description: "Datum waarop de locatie actief werd"
+      - name: einddatum_locatie
+        description: "Datum waarop de locatie inactief werd (null = nog actief)"
+      - name: is_intramuraal
+        description: "Geeft aan of het om een intramurale locatie gaat"
+      - name: capaciteit
+        description: "Aantal clienten dat gekoppeld kan worden"
+
+  - name: stg_onsdb__costcenter_assignments
+    description: "Koppelingen tussen locaties en kostenplaatsen."
+    columns:
+      - name: kostenplaatskoppeling_id
+        description: "Unieke identifier van de koppeling"
+        tests: [unique, not_null]
+      - name: locatie_id
+        description: "Verwijzing naar de locatie"
+        tests: [not_null]
+      - name: kostenplaats_id
+        description: "Verwijzing naar de kostenplaats (costcenterObjectId)"
+        tests: [not_null]
+      - name: startdatum
+        description: "startdatum van de koppeling"
+      - name: einddatum
+        description: "Einddatum van de koppeling (null = nog actief)"
+
+  - name: stg_onsdb__costcenters
+    description: "Kostenplaatsen (voor koppeling met ORTEC)."
+    columns:
+      - name: kostenplaats_id
+        description: "Unieke identifier van de kostenplaats"
+        tests: [unique, not_null]
+      - name: kostenplaats_code
+        description: "Identificatienummer / code van de kostenplaats"
+      - name: kostenplaats_naam
+        description: "Naam van de kostenplaats"
+
+  - name: stg_onsdb__location_assignments
+    description: "Koppelingen tussen clienten en locaties."
+    columns:
+      - name: locatiekoppeling_id
+        description: "Unieke identifier van de locatiekoppeling"
+        tests: [unique, not_null]
+      - name: client_id
+        description: "Verwijzing naar de client"
+        tests: [not_null]
+      - name: locatie_id
+        description: "Verwijzing naar de locatie"
+        tests: [not_null]
+      - name: type_toekenning
+        description: "Type toekenning (MAIN, STANDARD, MEDICINE, GGZ of WAITING)"
+      - name: is_verblijfslocatie
+        description: "Of deze locatie de verblijfslocatie is van de client"
+
+  # -- Zorg --
+  - name: stg_onsdb__care_orders
+    description: "Zorglegitimaties: autorisaties voor zorgverlening aan clienten."
+    columns:
+      - name: zorglegitimatie_id
+        description: "Unieke identifier van de zorglegitimatie"
+        tests: [unique, not_null]
+      - name: client_id
+        description: "Verwijzing naar de client"
+        tests: [not_null]
+      - name: zorglegitimatie_type
+        description: "Type van de zorglegitimatie (integer enum)"
+      - name: legitimatienummer
+        description: "Nummer van de zorglegitimatie"
+      - name: startdatum
+        description: "startdatum van de zorglegitimatie"
+      - name: einddatum
+        description: "Einddatum van de zorglegitimatie"
+      - name: ingangsdatum_geldig
+        description: "Ingangsdatum rekening houdend met andere zorglegitimaties"
+      - name: einddatum_geldig
+        description: "Einddatum geldigheid rekening houdend met andere zorglegitimaties"
+
+  - name: stg_onsdb__care_order_products
+    description: "Producten gekoppeld aan zorglegitimaties."
+    columns:
+      - name: zorglegitimatieproduct_id
+        description: "Unieke identifier van het zorglegitimatieproduct"
+        tests: [unique, not_null]
+      - name: zorglegitimatie_id
+        description: "Verwijzing naar de zorglegitimatie"
+        tests: [not_null]
+      - name: hoeveelheid_in_minuten
+        description: "Hoeveelheid in minuten (of awbz_klasse_id is gevuld)"
+
+  - name: stg_onsdb__care_arrangements
+    description: "Zorgarrangementen: afspraken over zorglevering per dagdeel."
+    columns:
+      - name: zorgarrangement_id
+        description: "Unieke identifier van het zorgarrangement"
+        tests: [unique, not_null]
+      - name: client_id
+        description: "Verwijzing naar de client"
+        tests: [not_null]
+      - name: minuten_ochtend
+        description: "Aantal minuten zorg 's ochtends"
+      - name: minuten_middag
+        description: "Aantal minuten zorg 's middags"
+      - name: minuten_avond
+        description: "Aantal minuten zorg 's avonds"
+      - name: minuten_nacht
+        description: "Aantal minuten zorg 's nachts"
+
+  - name: stg_onsdb__activities
+    description: "Uursoorten/activiteiten voor gebruik in zorgarrangementen en zorgregels."
+    columns:
+      - name: activiteit_id
+        description: "Unieke identifier van de activiteit"
+        tests: [unique, not_null]
+      - name: beschrijving
+        description: "Beschrijving van de activiteit"
+      - name: is_actief
+        description: "Geeft aan of deze activiteit actief is"
+      - name: is_direct
+        description: "Geeft aan of dit een directe activiteit is"
+      - name: is_reistijd
+        description: "Geeft aan of deze activiteit reistijd is"
+      - name: is_groepszorg
+        description: "Geeft aan of deze activiteit wordt gebruikt voor groepszorg"
+
+  # -- Zorgtoewijzingen --
+  - name: stg_onsdb__care_allocations
+    description: "Zorgtoewijzingen van clienten aan zorg."
+    columns:
+      - name: zorgtoewijzing_id
+        description: "Unieke identifier van de zorgtoewijzing"
+        tests: [unique, not_null]
+      - name: client_id
+        description: "Verwijzing naar de client"
+        tests: [not_null]
+      - name: startdatum
+        description: "startdatum van de zorgtoewijzing"
+      - name: einddatum
+        description: "Einddatum van de zorgtoewijzing"
+      - name: reden_uit_zorg
+        description: "Reden waarom de client uit zorg is gegaan (outOfCareReason)"
+      - name: bestemming_uit_zorg
+        description: "Bestemming van de client na uitstroom (outOfCareDestination)"
+      - name: opmerkingen
+        description: "Vrij tekstveld met opmerkingen bij de zorgtoewijzing"
+
+  # -- Zorgplannen --
+  - name: stg_onsdb__careplans
+    description: "Zorgplannen van clienten met raw statuscode."
+    columns:
+      - name: zorgplan_id
+        description: "Unieke identifier van het zorgplan"
+        tests: [unique, not_null]
+      - name: client_id
+        description: "Verwijzing naar de client"
+        tests: [not_null]
+      - name: startdatum
+        description: "startdatum van het zorgplan"
+      - name: einddatum
+        description: "Einddatum van het zorgplan"
+      - name: aangemaakt_door_id
+        description: "Verwijzing naar de medewerker die het zorgplan heeft aangemaakt (employeeObjectId)"
+      - name: status_code
+        description: "Raw statuscode — resolv naar omschrijving via stg_onsdb__lst_care_plan_statuses"
+
+  - name: stg_onsdb__lst_care_plan_statuses
+    description: "Lookup: zorgplanstatuscodes met omschrijving."
+    columns:
+      - name: status_code
+        description: "Raw statuscode"
+        tests: [unique, not_null]
+      - name: status_omschrijving
+        description: "Leesbare omschrijving (bijv. Actief, Concept)"
+
+  # -- Rapportages --
+  - name: stg_onsdb__careplan_entries
+    description: "Zorgplanregels (doelen en aandachtspunten) binnen een zorgplan."
+    columns:
+      - name: zorgplanregel_id
+        description: "Unieke identifier van de zorgplanregel"
+        tests: [unique, not_null]
+      - name: zorgplan_id
+        description: "Verwijzing naar het zorgplan"
+        tests: [not_null]
+      - name: zorgplanregel_link_id
+        description: "Stabiele koppeling over kopieën heen (linkId). Als een regel gekopieerd wordt naar een nieuw zorgplan behouden beide regels hetzelfde linkId."
+      - name: doeldefinitie_id
+        description: "Verwijzing naar de doeldefinitie (careplan_target_definitions)"
+      - name: aandachtspuntdefinitie_id
+        description: "Verwijzing naar de aandachtspuntdefinitie (careplan_demand_definitions)"
+      - name: doel_titel
+        description: "Overschreven doeltitel (gevuld als is_titel_aanpasbaar = 1 op de doeldefinitie)"
+      - name: doel_opmerking
+        description: "Vrij tekstveld bij het doel"
+      - name: streefdatum
+        description: "Streefdatum voor het behalen van het doel"
+      - name: percentage_gerealiseerd
+        description: "Voortgangspercentage (0–100)"
+      - name: aangemaakt_op
+        description: "Tijdstip waarop de regel is aangemaakt"
+      - name: gewijzigd_op
+        description: "Tijdstip waarop de regel het laatst is bijgewerkt"
+
+  - name: stg_onsdb__careplan_domain_definitions
+    description: "Domeindefinities voor zorgplanregels. is_oud_domein = 1 betekent het oude domeinensysteem (Oud), 0 = nieuw systeem (Nieuw)."
+    columns:
+      - name: domein_definitie_id
+        description: "Unieke identifier van de domeindefinitie"
+        tests: [unique, not_null]
+      - name: domein_naam
+        description: "Naam van het domein"
+      - name: is_oud_domein
+        description: "1 = oud domeinensysteem (hidden), 0 = huidig systeem"
+      - name: classificatie_id
+        description: "Classificatie-ID van de domeindefinitie"
+
+  - name: stg_onsdb__careplan_target_definitions
+    description: "Doeldefinities gekoppeld aan een domein. Worden gebruikt als template voor zorgplanregels."
+    columns:
+      - name: doeldefinitie_id
+        description: "Unieke identifier van de doeldefinitie"
+        tests: [unique, not_null]
+      - name: domein_definitie_id
+        description: "Verwijzing naar het domein"
+        tests: [not_null]
+      - name: doel_naam
+        description: "Naam van het doel (template-tekst)"
+      - name: is_opmerking_toegestaan
+        description: "1 als een vrij tekstveld bij het doel ingevuld mag worden"
+      - name: is_voortgang_bijhouden
+        description: "1 als voortgang (percentage) op dit doel vastgelegd kan worden"
+      - name: is_titel_aanpasbaar
+        description: "1 als de titel overschreven mag worden op zorgplanniveau"
+      - name: is_verborgen
+        description: "1 als de doeldefinitie verborgen/inactief is"
+      - name: classificatie_id
+        description: "Classificatie-ID van de doeldefinitie"
+
+  - name: stg_onsdb__careplan_reports
+    description: "Rapportages bij zorgplannen: tekstuele notities, SOEP-rapportages en metingen per cliënt."
+    columns:
+      - name: rapportage_id
+        description: "Unieke identifier van de rapportage"
+        tests: [unique, not_null]
+      - name: client_id
+        description: "Verwijzing naar de client"
+        tests: [not_null]
+      - name: medewerker_id
+        description: "Verwijzing naar de medewerker die de rapportage heeft opgesteld"
+      - name: rapportage_type_id
+        description: "Verwijzing naar het type rapportage — resolv via stg_onsdb__careplan_report_types"
+      - name: zorgplanregel_id
+        description: "Verwijzing naar de zorgplanregel (carePlanEntryObjectId). Gebruik zorgplanregel_link_id voor stabielere koppeling bij kopiëren."
+      - name: zorgplanregel_link_id
+        description: "Stabiele koppeling naar de zorgplanregel over kopieën heen (carePlanLinkId). Gebruik dit veld bij voorkeur boven zorgplanregel_id."
+      - name: rapportagedatum
+        description: "Datum van de rapportage (kan handmatig ingevuld zijn, wijkt soms af van aangemaakt_op)"
+      - name: opmerking
+        description: "Vrij tekstveld — bij elk rapportage-type beschikbaar"
+      - name: soep_subjectief
+        description: "SOEP: subjectieve bevinding (alleen gevuld bij SOEP-rapportages)"
+      - name: soep_objectief
+        description: "SOEP: objectieve bevinding"
+      - name: soep_evaluatie
+        description: "SOEP: evaluatie / assessment"
+      - name: soep_plan
+        description: "SOEP: plan"
+      - name: status_code
+        description: "Status van de rapportage: open of closed"
+      - name: is_gemarkeerd
+        description: "1 als de medewerker de rapportage als belangrijk heeft gemarkeerd"
+      - name: is_verborgen
+        description: "1 als de rapportage verborgen is"
+      - name: verbergingsreden
+        description: "Reden waarom de rapportage verborgen is (alleen gevuld als is_verborgen = 1)"
+
+  - name: stg_onsdb__careplan_report_types
+    description: "Lookup: typen rapportages bij zorgplannen."
+    columns:
+      - name: rapportage_type_id
+        description: "Unieke identifier van het type"
+        tests: [unique, not_null]
+      - name: rapportage_type
+        description: "Naam van het rapportage-type"
+
+  # -- Dossier: episodes & documenten --
+  - name: stg_onsdb__dossier_episodes
+    description: "Episodes (zorgtrajecten) in het cliëntdossier, met doelen en looptijd."
+    columns:
+      - name: episode_id
+        description: "Unieke identifier van de episode"
+        tests: [unique, not_null]
+      - name: client_id
+        description: "Verwijzing naar de client"
+        tests: [not_null]
+      - name: titel
+        description: "Titel van de episode"
+      - name: startdatum
+        description: "Startdatum van de episode"
+      - name: einddatum
+        description: "Einddatum van de episode (null = nog actief)"
+      - name: evaluatiedatum
+        description: "Geplande evaluatiedatum"
+      - name: doel
+        description: "Beschrijving van het doel van de episode"
+      - name: is_gemarkeerd
+        description: "1 als de episode als relevant gemarkeerd is"
+      - name: is_belangrijk
+        description: "1 als de episode als belangrijk aangemerkt is"
+      - name: aangemaakt_door_id
+        description: "Verwijzing naar de medewerker die de episode heeft aangemaakt"
+      - name: gewijzigd_door_id
+        description: "Verwijzing naar de medewerker die de episode het laatst heeft gewijzigd"
+
+  - name: stg_onsdb__dossier_episode_sub_goals
+    description: "Subdoelen gekoppeld aan episodes in het cliëntdossier."
+    columns:
+      - name: episode_subdoel_id
+        description: "Unieke identifier van het subdoel"
+        tests: [unique, not_null]
+      - name: episode_id
+        description: "Verwijzing naar de episode"
+        tests: [not_null]
+      - name: titel
+        description: "Titel van het subdoel"
+      - name: is_gearchiveerd
+        description: "1 als het subdoel gearchiveerd is"
+
+  - name: stg_onsdb__dossier_episode_actions
+    description: "Acties gekoppeld aan episode-subdoelen."
+    columns:
+      - name: episode_actie_id
+        description: "Unieke identifier van de actie"
+        tests: [unique, not_null]
+      - name: episode_subdoel_id
+        description: "Verwijzing naar het episode-subdoel"
+        tests: [not_null]
+      - name: titel
+        description: "Titel van de actie"
+      - name: tonen_in_zorgplan
+        description: "1 als de actie zichtbaar is in het zorgplan"
+      - name: is_gearchiveerd
+        description: "1 als de actie gearchiveerd is"
+
+  - name: stg_onsdb__documents
+    description: "Metadata van documenten (bijlagen) gekoppeld aan cliënten. De bestandsinhoud zelf is niet beschikbaar via OnsDB."
+    columns:
+      - name: document_id
+        description: "Unieke identifier van het document"
+        tests: [unique, not_null]
+      - name: client_id
+        description: "Verwijzing naar de client"
+        tests: [not_null]
+      - name: medewerker_id
+        description: "Verwijzing naar de medewerker die het document heeft geüpload"
+      - name: beschrijving
+        description: "Omschrijving van het document"
+      - name: bestandsnaam
+        description: "Bestandsnaam van het document"
+      - name: status_code
+        description: "Status: 0=Nieuw, 2=Opgeslagen, 3=Verwijderd, 4=Purged, 5=Fout, 6=Gearchiveerd"
+      - name: is_vertrouwelijk
+        description: "1 als het document alleen zichtbaar is voor een beperkte groep"
+      - name: aangemaakt_op
+        description: "Tijdstip waarop het document is aangemaakt"
+      - name: gewijzigd_op
+        description: "Tijdstip waarop het document het laatst is bijgewerkt"
+
+  - name: stg_onsdb__document_tags
+    description: "Koppeltabel tussen documenten en tags/labels."
+    columns:
+      - name: document_id
+        description: "Verwijzing naar het document"
+        tests: [not_null]
+      - name: tag_id
+        description: "Verwijzing naar de tag"
+        tests: [not_null]
+
+  - name: stg_onsdb__tags
+    description: "Tags (labels) die aan documenten gekoppeld kunnen worden."
+    columns:
+      - name: tag_id
+        description: "Unieke identifier van de tag"
+        tests: [unique, not_null]
+      - name: label_naam
+        description: "Naam van de tag"
+
+  - name: stg_onsdb__document_rights
+    description: "Toegangsrechten per document op basis van deskundigheid (expertise-profiel)."
+    columns:
+      - name: document_id
+        description: "Verwijzing naar het document"
+        tests: [not_null]
+      - name: deskundigheid_id
+        description: "Verwijzing naar de deskundigheid die toegang heeft (educationObjectId)"
+        tests: [not_null]
+
+  - name: stg_onsdb__document_deskundigheidsgroepen
+    description: "Toegangsbeperking per document op basis van deskundigheidsgroep."
+    columns:
+      - name: document_id
+        description: "Verwijzing naar het document"
+        tests: [not_null]
+      - name: deskundigheidsgroep_id
+        description: "Verwijzing naar de deskundigheidsgroep die toegang heeft"
+        tests: [not_null]
+
+  - name: stg_onsdb__lst_document_statuses
+    description: "Lookup: mogelijke documentstatussen."
+    columns:
+      - name: status_code
+        description: "Ruwe statuscode (bijv. 0=Nieuw, 2=Opgeslagen, 3=Verwijderd, 4=Purged, 5=Fout, 6=Gearchiveerd)"
+        tests: [unique, not_null]
+      - name: status_omschrijving
+        description: "Leesbare omschrijving van de documentstatus"
+
+  - name: stg_onsdb__dossier_deskundigheid_autorisaties
+    description: "Toegangsrechten op dossierniveau per deskundigheid (bijv. voor episodes)."
+    columns:
+      - name: episode_id
+        description: "Verwijzing naar de episode (expertiseAuthorizableId / expertiseGroupAuthorizableId)"
+        tests: [not_null]
+      - name: deskundigheid_id
+        description: "Verwijzing naar de deskundigheid die toegang heeft (expertiseProfileId)"
+        tests: [not_null]
+
+  - name: stg_onsdb__dossier_deskundigheidsgroep_autorisaties
+    description: "Toegangsrechten op dossierniveau per deskundigheidsgroep (bijv. voor episodes)."
+    columns:
+      - name: episode_id
+        description: "Verwijzing naar de episode (expertiseAuthorizableId / expertiseGroupAuthorizableId)"
+        tests: [not_null]
+      - name: deskundigheidsgroep_id
+        description: "Verwijzing naar de deskundigheidsgroep die toegang heeft (expertiseGroupId)"
+        tests: [not_null]
+
+  # -- Rapportagerechten --
+  - name: stg_onsdb__rapportage_rechten
+    description: "Toegangsrechten per rapportage, inclusief type en koppeling aan deskundigheid of deskundigheidsgroep."
+    columns:
+      - name: rapportage_id
+        description: "Verwijzing naar de rapportage (careplanReportObjectId)"
+        tests: [not_null]
+      - name: type_code
+        description: "Code van het rechtentype — resolv via stg_onsdb__lst_rapportage_recht_typen"
+        tests: [not_null]
+      - name: deskundigheid_id
+        description: "Verwijzing naar de deskundigheid (educationObjectId) — NULL als het recht op een groep betrekking heeft"
+      - name: deskundigheidsgroep_id
+        description: "Verwijzing naar de deskundigheidsgroep (expertiseGroupObjectId) — NULL als het recht op een profiel betrekking heeft"
+
+  - name: stg_onsdb__lst_rapportage_recht_typen
+    description: "Lookup: typen rapportagerechten (bijv. Zichtbaar voor, Bewerken)."
+    columns:
+      - name: type_code
+        description: "Code van het rechtentype"
+        tests: [unique, not_null]
+      - name: type_omschrijving
+        description: "Leesbare omschrijving (bijv. 'Zichtbaar voor')"
+
+  # -- Medicatie --
+  - name: stg_onsdb__medication_charts
+    description: "Medicatieoverzichten per client per datum."
+    columns:
+      - name: medication_chart_id
+        description: "Unieke identifier van het medicatieoverzicht"
+        tests: [unique, not_null]
+      - name: client_id
+        description: "Verwijzing naar de client"
+        tests: [not_null]
+      - name: datum
+        description: "Datum van het medicatieoverzicht"
+      - name: gegenereerd_op
+        description: "Tijdstip waarop het overzicht is gegenereerd"
+      - name: is_nep
+        description: "1 als dit een fictief testoverzicht is — filter in intermediate"
+
+  - name: stg_onsdb__administration_agreements
+    description: "Toedienafspraken gekoppeld aan medicatieoverzichten."
+    columns:
+      - name: toedienafspraak_id
+        description: "Unieke identifier van de toedienafspraak"
+        tests: [unique, not_null]
+      - name: medication_chart_id
+        description: "Verwijzing naar het medicatieoverzicht"
+        tests: [not_null]
+
+  - name: stg_onsdb__medication_administrations
+    description: "Individuele medicatietoedieningen."
+    columns:
+      - name: toediening_id
+        description: "Unieke identifier van de toediening"
+        tests: [unique, not_null]
+      - name: toedienafspraak_id
+        description: "Verwijzing naar de toedienafspraak"
+        tests: [not_null]
+      - name: ingepland_op
+        description: "Tijdstip waarop de toediening is ingepland"
+      - name: is_vrijgesteld
+        description: "Of deze toediening is vrijgesteld"
+
+  - name: stg_onsdb__status_updates
+    description: "Statusupdates van medicatietoedieningen."
+    columns:
+      - name: statusupdate_id
+        description: "Unieke identifier van de statusupdate"
+        tests: [unique, not_null]
+      - name: toediening_id
+        description: "Verwijzing naar de toediening"
+        tests: [not_null]
+      - name: status
+        description: "Status (bijv. handed, administered, prepared, self_managed)"
+      - name: aangemaakt_op
+        description: "Tijdstip van de statusupdate"
+
+  # -- Deskundigheden --
+  - name: stg_onsdb__deskundigheid_koppelingen
+    description: "Koppelingen van deskundigheden aan medewerkers."
+    columns:
+      - name: medewerker_id
+        description: "ObjectId van de medewerker (employeeObjectId)"
+        tests: [not_null]
+      - name: deskundigheid_id
+        description: "ObjectId van de deskundigheid (expertise-profiel)"
+        tests: [not_null]
+      - name: startdatum
+        description: "startdatum van de koppeling"
+      - name: einddatum
+        description: "Einddatum van de koppeling"
+
+  - name: stg_onsdb__deskundigheden
+    description: "Deskundigheden (expertise-profielen / bevoegdheden van medewerkers)."
+    columns:
+      - name: deskundigheid_id
+        description: "Unieke identifier van de deskundigheid"
+        tests: [unique, not_null]
+      - name: deskundigheid_code
+        description: "Code van de deskundigheid"
+      - name: deskundigheid_naam
+        description: "Naam van de deskundigheid"
+      - name: is_zichtbaar
+        description: "1 als de deskundigheid zichtbaar/actief is"
+
+  - name: stg_onsdb__deskundigheidsgroep_deskundigheden
+    description: "Koppeltabel tussen deskundigheidsgroepen en deskundigheden."
+    columns:
+      - name: deskundigheidsgroep_id
+        description: "Verwijzing naar de deskundigheidsgroep"
+        tests: [not_null]
+      - name: deskundigheid_id
+        description: "Verwijzing naar de deskundigheid"
+        tests: [not_null]
+
+  - name: stg_onsdb__deskundigheidsgroepen
+    description: "Deskundigheidsgroepen (groepen van expertise-profielen, bijv. Zorgpersoneel)."
+    columns:
+      - name: deskundigheidsgroep_id
+        description: "Unieke identifier van de deskundigheidsgroep"
+        tests: [unique, not_null]
+      - name: deskundigheidsgroep_naam
+        description: "Naam van de deskundigheidsgroep"
+
+  # -- Financiering --
+  - name: stg_onsdb__finance_types
+    description: "Financieringstypes zoals ZZP, WMO, Jeugdwet, PGB en Onderaanneming."
+    columns:
+      - name: financieringstype_id
+        description: "Unieke identifier van het financieringstype"
+        tests: [unique, not_null]
+      - name: financieringstype_code
+        description: "Interne code van het financieringstype (id)"
+      - name: financieringstype_naam
+        description: "Naam / omschrijving van het financieringstype"
+      - name: categorie
+        description: "Categorie van het financieringstype"
+      - name: financieringsgroep
+        description: "Groepering van financieringstypes (financeTypeGroup)"
+      - name: startdatum
+        description: "Datum waarop het financieringstype geldig werd"
+      - name: einddatum
+        description: "Datum waarop het financieringstype verviel (null = nog actief)"
+
+  # -- Vragenlijsten --
+  - name: stg_onsdb__vragenlijsten
+    description: "Vragenlijst-templates: definitie en configuratie van vragenlijsten in Nedap Ons. Geen datumfilter (all-time)."
+    columns:
+      - name: vragenlijst_id
+        description: "Unieke identifier van de vragenlijst (objectId)"
+        tests: [unique, not_null]
+      - name: titel
+        description: "Titel van de vragenlijst"
+      - name: beschrijving
+        description: "Uitgebreidere beschrijving van de vragenlijst"
+      - name: is_actief
+        description: "1 als de vragenlijst in gebruik is, 0 als buiten gebruik"
+      - name: gebruik_strikte_autorisatie
+        description: "1 als striktere autorisatie van toepassing is (useStrictEditAuthorization)"
+      - name: gebruik_workflow
+        description: "1 als de vragenlijst een uitgebreid proces met 'Bespreken'-stap gebruikt"
+      - name: kopieren_toegestaan
+        description: "1 als de vragenlijst gedupliceerd mag worden"
+      - name: classificatie_id
+        description: "Classificatie-ID (classificationId)"
+      - name: aangemaakt_op
+        description: "Tijdstip van aanmaken"
+      - name: gewijzigd_op
+        description: "Tijdstip van laatste wijziging"
+
+  - name: stg_onsdb__vragenlijst_categorieen
+    description: "Categorieën binnen een vragenlijst-template. Geen datumfilter (all-time)."
+    columns:
+      - name: vragenlijst_categorie_id
+        description: "Unieke identifier van de categorie (objectId)"
+        tests: [unique, not_null]
+      - name: vragenlijst_id
+        description: "Verwijzing naar de vragenlijst"
+        tests: [not_null]
+      - name: titel
+        description: "Titel van de categorie"
+      - name: volgnummer
+        description: "Volgnummer dat de volgorde van categorieën bepaalt"
+      - name: classificatie_id
+        description: "Classificatie-ID (classificationId)"
+      - name: aangemaakt_op
+        description: "Tijdstip van aanmaken"
+      - name: gewijzigd_op
+        description: "Tijdstip van laatste wijziging"
+
+  - name: stg_onsdb__vragenlijst_groepen
+    description: "Groepen binnen een categorie, met optionele drempelwaarde voor auto-aandachtspunten. Geen datumfilter (all-time)."
+    columns:
+      - name: vragenlijst_groep_id
+        description: "Unieke identifier van de groep (objectId)"
+        tests: [unique, not_null]
+      - name: vragenlijst_categorie_id
+        description: "Verwijzing naar de categorie (categoryObjectId)"
+        tests: [not_null]
+      - name: beschrijving
+        description: "Beschrijving van de groep"
+      - name: volgnummer
+        description: "Volgnummer binnen de categorie"
+      - name: aandachtspunt_id
+        description: "Optionele koppeling aan een aandachtspunt in het zorgplan (demandObjectId)"
+      - name: drempelwaarde_score
+        description: "Drempelwaarde waaronder automatisch een aandachtspunt aangemaakt wordt"
+      - name: max_score
+        description: "Maximale score voor deze groep"
+      - name: classificatie_id
+        description: "Classificatie-ID (classificationId)"
+      - name: aangemaakt_op
+        description: "Tijdstip van aanmaken"
+      - name: gewijzigd_op
+        description: "Tijdstip van laatste wijziging"
+
+  - name: stg_onsdb__vragenlijst_vragen
+    description: "Vragen binnen een groep, met antwoordtype en optionele koppeling aan multiplechoice-antwoordgroep. Geen datumfilter (all-time)."
+    columns:
+      - name: vragenlijst_vraag_id
+        description: "Unieke identifier van de vraag (objectId)"
+        tests: [unique, not_null]
+      - name: vragenlijst_groep_id
+        description: "Verwijzing naar de groep (groupObjectId)"
+        tests: [not_null]
+      - name: volgnummer
+        description: "Volgnummer binnen de groep"
+      - name: antwoord_type
+        description: "Type antwoord (integer enum: bijv. tekst, ja/nee, multiplechoice)"
+      - name: vraagtekst
+        description: "Tekst van de vraag"
+      - name: aanvullende_info
+        description: "Aanvullende toelichting bij de vraag (additionalInfo)"
+      - name: standaard_antwoord
+        description: "Standaardwaarde voor het antwoord (defaultAnswer)"
+      - name: is_inactief
+        description: "1 als de vraag niet meer in gebruik is"
+      - name: is_verplicht
+        description: "1 als het invullen van deze vraag verplicht is"
+      - name: antwoord_definitie_groep_id
+        description: "Verwijzing naar de multiplechoice antwoordgroep (answerDefinitionGroupObjectId) — null bij tekst/ja-nee vragen"
+      - name: classificatie_id
+        description: "Classificatie-ID (classificationId)"
+      - name: aangemaakt_op
+        description: "Tijdstip van aanmaken"
+      - name: gewijzigd_op
+        description: "Tijdstip van laatste wijziging"
+
+  - name: stg_onsdb__vragenlijst_antwoord_definitie_groepen
+    description: "Multiplechoice antwoordgroepen — sets van mogelijke antwoorden die aan vragen gekoppeld worden. Geen datumfilter (all-time)."
+    columns:
+      - name: antwoord_definitie_groep_id
+        description: "Unieke identifier van de antwoordgroep (objectId)"
+        tests: [unique, not_null]
+      - name: beschrijving
+        description: "Naam van de antwoordgroep"
+      - name: is_readonly
+        description: "1 als de antwoordgroep alleen-lezen is"
+      - name: classificatie_id
+        description: "Classificatie-ID (classificationId)"
+      - name: aangemaakt_op
+        description: "Tijdstip van aanmaken"
+      - name: gewijzigd_op
+        description: "Tijdstip van laatste wijziging"
+
+  - name: stg_onsdb__vragenlijst_antwoord_definities
+    description: "Mogelijke antwoorden binnen een multiplechoice antwoordgroep, met numerieke waarde en score. Geen datumfilter (all-time)."
+    columns:
+      - name: antwoord_definitie_id
+        description: "Unieke identifier van het antwoord (objectId)"
+        tests: [unique, not_null]
+      - name: antwoord_definitie_groep_id
+        description: "Verwijzing naar de antwoordgroep (answerDefinitionGroupObjectId)"
+        tests: [not_null]
+      - name: antwoord_tekst
+        description: "Tekst van het antwoord zoals weergegeven aan de gebruiker"
+      - name: waarde
+        description: "Numerieke waarde van het antwoord (value)"
+      - name: score
+        description: "Scorebijdrage van dit antwoord"
+      - name: heeft_tekstveld
+        description: "1 als dit antwoord een aanvullend tekstveld toont (hasInput)"
+      - name: classificatie_id
+        description: "Classificatie-ID (classificationId)"
+      - name: aangemaakt_op
+        description: "Tijdstip van aanmaken"
+      - name: gewijzigd_op
+        description: "Tijdstip van laatste wijziging"
+
+  - name: stg_onsdb__vragenlijst_resultaten
+    description: "Ingevulde vragenlijsten per cliënt — één rij per invulling, met medewerker, datum en status. Geen datumfilter (all-time)."
+    columns:
+      - name: vragenlijst_resultaat_id
+        description: "Unieke identifier van de ingevulde vragenlijst (objectId)"
+        tests: [unique, not_null]
+      - name: vragenlijst_id
+        description: "Verwijzing naar de vragenlijst-template (surveyObjectId)"
+        tests: [not_null]
+      - name: client_id
+        description: "Verwijzing naar de cliënt (clientObjectId)"
+        tests: [not_null]
+      - name: medewerker_id
+        description: "Verwijzing naar de medewerker die de vragenlijst heeft ingevuld (employeeObjectId)"
+      - name: ingevuld_op
+        description: "Datum waarop de vragenlijst is ingevuld (completedAt)"
+      - name: status_code
+        description: "Statuscode — resolv naar omschrijving via stg_onsdb__lst_vragenlijst_resultaat_statussen"
+      - name: is_readonly
+        description: "1 als de vragenlijst afgesloten is voor verdere wijzigingen"
+      - name: aangemaakt_op
+        description: "Tijdstip van aanmaken"
+      - name: gewijzigd_op
+        description: "Tijdstip van laatste wijziging"
+
+  - name: stg_onsdb__vragenlijst_antwoorden
+    description: "Antwoorden op vragen binnen een ingevulde vragenlijst. Bevat tekst-, ja/nee- en multiplechoice-antwoorden. Geen datumfilter (all-time)."
+    columns:
+      - name: vragenlijst_antwoord_id
+        description: "Unieke identifier van het antwoord (objectId)"
+        tests: [unique, not_null]
+      - name: vragenlijst_resultaat_id
+        description: "Verwijzing naar de ingevulde vragenlijst (surveyResultObjectId)"
+        tests: [not_null]
+      - name: vragenlijst_vraag_id
+        description: "Verwijzing naar de vraag (questionObjectId)"
+        tests: [not_null]
+      - name: antwoord_definitie_id
+        description: "Verwijzing naar het gekozen multiplechoice-antwoord (answerDefinitionObjectId) — null bij tekst/ja-nee antwoorden"
+      - name: tekst_antwoord
+        description: "Vrij tekstveld antwoord"
+      - name: ja_nee_antwoord
+        description: "Ja/nee antwoord (booleanAnswer)"
+      - name: is_belangrijk
+        description: "1 als dit antwoord als belangrijk gemarkeerd is"
+      - name: aangemaakt_op
+        description: "Tijdstip van aanmaken"
+      - name: gewijzigd_op
+        description: "Tijdstip van laatste wijziging"
+
+  - name: stg_onsdb__vragenlijst_groep_antwoorden
+    description: "Berekende scores per groep binnen een ingevulde vragenlijst. Geen datumfilter (all-time)."
+    columns:
+      - name: vragenlijst_groep_antwoord_id
+        description: "Unieke identifier van het groepantwoord (objectId)"
+        tests: [unique, not_null]
+      - name: vragenlijst_resultaat_id
+        description: "Verwijzing naar de ingevulde vragenlijst (surveyResultObjectId)"
+        tests: [not_null]
+      - name: vragenlijst_groep_id
+        description: "Verwijzing naar de vragengroep (groupObjectId)"
+        tests: [not_null]
+      - name: is_belangrijk
+        description: "1 als deze groep als belangrijk gemarkeerd is"
+      - name: score
+        description: "Berekende score voor deze groep"
+      - name: versie
+        description: "Versienummer van het groepantwoord"
+      - name: aangemaakt_op
+        description: "Tijdstip van aanmaken"
+      - name: gewijzigd_op
+        description: "Tijdstip van laatste wijziging"
+
+  - name: stg_onsdb__lst_vragenlijst_resultaat_statussen
+    description: "Lookup: statuscodes voor ingevulde vragenlijsten met leesbare omschrijving."
+    columns:
+      - name: status_code
+        description: "Ruwe statuscode (koppelt aan status_code in stg_onsdb__vragenlijst_resultaten)"
+        tests: [unique, not_null]
+      - name: status_omschrijving
+        description: "Leesbare omschrijving van de status"
+
+  # -- Groepszorg --
+  - name: stg_onsdb__groupcare_groups
+    description: "Groepszorg-groepen met naam, locatie en capaciteitsgegevens."
+    columns:
+      - name: groepszorg_groep_id
+        description: "Unieke identifier van de groep (id)"
+        tests: [unique, not_null]
+      - name: groepsnaam
+        description: "Naam van de groep"
+      - name: groepszorg_locatie_id
+        description: "Verwijzing naar stg_onsdb__groupcare_locations.groepszorg_locatie_id"
+      - name: team_id
+        description: "ClusterObjectId in Ons Administratie"
+      - name: is_gearchiveerd
+        description: "1 als de groep gearchiveerd is"
+      - name: standaard_starttijd
+        description: "Standaard starttijd van de groepsactiviteit"
+      - name: standaard_eindtijd
+        description: "Standaard eindtijd van de groepsactiviteit"
+      - name: min_capaciteit
+        description: "Minimale capaciteit van de groep"
+      - name: max_capaciteit
+        description: "Maximale capaciteit van de groep"
+      - name: aangemaakt_op
+        description: "Tijdstip van aanmaken"
+      - name: gewijzigd_op
+        description: "Tijdstip van laatste wijziging"
+
+  - name: stg_onsdb__groupcare_locations
+    description: "Bridge-tabel: koppelt groepszorg-locatie-ID aan Ons Administratie locatie-ID."
+    columns:
+      - name: groepszorg_locatie_id
+        description: "Interne groepszorg-locatie-ID (id)"
+        tests: [unique, not_null]
+      - name: locatie_id
+        description: "ObjectId in Ons Administratie — bruikbaar voor joins naar stg_onsdb__locations"
+
+  - name: stg_onsdb__groupcare_registrations
+    description: "Groepszorg-registraties: aanwezigheid van cliënten bij groepsactiviteiten. Verwijderde registraties (status=4) gefilterd."
+    columns:
+      - name: groepszorg_registratie_id
+        description: "Unieke identifier van de registratie (id)"
+        tests: [unique, not_null]
+      - name: groepszorg_client_id
+        description: "Interne groepszorg-client-ID (client_id in groupcare_clients)"
+      - name: client_id
+        description: "ObjectId van de cliënt in Ons Administratie (client_external_id) — bruikbaar voor joins naar stg_onsdb__clients"
+      - name: booking_id
+        description: "Booking ObjectID van de registratie in Ons Administratie (external_id)"
+      - name: groepszorg_groep_id
+        description: "Verwijzing naar de groep (group_id in groupcare_groups)"
+      - name: groupcare_afspraak_id
+        description: "Verwijzing naar de afspraak waaruit deze registratie gemaakt is (timeline_id), nullable"
+      - name: kostenplaats_id
+        description: "ClusterObjectId van het team (team_cost_center) voor kostenplaatsbepaling"
+      - name: registratie_datum
+        description: "Datum van de registratie"
+      - name: starttijd
+        description: "Starttijd van de registratie"
+      - name: eindtijd
+        description: "Eindtijd van de registratie"
+      - name: status
+        description: "Statuscode: 0=Aanwezig, 1=Afwezig, 2=Aangemaakt, 3=No-show (4=Verwijderd wordt gefilterd)"
+      - name: status_omschrijving
+        description: "Leesbare omschrijving van de status"
+      - name: is_gefiatteerd
+        description: "1 als de registratie gefiatteerd (goedgekeurd) is, onafhankelijk van status"
+      - name: aangemaakt_op
+        description: "Tijdstip van aanmaken"
+      - name: gewijzigd_op
+        description: "Tijdstip van laatste wijziging"

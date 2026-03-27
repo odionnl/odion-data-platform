@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: int_episodes_met_rechten
+    description: >
+      Toegangsrechtclassificatie per episode op basis van deskundigheden en deskundigheidsgroepen.
+      afgeschermd_voor bepaald via EXISTS — geen aggregatie. Grain: één rij per episode.
+    columns:
+      - name: episode_id
+        description: "Unieke identifier van de episode"
+        tests: [unique, not_null]
+      - name: afgeschermd_voor
+        description: "Classificatie: 'deskundigheid', 'deskundigheidsgroep', 'beiden' of 'geen'"
+
+  - name: int_medicatie_toedieningen
+    description: >
+      Samenvoegen van medicatieoverzichten, toedienafspraken, toedieningen
+      en statusupdates. Alleen niet-vrijgestelde toedieningen.
+    columns:
+      - name: toediening_id
+        description: "Unieke identifier van de toediening"
+        tests: [not_null]
+      - name: client_id
+        description: "Verwijzing naar de client"
+        tests: [not_null]
+      - name: status
+        description: "Status van de toediening (bijv. handed, administered, prepared)"

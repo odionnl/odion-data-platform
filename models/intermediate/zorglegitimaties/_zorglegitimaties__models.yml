@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: int_zorglegitimaties_met_producten
+    description: "Zorglegitimaties verrijkt met gekoppelde producten."
+    columns:
+      - name: zorglegitimatie_id
+        description: "Unieke identifier van de zorglegitimatie"
+        tests: [not_null]
+      - name: hoeveelheid_in_minuten
+        description: "Hoeveelheid in minuten per product"

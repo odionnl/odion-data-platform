@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: stg_ons_audits__zorgplan_inzage
+    description: "Ruwe audit-logs van zorgplaninzage. Transformaties (medewerker_id extractie, filter) in int_zorgplan_inzage."
+    columns:
+      - name: tijdstip
+        description: "Tijdstip van de zorgplaninzage"
+        tests: [not_null]
+      - name: gebruiker_medewerkernummer
+        description: "Gebruiker-ID in formaat personeelsnummer-organisatie (bijv. 12345-orgname)"
+      - name: clientnummer
+        description: "Clientnummer van de betrokken cliënt"

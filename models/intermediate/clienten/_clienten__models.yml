@@ -1,0 +1,62 @@
+version: 2
+
+models:
+  - name: int_clienten_met_locaties
+    description: "Clienten verrijkt met hun locatiekoppelingen."
+    columns:
+      - name: client_id
+        description: "Unieke identifier van de client"
+        tests: [not_null]
+      - name: locatienaam
+        description: "Naam van de locatie"
+
+  - name: int_clienten_met_adressen
+    description: "Clienten verrijkt met hun gekoppelde adressen en adrestype. Geen datumfilter (all-time)."
+    columns:
+      - name: client_id
+        description: "Unieke identifier van de client"
+        tests: [not_null]
+      - name: adres_id
+        description: "Unieke identifier van het adres"
+        tests: [not_null]
+      - name: adrestype
+        description: "Beschrijving van het adrestype (bijv. GBA adres, Verblijfadres)"
+      - name: straatnaam
+        description: "Straatnaam"
+      - name: huisnummer
+        description: "Huisnummer"
+      - name: huisnummer_toevoeging
+        description: "Toevoeging bij het huisnummer"
+      - name: plaatsnaam
+        description: "Plaatsnaam"
+      - name: postcode
+        description: "Postcode"
+      - name: gemeentenaam
+        description: "Gemeentenaam"
+      - name: startdatum
+        description: "Datum waarop het adres geldig werd"
+      - name: einddatum
+        description: "Datum waarop het adres niet langer geldig is (null = huidig)"
+
+  - name: int_clienten_financiering_actueel
+    description: >
+      Primaire financieringsvorm per client op basis van actieve zorglegitimaties op vandaag (GETDATE()).
+      Prioriteit: ZZP > WMO > Jeugdwet > PGB > Onderaanneming.
+      Grain: één rij per client. Voor alle zorglegitimaties zie int_zorglegitimaties_met_producten.
+    columns:
+      - name: client_id
+        description: "Unieke identifier van de client"
+        tests: [unique, not_null]
+      - name: financiering
+        description: "Primaire financieringsvorm (bijv. Zorgzwaartepakket, WMO, Jeugdwet, PGB)"
+
+  - name: int_clienten_in_zorg_actueel
+    description: >
+      Clients met een actieve zorgtoewijzing op vandaag (GETDATE()).
+      Grain: één rij per actieve client. Gebruikt door verantwoording-pipeline.
+    columns:
+      - name: client_id
+        description: "Unieke identifier van de client"
+        tests: [unique, not_null]
+      - name: client_naam
+        description: "Weergavenaam van de client (roepnaam + achternaam)"

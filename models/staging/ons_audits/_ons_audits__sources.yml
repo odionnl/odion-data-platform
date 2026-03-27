@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: ons_audits
+    description: "Audit-logs uit Nedap Ons, geladen door dlt pipeline."
+    schema: raw_ons_audits
+    tables:
+      - name: audits
+        description: "Audit-logs van zorgplaninzage (Excel-bestanden van RPA)."

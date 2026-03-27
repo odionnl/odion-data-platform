@@ -1,0 +1,408 @@
+version: 2
+
+models:
+  - name: mart_clienten
+    description: >
+      Snapshot op vandaag (GETDATE()). Breed clientoverzicht met huidige locatie,
+      leeftijd, in-zorg vlag, primaire financieringsvorm, zorglegitimatie-samenvatting
+      en deep-links naar ONS. Eén rij per client.
+    columns:
+      - name: client_id
+        description: "Unieke identifier van de client"
+        tests: [unique, not_null]
+      - name: voornaam
+        description: "Officiële voornaam van de client (firstName)"
+      - name: roepnaam
+        description: "Roepnaam van de client (givenName) — gebruik dit voor weergave"
+      - name: voorvoegsel
+        description: "Tussenvoegsel (bijv. 'van den')"
+      - name: achternaam
+        description: "Achternaam van de client"
+      - name: leeftijd
+        description: "Leeftijd in jaren, berekend op basis van vandaag"
+      - name: leeftijdsgroep
+        description: "Leeftijdsgroep: <18, 18-49, 50-64 of 65+"
+      - name: in_zorg
+        description: "1 als client een actieve zorgtoewijzing heeft op vandaag, anders 0"
+      - name: huidige_locatienaam
+        description: "Naam van de meest recente actieve locatie"
+      - name: financiering
+        description: "Primaire financieringsvorm op basis van actieve zorglegitimaties (bijv. Zorgzwaartepakket)"
+      - name: aantal_zorglegitimaties
+        description: "Totaal aantal zorglegitimaties (alle tijd)"
+      - name: url_ons_administratie
+        description: "Deep-link naar ONS administratie van deze client"
+      - name: url_ons_zorgplan
+        description: "Deep-link naar het zorgplan van deze client in ONS dossier"
+      - name: url_ons_rapportages
+        description: "Deep-link naar de rapportages van deze client in ONS dossier"
+
+  - name: mart_medewerkers
+    description: >
+      Snapshot op vandaag (GETDATE()). Breed medewerkersoverzicht met huidig team en huidig contract.
+      Eén rij per medewerker.
+    columns:
+      - name: medewerker_id
+        description: "Unieke identifier van de medewerker"
+        tests: [unique, not_null]
+      - name: voornaam
+        description: "Voornaam van de medewerker"
+      - name: achternaam
+        description: "Achternaam van de medewerker"
+      - name: huidig_teamnaam
+        description: "Naam van het huidige team"
+      - name: huidig_contracttype
+        description: "Type van het huidige contract"
+      - name: huidig_normtijd_uren_per_week
+        description: "Normtijd uren per week van het huidige contract"
+
+  - name: mart_zorglegitimaties
+    description: >
+      Alle zorglegitimaties (historisch + actueel) met clientgegevens, teamnaam
+      en samenvatting van gekoppelde producten. Eén rij per zorglegitimatie.
+    columns:
+      - name: zorglegitimatie_id
+        description: "Unieke identifier van de zorglegitimatie"
+        tests: [unique, not_null]
+      - name: legitimatienummer
+        description: "Nummer van de zorglegitimatie"
+      - name: client_naam
+        description: "Volledige naam van de client (roepnaam + voorvoegsel + achternaam)"
+      - name: teamnaam
+        description: "Naam van het team"
+      - name: aantal_producten
+        description: "Aantal gekoppelde producten"
+      - name: totaal_minuten
+        description: "Totaal aantal minuten van gekoppelde producten"
+
+  - name: mart_locaties
+    description: >
+      Snapshot op vandaag (GETDATE()). Volledig locatieoverzicht met hiërarchie (niveau1-6, cluster),
+      adresgegevens, actieve kostenplaats en huidig aantal actieve clienten. Eén rij per locatie.
+    columns:
+      - name: locatie_id
+        description: "Unieke identifier van de locatie"
+        tests: [unique, not_null]
+      - name: locatienaam
+        description: "Naam van de locatie"
+      - name: locatie_niveau
+        description: "Diepte in de hiërarchie (1 = root)"
+      - name: locatie_pad
+        description: "Pad van rootlocatie naar huidige locatie"
+      - name: niveau1
+        description: "Naam van het eerste hiërarchieniveau (organisatie)"
+      - name: niveau2
+        description: "Naam van het tweede hiërarchieniveau"
+      - name: niveau3
+        description: "Naam van het derde hiërarchieniveau"
+      - name: cluster
+        description: "Zorgcluster (CC-specifiek via get_locatiecluster-macro)"
+      - name: is_actief_vandaag
+        description: "1 als de locatie vandaag actief is"
+      - name: is_leaf_locatie
+        description: "1 als de locatie geen kindlocaties heeft"
+      - name: kostenplaats_id
+        description: "Kostenplaatscode (voor koppeling met ORTEC)"
+      - name: aantal_actieve_clienten
+        description: "Aantal clienten met een actieve locatiekoppeling"
+
+  - name: mart_documenten
+    description: >
+      Breed documentenoverzicht met clientnaam, medewerkersnaam, labels en toegangsrechten.
+      Bevat alle documenten (ook gearchiveerde en verwijderde). Eén rij per document.
+    columns:
+      - name: document_id
+        description: "Unieke identifier van het document"
+        tests: [unique, not_null]
+      - name: client_id
+        description: "Verwijzing naar de client"
+        tests: [not_null]
+      - name: clientnummer
+        description: "Clientnummer van de client"
+      - name: client_naam
+        description: "Volledige naam van de client (roepnaam + voorvoegsel + achternaam)"
+      - name: medewerker_id
+        description: "Verwijzing naar de medewerker die het document heeft geüpload"
+      - name: medewerker_naam
+        description: "Volledige naam van de medewerker (voornaam + achternaam)"
+      - name: medewerker_deskundigheden
+        description: "Samengevoegde actieve deskundigheden van de medewerker, gescheiden door ' | '"
+      - name: medewerker_deskundigheidsgroepen
+        description: "Samengevoegde deskundigheidsgroepen van de medewerker, gescheiden door ' | '"
+      - name: beschrijving
+        description: "Omschrijving van het document"
+      - name: bestandsnaam
+        description: "Bestandsnaam van het document"
+      - name: documentstatus
+        description: "Leesbare documentstatus (bijv. Opgeslagen, Gearchiveerd)"
+      - name: labels
+        description: "Samengevoegde labels/tags, gescheiden door ' | '"
+      - name: is_vertrouwelijk
+        description: "1 als het document alleen zichtbaar is voor een beperkte groep"
+      - name: afgeschermd_voor
+        description: "Classificatie: 'deskundigheid', 'deskundigheidsgroep', 'beiden' of 'geen'"
+      - name: afgeschermd_voor_deskundigheden
+        description: "Samengevoegde deskundigheden waarvoor het document afgeschermd is (of NULL)"
+      - name: afgeschermd_voor_deskundigheidsgroepen
+        description: "Samengevoegde deskundigheidsgroepen waarvoor het document afgeschermd is (of NULL)"
+      - name: aangemaakt_op
+        description: "Tijdstip waarop het document is aangemaakt"
+      - name: gewijzigd_op
+        description: "Tijdstip waarop het document het laatst is bijgewerkt"
+      - name: url_ons_documenten
+        description: "Deep-link naar de documenten van deze client in ONS dossier"
+
+  - name: mart_episodes
+    description: >
+      Breed episodeoverzicht met clientnaam, aanmaak/wijzigingsinformatie, afscherming per deskundigheid/-groep.
+      Bevat alle episodes (ook gesloten). Eén rij per episode.
+    columns:
+      - name: episode_id
+        description: "Unieke identifier van de episode"
+        tests: [unique, not_null]
+      - name: client_id
+        description: "Verwijzing naar de client"
+        tests: [not_null]
+      - name: clientnummer
+        description: "Clientnummer van de client"
+      - name: client_naam
+        description: "Volledige naam van de client (roepnaam + voorvoegsel + achternaam)"
+      - name: titel
+        description: "Titel van de episode"
+      - name: startdatum
+        description: "Startdatum van de episode"
+      - name: einddatum
+        description: "Einddatum van de episode (null = nog actief)"
+      - name: evaluatiedatum
+        description: "Geplande evaluatiedatum"
+      - name: doel
+        description: "Beschrijving van het doel van de episode"
+      - name: is_gemarkeerd
+        description: "1 als de episode als relevant gemarkeerd is"
+      - name: is_belangrijk
+        description: "1 als de episode als belangrijk aangemerkt is"
+      - name: afgeschermd_voor
+        description: "Classificatie: 'deskundigheid', 'deskundigheidsgroep', 'beiden' of 'geen'"
+      - name: afgeschermd_voor_deskundigheden
+        description: "Samengevoegde deskundigheden waarvoor de episode afgeschermd is (of NULL)"
+      - name: afgeschermd_voor_deskundigheidsgroepen
+        description: "Samengevoegde deskundigheidsgroepen waarvoor de episode afgeschermd is (of NULL)"
+      - name: medewerker_id
+        description: "Verwijzing naar de medewerker die de episode heeft aangemaakt (aangemaakt_door_id)"
+      - name: medewerker_naam
+        description: "Volledige naam van de medewerker die de episode heeft aangemaakt"
+      - name: medewerker_deskundigheden
+        description: "Samengevoegde actieve deskundigheden van de medewerker, gescheiden door ' | '"
+      - name: medewerker_deskundigheidsgroepen
+        description: "Samengevoegde deskundigheidsgroepen van de medewerker, gescheiden door ' | '"
+      - name: gewijzigd_door_id
+        description: "Verwijzing naar de medewerker die de episode het laatst heeft gewijzigd"
+      - name: gewijzigd_door_naam
+        description: "Volledige naam van de medewerker die de episode het laatst heeft gewijzigd"
+      - name: aangemaakt_op
+        description: "Tijdstip waarop de episode is aangemaakt"
+      - name: gewijzigd_op
+        description: "Tijdstip waarop de episode het laatst is gewijzigd"
+      - name: url_ons_episodes
+        description: "Deep-link naar de episodes van deze client in ONS dossier"
+
+  - name: mart_rapportages
+    description: >
+      Breed rapportageoverzicht met clientnaam, medewerkersnaam, rapportage-type en toegangsrechten.
+      Bevat alle rapportages. Eén rij per rapportage.
+    columns:
+      - name: rapportage_id
+        description: "Unieke identifier van de rapportage"
+        tests: [unique, not_null]
+      - name: client_id
+        description: "Verwijzing naar de client"
+        tests: [not_null]
+      - name: clientnummer
+        description: "Clientnummer van de client"
+      - name: client_naam
+        description: "Volledige naam van de client (roepnaam + voorvoegsel + achternaam)"
+      - name: medewerker_id
+        description: "Verwijzing naar de medewerker die de rapportage heeft opgesteld"
+      - name: medewerker_naam
+        description: "Volledige naam van de medewerker (voornaam + achternaam)"
+      - name: medewerker_deskundigheden
+        description: "Samengevoegde actieve deskundigheden van de medewerker, gescheiden door ' | '"
+      - name: medewerker_deskundigheidsgroepen
+        description: "Samengevoegde deskundigheidsgroepen van de medewerker, gescheiden door ' | '"
+      - name: rapportage_type_id
+        description: "Verwijzing naar het type rapportage"
+      - name: rapportage_type
+        description: "Naam van het rapportage-type"
+      - name: rapportagedatum
+        description: "Datum van de rapportage"
+      - name: status_code
+        description: "Status van de rapportage (open/closed)"
+      - name: is_gemarkeerd
+        description: "1 als de medewerker de rapportage als belangrijk heeft gemarkeerd"
+      - name: is_verborgen
+        description: "1 als de rapportage verborgen is"
+      - name: afgeschermd_voor
+        description: "Classificatie: 'deskundigheid', 'deskundigheidsgroep', 'beiden' of 'geen'"
+      - name: afgeschermd_voor_deskundigheden
+        description: "Samengevoegde deskundigheden waarvoor de rapportage afgeschermd is (of NULL)"
+      - name: afgeschermd_voor_deskundigheidsgroepen
+        description: "Samengevoegde deskundigheidsgroepen waarvoor de rapportage afgeschermd is (of NULL)"
+      - name: aangemaakt_op
+        description: "Tijdstip waarop de rapportage is aangemaakt"
+      - name: gewijzigd_op
+        description: "Tijdstip waarop de rapportage het laatst is gewijzigd"
+      - name: url_ons_rapportages
+        description: "Deep-link naar de rapportages van deze client in ONS dossier"
+
+  - name: mart_zorgplannen
+    description: >
+      Alle zorgplannen (historisch + actueel) met clientgegevens, leesbare status,
+      geldigheid, zorgplan_versie en regeltellingen. Eén rij per zorgplan.
+    columns:
+      - name: zorgplan_id
+        description: "Unieke identifier van het zorgplan"
+        tests: [unique, not_null]
+      - name: client_id
+        description: "Verwijzing naar de client"
+        tests: [not_null]
+      - name: clientnummer
+        description: "Identificatienummer van de client"
+      - name: client_naam
+        description: "Volledige naam van de client (roepnaam + voorvoegsel + achternaam)"
+      - name: startdatum
+        description: "Startdatum van het zorgplan"
+      - name: einddatum
+        description: "Einddatum van het zorgplan (null = open einde)"
+      - name: status
+        description: "Leesbare zorgplanstatus (bijv. Actief, Concept)"
+      - name: geldigheid
+        description: "Geldig, Verlopen of Nog niet gestart — op basis van startdatum/einddatum vs GETDATE()"
+      - name: zorgplan_versie
+        description: "Leeg, Oud, Nieuw of Mix — gebaseerd op de domeinen van de zorgplanregels"
+      - name: aantal_regels
+        description: "Totaal aantal zorgplanregels"
+      - name: aantal_geldige_regels
+        description: "Aantal regels met een geldig domein (Oud of Nieuw)"
+      - name: aangemaakt_door_id
+        description: "Verwijzing naar de medewerker die het zorgplan heeft aangemaakt"
+      - name: aangemaakt_door_naam
+        description: "Naam van de medewerker die het zorgplan heeft aangemaakt"
+      - name: aangemaakt_op
+        description: "Tijdstip waarop het zorgplan is aangemaakt"
+      - name: gewijzigd_op
+        description: "Tijdstip waarop het zorgplan het laatst is bijgewerkt"
+      - name: url_ons_zorgplan
+        description: "Deep-link naar het zorgplan van deze client in ONS dossier"
+
+  - name: mart_vragenlijst_resultaten
+    description: >
+      Historisch overzicht van alle ingevulde vragenlijsten per cliënt.
+      Bevat vragenlijsttitel, cliëntnaam, invullende medewerker, invuldatum en leesbare statusomschrijving.
+      Geen datumfilter — Power BI filtert op ingevuld_op. Eén rij per ingevulde vragenlijst.
+    columns:
+      - name: vragenlijst_resultaat_id
+        description: "Unieke identifier van de ingevulde vragenlijst"
+        tests: [unique, not_null]
+      - name: vragenlijst_id
+        description: "Verwijzing naar de vragenlijst-template"
+        tests: [not_null]
+      - name: vragenlijst_titel
+        description: "Titel van de vragenlijst"
+      - name: client_id
+        description: "Verwijzing naar de cliënt"
+        tests: [not_null]
+      - name: client_naam
+        description: "Volledige naam van de cliënt (voornaam + achternaam)"
+      - name: medewerker_id
+        description: "Verwijzing naar de medewerker die de vragenlijst heeft ingevuld"
+      - name: ingevuld_door
+        description: "Naam van de medewerker die de vragenlijst heeft ingevuld"
+      - name: ingevuld_op
+        description: "Datum/tijd waarop de vragenlijst is ingevuld"
+      - name: status_code
+        description: "Ruwe statuscode van de ingevulde vragenlijst"
+      - name: status_omschrijving
+        description: "Leesbare statusomschrijving (via lst_vragenlijst_resultaat_statussen)"
+      - name: is_readonly
+        description: "1 als de vragenlijst afgesloten is voor verdere wijzigingen"
+      - name: aangemaakt_op
+        description: "Tijdstip van aanmaken"
+      - name: gewijzigd_op
+        description: "Tijdstip van laatste wijziging"
+
+  - name: mart_feitelijk_geleverde_zorg
+    description: >
+      Verantwoording feitelijk geleverde zorg per client. Bevat checks op
+      geldig zorgplan, recente rapportages, medicatietoediening en
+      zorgplaninzage, plus een totaalscore. Eén rij per client in zorg.
+      Gematerialiseerd als tabel voor gebruik in Power BI.
+    columns:
+      - name: client_id
+        description: "Unieke identifier van de client"
+        tests: [unique, not_null]
+      - name: client_naam
+        description: "Naam van de client (roepnaam + achternaam)"
+      - name: geldig_zorgplan
+        description: "1 als client een actief zorgplan heeft op peildatum, anders 0"
+      - name: recente_rapportages
+        description: "1 als client minstens 1 rapportage heeft in evaluatieperiode, anders 0"
+      - name: medicatie_toegediend
+        description: "1 als medicatie correct toegediend, 0 als niet, NULL als geen medicatie"
+      - name: zorgplan_ingezien
+        description: "1 als zorgplan ingezien door relevant zorgpersoneel op dezelfde locatie, anders 0"
+      - name: client_score
+        description: "Percentage score (0-100) over alle datapunten"
+      - name: peildatum
+        description: "Gebruikte peildatum voor de berekening"
+      - name: startdatum
+        description: "Begin van de evaluatieperiode (peildatum - 28 dagen)"
+
+
+  - name: mart_groepszorg_registraties
+    description: >
+      Alle groepszorg-registraties (niet-verwijderd) verrijkt met cliëntgegevens en groepsgegevens.
+      Eén rij per registratie. Geen datumfilter — bevat historische en toekomstige registraties.
+    columns:
+      - name: groepszorg_registratie_id
+        description: "Unieke identifier van de registratie"
+        tests: [unique, not_null]
+      - name: registratie_datum
+        description: "Datum van de registratie"
+      - name: starttijd
+        description: "Starttijd van de registratie"
+      - name: eindtijd
+        description: "Eindtijd van de registratie"
+      - name: status
+        description: "Statuscode: 0=Aanwezig, 1=Afwezig, 2=Aangemaakt, 3=No-show"
+      - name: status_omschrijving
+        description: "Leesbare omschrijving van de status"
+      - name: is_gefiatteerd
+        description: "1 als de registratie gefiatteerd (goedgekeurd) is"
+      - name: client_id
+        description: "Verwijzing naar de cliënt in Ons Administratie"
+      - name: clientnummer
+        description: "Identificatienummer van de cliënt"
+      - name: clientnaam
+        description: "Samengestelde naam van de cliënt (roepnaam + voorvoegsel + achternaam)"
+      - name: geboortedatum
+        description: "Geboortedatum van de cliënt"
+      - name: geslacht
+        description: "Geslacht van de cliënt (integer enum)"
+      - name: groepszorg_groep_id
+        description: "Verwijzing naar de groep"
+      - name: groepsnaam
+        description: "Naam van de groep"
+      - name: is_groep_gearchiveerd
+        description: "1 als de groep gearchiveerd is"
+      - name: min_capaciteit
+        description: "Minimale capaciteit van de groep"
+      - name: max_capaciteit
+        description: "Maximale capaciteit van de groep"
+      - name: groep_locatienaam
+        description: "Naam van de locatie waaraan de groep gekoppeld is"
+      - name: is_intramuraal
+        description: "1 als de locatie intramuraal is"
+      - name: aangemaakt_op
+        description: "Tijdstip van aanmaken van de registratie"
+      - name: gewijzigd_op
+        description: "Tijdstip van laatste wijziging van de registratie"

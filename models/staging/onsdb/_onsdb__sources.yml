@@ -1,0 +1,340 @@
+version: 2
+
+sources:
+  - name: ons_plan_2
+    database: Ons_Plan_2
+    schema: dbo
+    tables:
+      # -- Clients --
+      - name: clients
+        description: "Informatie over clienten: naam, geboortedatum, contactgegevens en persoonlijke gegevens."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: clients_addresses
+        description: "Koppeltabel tussen clienten en adressen."
+
+      - name: relations
+        description: "Contactpersonen en relaties van clienten."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      # -- Employees --
+      - name: employees
+        description: "Informatie over medewerkers: naam, contactgegevens, contractgegevens."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: employees_addresses
+        description: "Koppeltabel tussen medewerkers en adressen."
+
+      - name: contracts
+        description: "Contracten van medewerkers (uren per week, vast/variabel, begin- en einddatum)."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: contract_types
+        description: "Contracttypes gekoppeld aan contracts."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      # -- Teams & Organisatie --
+      - name: teams
+        description: "Teams binnen de organisatie waaraan medewerkers gekoppeld worden."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: team_assignments
+        description: "Koppelingen tussen medewerkers en teams."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      # -- Locaties & Adressen --
+      - name: addresses
+        description: "Adressen gebruikt door clienten, medewerkers, locaties en teams."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: lst_address_types
+        description: "Lookup: adrestypen (GBA adres, Correspondentieadres, Verblijfadres, etc.)."
+
+      - name: locations
+        description: "Locaties in het locatiegram (hierarchische structuur)."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: location_assignments
+        description: "Koppelingen tussen locaties en clienten."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      # -- Zorg --
+      - name: care_orders
+        description: "Zorglegitimaties: autorisatie en legitimatie van zorgdiensten."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: care_order_products
+        description: "Producten gekoppeld aan zorglegitimaties."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: care_arrangements
+        description: "Zorgarrangementen: afspraken tussen client en zorgleverancier."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: activities
+        description: "Uursoorten voor gebruik in zorgarrangementen en zorgregels."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: activity_groups
+        description: "Categorieen van activiteiten."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      # -- Zorgtoewijzingen --
+      - name: care_allocations
+        description: "Zorgtoewijzingen: koppeling van clienten aan zorg."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      # -- Zorgplannen --
+      - name: careplans
+        description: "Zorgplannen van clienten met status en looptijd."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: lst_care_plan_statuses
+        description: "Lijst van mogelijke zorgplanstatussen."
+
+      - name: careplan_entries
+        description: "Zorgplanregels in een zorgplan: doelen en aandachtspunten per cliënt."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: careplan_domain_definitions
+        description: "Domeindefinities voor zorgplanregels. hidden=true = oud domeinensysteem."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: careplan_target_definitions
+        description: "Doeldefinities gekoppeld aan een domein. Basis voor zorgplanregels."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      # -- Rapportages --
+      - name: careplan_reports
+        description: "Rapportages bij zorgplannen: tekstuele notities, SOEP-rapportages en metingen per cliënt."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: careplan_report_types
+        description: "Typen rapportages."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      # -- Dossier (episodes & documenten) --
+      - name: dossier_episodes
+        description: "Episodes (zorgtrajecten) in het cliëntdossier."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: dossier_episode_sub_goals
+        description: "Subdoelen gekoppeld aan een episode."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: dossier_episode_actions
+        description: "Acties gekoppeld aan een episode-subdoel."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: documents
+        description: "Documenten (bijlagen) gekoppeld aan cliënten. Bestandsinhoud niet beschikbaar, alleen metadata."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: document_tags
+        description: "Koppeltabel tussen documenten en tags/labels."
+
+      - name: tags
+        description: "Tags (labels) die aan documenten gekoppeld kunnen worden."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: document_rights
+        description: "Toegangsrechten per document op basis van expertise-profiel (deskundigheid)."
+
+      - name: document_expertise_groups
+        description: "Toegangsbeperking per document op basis van expertise-groep (deskundigheidsgroep)."
+
+      - name: lst_document_statuses
+        description: "Lookup: mogelijke documentstatussen (Nieuw, Opgeslagen, Verwijderd, etc.)."
+
+      - name: dossier_expertise_authorizations
+        description: "Toegangsrechten op dossierniveau per deskundigheid (expertiseAuthorizableId = episode/dossier objectId)."
+
+      - name: dossier_expertise_group_authorizations
+        description: "Toegangsrechten op dossierniveau per deskundigheidsgroep (expertiseGroupAuthorizableId = episode/dossier objectId)."
+
+      # -- Rapportagerechten --
+      - name: careplan_report_action_rights
+        description: "Toegangsrechten per rapportage, inclusief type (bijv. Zichtbaar voor) en koppeling aan deskundigheid of deskundigheidsgroep."
+
+      - name: lst_careplan_report_action_right_types
+        description: "Lookup: typen rapportagerechten (bijv. Zichtbaar voor, Bewerken)."
+
+      # -- Medicatie --
+      - name: medication_charts
+        description: "Medicatieoverzichten per client per datum."
+
+      - name: administration_agreements
+        description: "Toedienafspraken gekoppeld aan medicatieoverzichten."
+
+      - name: medication_administrations
+        description: "Medicatietoedieningen gekoppeld aan toedienafspraken."
+
+      - name: status_updates
+        description: "Statusupdates van medicatietoedieningen."
+
+      # -- Expertise-profielen --
+      - name: expertise_profile_assignments
+        description: "Koppelingen van expertise-profielen aan medewerkers."
+
+      - name: expertise_profiles
+        description: "Expertise-profielen (bevoegdheden van medewerkers)."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: expertise_groups
+        description: "Groepen van expertise-profielen (bijv. Zorgpersoneel)."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: expertise_group_expertise_profiles
+        description: "Koppeltabel tussen expertise-groepen en expertise-profielen."
+
+      # -- Kostenplaatsen --
+      - name: costcenter_assignments
+        description: "Koppelingen tussen locaties en kostenplaatsen."
+
+      - name: costcenters
+        description: "Kostenplaatsen (voor koppeling met ORTEC)."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      # -- Financiering --
+      - name: finance_types
+        description: "Financieringstypes (ZZP, WMO, Jeugdwet, PGB, Onderaanneming, etc.)."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      # -- Vragenlijsten --
+      - name: surveys
+        description: "Definitie van vragenlijsten (templates met titel en configuratie)."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: survey_categories
+        description: "Categorieën binnen een vragenlijst."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: survey_groups
+        description: "Groepen binnen een categorie (met drempelwaarde en max score voor auto-aandachtspunten)."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: survey_questions
+        description: "Vragen binnen een groep (tekst, type, verplicht/niet verplicht)."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: survey_answer_definition_groups
+        description: "Multiplechoice antwoordgroepen (sets van mogelijke antwoorden)."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: survey_answer_definitions
+        description: "Mogelijke antwoorden binnen een antwoordgroep (tekst, waarde, score)."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: survey_results
+        description: "Ingevulde vragenlijsten per cliënt, met medewerker en invuldatum."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: survey_answers
+        description: "Antwoorden op vragen binnen een ingevulde vragenlijst."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: survey_group_answers
+        description: "Berekende scores per groep binnen een ingevulde vragenlijst."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: lst_survey_result_statuses
+        description: "Lookup: statuscodes voor ingevulde vragenlijsten."
+
+      # -- Groepszorg --
+      - name: groupcare_registrations
+        description: "Groepszorg-registraties: aanwezigheid van cliënten bij groepsactiviteiten."
+        columns:
+          - name: id
+            tests: [unique, not_null]
+
+      - name: groupcare_groups
+        description: "Groepszorg-groepen met naam, locatie, team en capaciteitsgegevens."
+        columns:
+          - name: id
+            tests: [unique, not_null]
+
+      - name: groupcare_locations
+        description: "Bridge-tabel: koppeling tussen groepszorg-locatie-ID en Ons Administratie locatie-ID."
+        columns:
+          - name: id
+            tests: [unique, not_null]

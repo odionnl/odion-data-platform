@@ -1,0 +1,61 @@
+version: 2
+
+models:
+  - name: int_locaties_basis
+    description: "Locaties verrijkt met adresgegevens en hiërarchische kenmerken (is_leaf, is_actief_vandaag, kindlocatie-aantallen)."
+    columns:
+      - name: locatie_id
+        description: "Unieke identifier van de locatie"
+        tests: [unique, not_null]
+      - name: locatienaam
+        description: "Naam van de locatie"
+      - name: ouder_locatie_id
+        description: "Verwijzing naar de bovenliggende locatie"
+      - name: is_leaf_locatie
+        description: "1 als de locatie geen kindlocaties heeft"
+      - name: is_toplocatie
+        description: "1 als de locatie geen ouder heeft (rootlocatie)"
+      - name: is_actief_vandaag
+        description: "1 als de locatie vandaag actief is"
+      - name: aantal_kindlocaties
+        description: "Aantal directe kindlocaties"
+
+  - name: int_locatie_hierarchie
+    description: >
+      Recursieve locatiehiërarchie met niveaunamen (niveau1 t/m niveau6), locatiepad en cluster.
+      Generiek model — de clusterbepaling is CC-specifiek via de get_locatiecluster-macro
+      in macros/locaties.sql.
+    columns:
+      - name: locatie_id
+        description: "Unieke identifier van de locatie"
+        tests: [unique, not_null]
+      - name: locatie_niveau
+        description: "Diepte in de hiërarchie (1 = root)"
+      - name: locatie_pad
+        description: "Pad van rootlocatie naar huidige locatie (bijv. .1.593.)"
+      - name: niveau1
+        description: "Naam van het eerste hiërarchieniveau (organisatie)"
+      - name: niveau2
+        description: "Naam van het tweede hiërarchieniveau"
+      - name: niveau3
+        description: "Naam van het derde hiërarchieniveau"
+      - name: cluster
+        description: "Zorgcluster o.b.v. locatienamen (CC-specifiek via get_locatiecluster-macro)"
+
+  - name: int_locaties_met_kostenplaatsen
+    description: >
+      Locaties met al hun kostenplaatskoppelingen over alle tijd.
+      Grain: één rij per locatie × koppelingsperiode.
+      Filter op startdatum_koppeling / einddatum_koppeling om een specifieke datum te selecteren.
+    columns:
+      - name: locatie_id
+        description: "Unieke identifier van de locatie"
+        tests: [not_null]
+      - name: locatienaam
+        description: "Naam van de locatie"
+      - name: kostenplaats_id
+        description: "Kostenplaatscode (voor koppeling met ORTEC-diensten)"
+      - name: startdatum_koppeling
+        description: "startdatum van de kostenplaatskoppeling"
+      - name: einddatum_koppeling
+        description: "Einddatum van de kostenplaatskoppeling (NULL = nog actief)"
