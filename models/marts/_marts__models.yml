@@ -472,3 +472,43 @@ models:
         description: "Tijdstip van aanmaken van de registratie"
       - name: gewijzigd_op
         description: "Tijdstip van laatste wijziging van de registratie"
+
+  - name: mart_wachtlijsten
+    description: >
+      Snapshot op vandaag (GETDATE()). Cliënten met een actieve wachtlijstkoppeling,
+      inclusief hoofdlocatie, in-zorg vlag, leeftijd en huidige producten per locatiecluster.
+      Eén rij per cliënt per wachtlijstlocatie.
+    columns:
+      - name: client_id
+        description: "Unieke identifier van de cliënt"
+        tests: [not_null]
+      - name: clientnummer
+        description: "Extern cliëntnummer uit ONS"
+      - name: hoofdlocatie_locatie_id
+        description: "Locatie-ID van de meest recente actieve hoofdlocatie (MAIN)"
+      - name: hoofdlocatie_locatienaam
+        description: "Naam van de meest recente actieve hoofdlocatie"
+      - name: wachtlijst_locatie_id
+        description: "Locatie-ID van de wachtlijstkoppeling"
+      - name: wachtlijst_locatienaam
+        description: "Naam van de wachtlijstlocatie"
+      - name: wachtlijst_niveau3
+        description: "Niveau 3 in de locatiehiërarchie van de wachtlijstlocatie"
+      - name: wachtlijst_startdatum
+        description: "Startdatum van de wachtlijstkoppeling"
+      - name: wachtlijst_einddatum
+        description: "Einddatum van de wachtlijstkoppeling (null = nog actief)"
+      - name: ambulant
+        description: "1 als cliënt een actieve Ambulant-koppeling heeft"
+      - name: dagbesteding
+        description: "1 als cliënt een actieve Dagbesteding-koppeling heeft"
+      - name: logeren
+        description: "1 als cliënt een actieve Logeren-koppeling heeft"
+      - name: wonen
+        description: "1 als cliënt een actieve Wonen-koppeling heeft"
+      - name: behandeling
+        description: "1 als cliënt een actieve Behandeling-koppeling heeft"
+      - name: kind_en_gezin
+        description: "1 als cliënt een actieve Kind en gezin-koppeling heeft"
+      - name: multidisciplinair_team
+        description: "1 als cliënt een actieve Multidisciplinair Team-koppeling heeft"

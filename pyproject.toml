@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "odion-data-platform-cc"
+name = "odion-data-platform"
 version = "0.1.0"
 description = "dbt project voor OnsDB data (Odion)"
 authors = ["Odion"]

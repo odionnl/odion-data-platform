@@ -13,10 +13,15 @@
       "Bash(poetry run dbt show --inline \"SELECT c.name as kolom, c.column_id as nr FROM Ons_Plan_2.sys.columns c INNER JOIN Ons_Plan_2.sys.tables t ON c.object_id = t.object_id WHERE t.name = ''survey_answers'' AND c.column_id > 5\")",
       "Read(//c/Users/adm-chantals/.dbt/**)",
       "Bash(sqlcmd -S sql803528-prd.ad.odion.nl -E -Q \"SELECT TABLE_SCHEMA, TABLE_NAME FROM OdionDataPlatform.INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME IN \\(''mart_clienten'',''stg_onsdb__clients'',''int_locatie_hierarchie''\\) ORDER BY TABLE_SCHEMA, TABLE_NAME\")",
-      "Bash(poetry run python -c \":*)"
+      "Bash(poetry run python -c \":*)",
+      "Bash(git ls-tree:*)",
+      "Read(//c/Users/adm-chantals/Projecten/odion-data-platform/$LOCALAPPDATA/pypoetry/Cache/**)",
+      "Read(//c/Users/adm-chantals/AppData/Local/pypoetry/Cache/virtualenvs/**)"
     ],
     "additionalDirectories": [
-      "C:\\Users\\adm-chantals\\.claude\\projects\\c--Users-adm-chantals-Projecten-odion-data-platform-cc\\memory"
+      "C:\\Users\\adm-chantals\\.claude\\projects\\c--Users-adm-chantals-Projecten-odion-data-platform-cc\\memory",
+      "C:\\Users\\adm-chantals\\AppData\\Local\\pypoetry\\Cache\\virtualenvs\\odion-data-platform-PMSPcJgJ-py3.11",
+      "C:\\Users\\adm-chantals\\AppData\\Local\\pypoetry\\Cache\\virtualenvs"
     ]
   },
   "enabledPlugins": {
