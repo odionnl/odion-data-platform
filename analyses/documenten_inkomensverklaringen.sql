@@ -13,7 +13,7 @@ select
     aangemaakt_op,
     gewijzigd_op
 
-from [OdionDataPlatformCC].[dbo_marts].[mart_documenten]
+from [OdionDataPlatform].[dbo].[mart_documenten]
 
 where (
     bestandsnaam LIKE '%inkomen%'

@@ -22,7 +22,7 @@ select
   aangemaakt_op,
   gewijzigd_op
 
-from [OdionDataPlatformCC].[dbo_marts].[mart_documenten]
+from [OdionDataPlatform].[dbo].[mart_documenten]
 
 where aangemaakt_op >= @startdatum
   and aangemaakt_op  < @einddatum

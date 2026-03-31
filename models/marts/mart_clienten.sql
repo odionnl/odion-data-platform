@@ -79,6 +79,7 @@ definitief as (
 
     select
         c.client_id,
+        c.clientnummer,
         c.voornaam,
         c.roepnaam,
         c.voorvoegsel,

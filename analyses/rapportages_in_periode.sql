@@ -21,7 +21,7 @@ select
   aangemaakt_op,
   gewijzigd_op
 
-from [OdionDataPlatformCC].[dbo_marts].[mart_rapportages]
+from [OdionDataPlatform].[dbo].[mart_rapportages]
 
 where rapportagedatum >= @startdatum
   and rapportagedatum  < @einddatum

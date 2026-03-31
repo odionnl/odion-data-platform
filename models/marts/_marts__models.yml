@@ -10,6 +10,8 @@ models:
       - name: client_id
         description: "Unieke identifier van de client"
         tests: [unique, not_null]
+      - name: clientnummer
+        description: "Extern cliëntnummer (identificationNo) uit ONS"
       - name: voornaam
         description: "Officiële voornaam van de client (firstName)"
       - name: roepnaam
