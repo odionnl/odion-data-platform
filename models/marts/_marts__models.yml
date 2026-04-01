@@ -512,3 +512,16 @@ models:
         description: "1 als cliënt een actieve Kind en gezin-koppeling heeft"
       - name: multidisciplinair_team
         description: "1 als cliënt een actieve Multidisciplinair Team-koppeling heeft"
+
+  - name: mart_actieve_producten
+    description: >
+      Actieve producten (locatieclusters) per cliënt op de wachtlijst. Eén rij
+      per cliënt per product. Bedoeld als bridge-tabel in Power BI zodat je met
+      een enkele slicer op product_naam kunt filteren.
+    columns:
+      - name: client_id
+        description: "Verwijzing naar de cliënt"
+        tests: [not_null]
+      - name: product_naam
+        description: "Naam van het product dat de cliënt afneemt (bijv. Ambulant, Wonen)"
+        tests: [not_null]
