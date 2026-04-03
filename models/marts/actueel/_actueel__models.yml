@@ -3,8 +3,15 @@ version: 2
 models:
   - name: mart_clienten_actueel
     description: >
-      Snapshot: alleen cliënten die vandaag in zorg zijn.
-      View op mart_clienten met filter is_in_zorg = 1.
+      Snapshot: cliënten die vandaag in zorg zijn, verrijkt met huidige
+      hoofdlocatie en primaire financieringsvorm. View op mart_clienten.
+    columns:
+      - name: hoofdlocatie_id
+        description: "Locatie-ID van de huidige hoofdlocatie (type MAIN)"
+      - name: hoofdlocatienaam
+        description: "Naam van de huidige hoofdlocatie"
+      - name: financiering
+        description: "Primaire financieringsvorm op basis van actieve zorglegitimaties (bijv. Zorgzwaartepakket)"
 
   - name: mart_medewerkers_actueel
     description: >

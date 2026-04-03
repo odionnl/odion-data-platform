@@ -3,9 +3,9 @@ version: 2
 models:
   - name: mart_clienten
     description: >
-      Alle cliënten (historisch + actueel) met hoofdlocatie, leeftijd, in-zorg vlag,
-      primaire financieringsvorm. Eén rij per client.
-      Gebruik mart_clienten_actueel voor alleen cliënten in zorg.
+      Alle cliënten (historisch + actueel) met leeftijd en in-zorg vlag.
+      Eén rij per client. Gebruik mart_clienten_actueel voor cliënten in zorg
+      met hoofdlocatie en financiering.
     columns:
       - name: client_id
         description: "Unieke identifier van de client"
@@ -28,10 +28,6 @@ models:
         description: "Leeftijdsgroep fijnmazig: <18, 18-24, 25-34, 35-49, 50-64, 65-79 of 80+"
       - name: is_in_zorg
         description: "1 als client een actieve zorgtoewijzing heeft op vandaag, anders 0"
-      - name: hoofdlocatienaam
-        description: "Naam van de (meest recente) hoofdlocatie (type MAIN) van de client"
-      - name: financiering
-        description: "Primaire financieringsvorm op basis van actieve zorglegitimaties (bijv. Zorgzwaartepakket)"
   - name: mart_clienten_urls
     description: >
       Deep-links naar ONS per client (administratie, zorgplan, rapportages, medicatie, agenda).
@@ -406,6 +402,82 @@ models:
         description: "Leesbare statusomschrijving (via lst_vragenlijst_resultaat_statussen)"
       - name: is_readonly
         description: "1 als de vragenlijst afgesloten is voor verdere wijzigingen"
+      - name: aangemaakt_op
+        description: "Tijdstip van aanmaken"
+      - name: gewijzigd_op
+        description: "Tijdstip van laatste wijziging"
+
+  - name: mart_vragenlijst_antwoorden
+    description: >
+      Alle antwoorden op ingevulde vragenlijsten, verrijkt met vragenlijststructuur
+      (categorie/groep), cliëntnaam, medewerker en statusomschrijving. Eén rij per antwoord.
+      Geen datumfilter — Power BI filtert op ingevuld_op.
+    columns:
+      - name: vragenlijst_antwoord_id
+        description: "Unieke identifier van het antwoord"
+        tests: [unique, not_null]
+      - name: vragenlijst_resultaat_id
+        description: "Verwijzing naar de ingevulde vragenlijst (join key naar mart_vragenlijst_resultaten)"
+        tests: [not_null]
+      - name: vragenlijst_id
+        description: "Verwijzing naar de vragenlijst-template"
+        tests: [not_null]
+      - name: vragenlijst_titel
+        description: "Titel van de vragenlijst"
+      - name: client_id
+        description: "Verwijzing naar de cliënt"
+        tests: [not_null]
+      - name: client_naam
+        description: "Volledige naam van de cliënt (voornaam + achternaam)"
+      - name: medewerker_id
+        description: "Verwijzing naar de medewerker die de vragenlijst heeft ingevuld"
+      - name: ingevuld_door
+        description: "Naam van de medewerker die de vragenlijst heeft ingevuld"
+      - name: ingevuld_op
+        description: "Datum/tijd waarop de vragenlijst is ingevuld"
+      - name: status_code
+        description: "Ruwe statuscode van de ingevulde vragenlijst"
+      - name: status_omschrijving
+        description: "Leesbare statusomschrijving (via lst_vragenlijst_resultaat_statussen)"
+      - name: vragenlijst_categorie_id
+        description: "Verwijzing naar de categorie binnen de vragenlijst"
+      - name: categorie_titel
+        description: "Titel van de categorie"
+      - name: categorie_volgnummer
+        description: "Volgorde van de categorie binnen de vragenlijst"
+      - name: vragenlijst_groep_id
+        description: "Verwijzing naar de groep binnen de categorie"
+      - name: groep_beschrijving
+        description: "Beschrijving van de groep"
+      - name: groep_volgnummer
+        description: "Volgorde van de groep binnen de categorie"
+      - name: drempelwaarde_score
+        description: "Drempelwaarde waaronder automatisch een aandachtspunt aangemaakt wordt"
+      - name: max_score
+        description: "Maximale score voor deze groep"
+      - name: vragenlijst_vraag_id
+        description: "Verwijzing naar de vraag"
+        tests: [not_null]
+      - name: vraagtekst
+        description: "Tekst van de vraag"
+      - name: antwoord_type
+        description: "Type antwoord (integer enum: bijv. tekst, ja/nee, multiplechoice)"
+      - name: vraag_volgnummer
+        description: "Volgorde van de vraag binnen de groep"
+      - name: antwoord_definitie_id
+        description: "Verwijzing naar het gekozen multiplechoice-antwoord — NULL bij tekst/ja-nee"
+      - name: antwoord_tekst
+        description: "Tekst van het gekozen multiplechoice-antwoord"
+      - name: antwoord_waarde
+        description: "Numerieke waarde van het gekozen antwoord"
+      - name: antwoord_score
+        description: "Scorebijdrage van het gekozen antwoord"
+      - name: tekst_antwoord
+        description: "Vrij tekstveld antwoord"
+      - name: ja_nee_antwoord
+        description: "Ja/nee antwoord"
+      - name: is_belangrijk
+        description: "1 als dit antwoord als belangrijk gemarkeerd is"
       - name: aangemaakt_op
         description: "Tijdstip van aanmaken"
       - name: gewijzigd_op
