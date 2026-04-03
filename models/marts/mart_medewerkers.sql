@@ -4,26 +4,33 @@ with medewerkers as (
 
 ),
 
-huidige_teams as (
+teams as (
 
+    -- Meest recent team per medewerker (voorkeur voor actieve koppeling)
     select
         medewerker_id,
         team_id,
         teamnaam,
         teamkoppeling_startdatum,
+        teamkoppeling_einddatum,
         row_number() over (
             partition by medewerker_id
-            order by teamkoppeling_startdatum desc
+            order by
+                case
+                    when teamkoppeling_einddatum is null
+                      or teamkoppeling_einddatum >= cast(getdate() as date)
+                    then 0 else 1
+                end,
+                teamkoppeling_startdatum desc
         ) as rn
 
     from {{ ref('int_medewerkers_met_teams') }}
-    where teamkoppeling_einddatum is null
-       or teamkoppeling_einddatum >= getdate()
 
 ),
 
-huidige_contracten as (
+contracten as (
 
+    -- Meest recent contract per medewerker (voorkeur voor actief contract)
     select
         medewerker_id,
         contract_id,
@@ -34,12 +41,16 @@ huidige_contracten as (
         variabele_uren_per_week,
         row_number() over (
             partition by medewerker_id
-            order by contract_startdatum desc
+            order by
+                case
+                    when contract_einddatum is null
+                      or contract_einddatum >= cast(getdate() as date)
+                    then 0 else 1
+                end,
+                contract_startdatum desc
         ) as rn
 
     from {{ ref('int_medewerkers_met_contracten') }}
-    where contract_einddatum is null
-       or contract_einddatum >= getdate()
 
 ),
 
@@ -55,26 +66,33 @@ definitief as (
         medewerkers.mobiel_telefoonnummer,
         medewerkers.is_onderaannemer,
 
-        -- Huidig team
-        huidige_teams.teamnaam                          as huidig_teamnaam,
+        -- Actief vlag (1 = heeft actief contract vandaag)
+        case
+            when contracten.contract_einddatum is null
+              or contracten.contract_einddatum >= cast(getdate() as date)
+            then 1 else 0
+        end as is_actief,
 
-        -- Huidig contract
-        huidige_contracten.contracttype_naam            as huidig_contracttype,
-        huidige_contracten.contract_startdatum          as huidig_contract_startdatum,
-        huidige_contracten.contract_einddatum           as huidig_contract_einddatum,
-        huidige_contracten.normtijd_uren_per_week       as huidig_normtijd_uren_per_week,
-        huidige_contracten.variabele_uren_per_week      as huidig_variabele_uren_per_week,
+        -- Team (meest recent, bij voorkeur actief)
+        teams.teamnaam,
+
+        -- Contract (meest recent, bij voorkeur actief)
+        contracten.contracttype_naam                    as contracttype,
+        contracten.contract_startdatum,
+        contracten.contract_einddatum,
+        contracten.normtijd_uren_per_week,
+        contracten.variabele_uren_per_week,
 
         medewerkers.aangemaakt_op,
         medewerkers.gewijzigd_op
 
     from medewerkers
-    left join huidige_teams
-        on huidige_teams.medewerker_id = medewerkers.medewerker_id
-        and huidige_teams.rn = 1
-    left join huidige_contracten
-        on huidige_contracten.medewerker_id = medewerkers.medewerker_id
-        and huidige_contracten.rn = 1
+    left join teams
+        on teams.medewerker_id = medewerkers.medewerker_id
+        and teams.rn = 1
+    left join contracten
+        on contracten.medewerker_id = medewerkers.medewerker_id
+        and contracten.rn = 1
 
 )
 

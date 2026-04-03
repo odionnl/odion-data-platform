@@ -7,7 +7,7 @@ select
 
     c.leeftijd,
     c.leeftijdsgroep,
-    c.in_zorg,
+    c.is_in_zorg,
 
     wl.hoofdlocatie_locatie_id,
     wl.hoofdlocatie_locatienaam,

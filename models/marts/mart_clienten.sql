@@ -10,21 +10,29 @@ locaties as (
 
 ),
 
-huidige_hoofdlocatie as (
+hoofdlocatie as (
 
+    -- Meest recente hoofdlocatie per client (voorkeur voor actieve koppeling)
     select
         client_id,
         locatie_id,
         locatienaam,
         is_intramuraal,
         type_toekenning,
-        is_verblijfslocatie
+        is_verblijfslocatie,
+        row_number() over (
+            partition by client_id
+            order by
+                case
+                    when locatie_einddatum is null
+                      or locatie_einddatum >= cast(getdate() as date)
+                    then 0 else 1
+                end,
+                locatie_startdatum desc
+        ) as rn
 
     from locaties
     where type_toekenning = 'MAIN'
-      and locatie_startdatum <= cast(getdate() as date)
-      and (locatie_einddatum is null
-       or locatie_einddatum >= cast(getdate() as date))
 
 ),
 
@@ -85,11 +93,11 @@ definitief as (
         {{ get_leeftijdsgroep2('c.leeftijd') }}                 as leeftijdsgroep2,
 
         -- In zorg vlag (1 = actieve zorgtoewijzing vandaag)
-        case when in_zorg.client_id is not null then 1 else 0 end as in_zorg,
+        case when in_zorg.client_id is not null then 1 else 0 end as is_in_zorg,
 
-        -- Huidige hoofdlocatie
-        huidige_hoofdlocatie.locatie_id                             as huidige_hoofdlocatie_id,
-        huidige_hoofdlocatie.locatienaam                            as huidige_hoofdlocatienaam,
+        -- Hoofdlocatie (meest recente, bij voorkeur actieve)
+        hoofdlocatie.locatie_id                             as hoofdlocatie_id,
+        hoofdlocatie.locatienaam                            as hoofdlocatienaam,
 
         -- Financiering (primaire financieringsvorm op basis van actieve zorglegitimaties)
         financiering.financiering,
@@ -98,8 +106,9 @@ definitief as (
         c.gewijzigd_op
 
     from clienten_met_leeftijd c
-    left join huidige_hoofdlocatie
-        on huidige_hoofdlocatie.client_id = c.client_id
+    left join hoofdlocatie
+        on hoofdlocatie.client_id = c.client_id
+        and hoofdlocatie.rn = 1
     left join in_zorg
         on in_zorg.client_id = c.client_id
     left join financiering

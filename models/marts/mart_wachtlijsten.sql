@@ -1,4 +1,4 @@
-with actieve_koppelingen as (
+with koppelingen as (
 
     select
         lk.client_id,
@@ -24,28 +24,37 @@ wachtlijst_clienten as (
         locatienaam   as wachtlijst_locatienaam,
         niveau3       as wachtlijst_niveau3,
         startdatum    as wachtlijst_startdatum,
-        einddatum     as wachtlijst_einddatum
+        einddatum     as wachtlijst_einddatum,
+        case
+            when einddatum is null or einddatum >= cast(getdate() as date)
+            then 1 else 0
+        end as is_actief
 
-    from actieve_koppelingen
+    from koppelingen
     where cluster = N'Wachtlijsten'
-        and (einddatum is null or einddatum >= cast(getdate() as date))
 
 ),
 
 hoofdlocaties as (
 
+    -- Meest recente hoofdlocatie per client (voorkeur voor actieve koppeling)
     select
         client_id,
         locatie_id    as hoofdlocatie_locatie_id,
         locatienaam   as hoofdlocatie_locatienaam,
         row_number() over (
             partition by client_id
-            order by startdatum desc
+            order by
+                case
+                    when einddatum is null
+                      or einddatum >= cast(getdate() as date)
+                    then 0 else 1
+                end,
+                startdatum desc
         ) as rn
 
-    from actieve_koppelingen
+    from koppelingen
     where type_toekenning = N'MAIN'
-        and (einddatum is null or einddatum >= cast(getdate() as date))
 
 ),
 
@@ -54,6 +63,8 @@ definitief as (
     select
         c.client_id,
         c.clientnummer,
+
+        wl.is_actief,
 
         hl.hoofdlocatie_locatie_id,
         hl.hoofdlocatie_locatienaam,
@@ -79,7 +90,7 @@ definitief as (
         left join hoofdlocaties hl
         on hl.client_id = wl.client_id
             and hl.rn = 1
-        left join actieve_koppelingen ak
+        left join koppelingen ak
         on ak.client_id = wl.client_id
             and ak.cluster <> N'Wachtlijsten'
             and (ak.einddatum is null or ak.einddatum >= cast(getdate() as date))
@@ -87,6 +98,7 @@ definitief as (
     group by
         c.client_id,
         c.clientnummer,
+        wl.is_actief,
         hl.hoofdlocatie_locatie_id,
         hl.hoofdlocatie_locatienaam,
         wl.wachtlijst_locatie_id,

@@ -12,9 +12,22 @@ basis as (
 
 kostenplaatsen as (
 
-    select * from {{ ref('int_locaties_met_kostenplaatsen') }}
-    where startdatum_koppeling <= cast(getdate() as date)
-      and (einddatum_koppeling is null or einddatum_koppeling > cast(getdate() as date))
+    -- Meest recente kostenplaats per locatie (voorkeur voor actieve koppeling)
+    select
+        locatie_id,
+        kostenplaats_id,
+        row_number() over (
+            partition by locatie_id
+            order by
+                case
+                    when einddatum_koppeling is null
+                      or einddatum_koppeling > cast(getdate() as date)
+                    then 0 else 1
+                end,
+                startdatum_koppeling desc
+        ) as rn
+
+    from {{ ref('int_locaties_met_kostenplaatsen') }}
 
 ),
 
@@ -49,7 +62,7 @@ definitief as (
         hierarchie.locatie_niveau,
         hierarchie.aantal_kindlocaties,
         hierarchie.is_leaf_locatie,
-        hierarchie.is_actief_vandaag,
+        hierarchie.is_actief_vandaag                        as is_actief,
         basis.is_toplocatie,
 
         -- Niveaunamen
@@ -86,6 +99,7 @@ definitief as (
         on basis.locatie_id = hierarchie.locatie_id
     left join kostenplaatsen
         on kostenplaatsen.locatie_id = hierarchie.locatie_id
+        and kostenplaatsen.rn = 1
     left join actieve_clienten
         on actieve_clienten.locatie_id = hierarchie.locatie_id
 

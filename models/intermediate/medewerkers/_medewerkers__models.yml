@@ -31,17 +31,3 @@ models:
         tests: [not_null]
       - name: contracttype_naam
         description: "Naam van het contracttype"
-
-  - name: int_medewerkers_met_expertisegroepen
-    description: >
-      Medewerkers gekoppeld aan hun expertise-groepen via expertise-profielen.
-    columns:
-      - name: medewerker_id
-        description: "Personeelsnummer van de medewerker"
-        tests: [not_null]
-      - name: expertise_groep
-        description: "Naam van de expertise-groep"
-      - name: startdatum
-        description: "startdatum van de expertise-profielkoppeling"
-      - name: einddatum
-        description: "Einddatum van de expertise-profielkoppeling"

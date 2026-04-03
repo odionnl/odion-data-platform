@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: mart_clienten_actueel
+    description: >
+      Snapshot: alleen cliënten die vandaag in zorg zijn.
+      View op mart_clienten met filter is_in_zorg = 1.
+
+  - name: mart_medewerkers_actueel
+    description: >
+      Snapshot: alleen medewerkers met een actief contract vandaag.
+      View op mart_medewerkers met filter is_actief = 1.
+
+  - name: mart_wachtlijsten_actueel
+    description: >
+      Snapshot: alleen actieve (lopende) wachtlijstkoppelingen.
+      View op mart_wachtlijsten met filter is_actief = 1.
+
+  - name: mart_locaties_actueel
+    description: >
+      Snapshot: alleen locaties die vandaag actief zijn.
+      View op mart_locaties met filter is_actief = 1.
+
+  - name: mart_zorglegitimaties_actueel
+    description: >
+      Snapshot: alleen actieve zorglegitimaties.
+      View op mart_zorglegitimaties met filter is_actief = 1.
+
+  - name: mart_zorglegitimatie_producten_actueel
+    description: >
+      Snapshot: alleen actieve zorglegitimatie-producten.
+      View op mart_zorglegitimatie_producten met filter is_actief = 1.

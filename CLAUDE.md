@@ -51,6 +51,7 @@ poetry run python -m ingestion.pipelines.ons_audits
 | Intermediate actueel | `intermediate` | view | `int_<entiteit>_actueel` |
 | Verantwoording | `intermediate` | view | `int_check_<onderwerp>` |
 | Marts | `marts` | table | `mart_<onderwerp>` |
+| Marts actueel | `marts` | view | `mart_<onderwerp>_actueel` |
 
 ### Databronnen
 
@@ -65,7 +66,9 @@ Ingestion gebruikt **dlt** (`dlt[mssql]`). Credentials staan in `.dlt/secrets.to
 - **Staging / Intermediate basis/hierarchie**: geen datumfilter (all-time)
 - **`int_*_actueel`**: gefilterd op `CAST(GETDATE() AS DATE)` (snapshot vandaag)
 - **`int_check_*`**: `CAST(GETDATE() AS DATE)` en/of `DATEADD(day, -28, CAST(GETDATE() AS DATE))`
-- **Marts**: gefilterd op `GETDATE()` (huidige snapshot)
+- **Marts (base)**: all-time, met `is_actief` / `is_in_zorg` kolom berekend op `GETDATE()`
+- **Marts actueel (`mart_*_actueel`)**: view op base mart met `WHERE is_actief = 1` — snapshot vandaag
+- **Uitzondering**: `mart_feitelijk_geleverde_zorg` is inherent actueel (alleen cliënten in zorg)
 
 Regel: gebruik altijd `GETDATE()` direct — **geen** dbt-variabelen of macros voor datumfilters.
 

@@ -3,9 +3,9 @@ version: 2
 models:
   - name: mart_clienten
     description: >
-      Snapshot op vandaag (GETDATE()). Breed clientoverzicht met huidige locatie,
-      leeftijd, in-zorg vlag, primaire financieringsvorm, zorglegitimatie-samenvatting
-      en deep-links naar ONS. Eén rij per client.
+      Alle cliënten (historisch + actueel) met hoofdlocatie, leeftijd, in-zorg vlag,
+      primaire financieringsvorm. Eén rij per client.
+      Gebruik mart_clienten_actueel voor alleen cliënten in zorg.
     columns:
       - name: client_id
         description: "Unieke identifier van de client"
@@ -22,12 +22,14 @@ models:
         description: "Achternaam van de client"
       - name: leeftijd
         description: "Leeftijd in jaren, berekend op basis van vandaag"
-      - name: leeftijdsgroep
+      - name: leeftijdsgroep1
         description: "Leeftijdsgroep: <18, 18-49, 50-64 of 65+"
-      - name: in_zorg
+      - name: leeftijdsgroep2
+        description: "Leeftijdsgroep fijnmazig: <18, 18-24, 25-34, 35-49, 50-64, 65-79 of 80+"
+      - name: is_in_zorg
         description: "1 als client een actieve zorgtoewijzing heeft op vandaag, anders 0"
-      - name: huidige_hoofdlocatienaam
-        description: "Naam van de huidige hoofdlocatie (type MAIN) van de client"
+      - name: hoofdlocatienaam
+        description: "Naam van de (meest recente) hoofdlocatie (type MAIN) van de client"
       - name: financiering
         description: "Primaire financieringsvorm op basis van actieve zorglegitimaties (bijv. Zorgzwaartepakket)"
   - name: mart_clienten_urls
@@ -51,8 +53,8 @@ models:
 
   - name: mart_medewerkers
     description: >
-      Snapshot op vandaag (GETDATE()). Breed medewerkersoverzicht met huidig team en huidig contract.
-      Eén rij per medewerker.
+      Alle medewerkers (historisch + actueel) met meest recent team en contract.
+      Eén rij per medewerker. Gebruik mart_medewerkers_actueel voor alleen actieve medewerkers.
     columns:
       - name: medewerker_id
         description: "Unieke identifier van de medewerker"
@@ -61,12 +63,14 @@ models:
         description: "Voornaam van de medewerker"
       - name: achternaam
         description: "Achternaam van de medewerker"
-      - name: huidig_teamnaam
-        description: "Naam van het huidige team"
-      - name: huidig_contracttype
-        description: "Type van het huidige contract"
-      - name: huidig_normtijd_uren_per_week
-        description: "Normtijd uren per week van het huidige contract"
+      - name: is_actief
+        description: "1 als medewerker een actief contract heeft op vandaag, anders 0"
+      - name: teamnaam
+        description: "Naam van het meest recente team (bij voorkeur actief)"
+      - name: contracttype
+        description: "Type van het meest recente contract (bij voorkeur actief)"
+      - name: normtijd_uren_per_week
+        description: "Normtijd uren per week van het meest recente contract"
 
   - name: mart_zorglegitimaties
     description: >
@@ -153,8 +157,9 @@ models:
 
   - name: mart_locaties
     description: >
-      Snapshot op vandaag (GETDATE()). Volledig locatieoverzicht met hiërarchie (niveau1-6, cluster),
-      adresgegevens, actieve kostenplaats en huidig aantal actieve clienten. Eén rij per locatie.
+      Alle locaties (historisch + actueel) met hiërarchie (niveau1-6, cluster),
+      adresgegevens, meest recente kostenplaats en huidig aantal actieve cliënten.
+      Eén rij per locatie. Gebruik mart_locaties_actueel voor alleen actieve locaties.
     columns:
       - name: locatie_id
         description: "Unieke identifier van de locatie"
@@ -173,14 +178,14 @@ models:
         description: "Naam van het derde hiërarchieniveau"
       - name: cluster
         description: "Zorgcluster (CC-specifiek via get_locatiecluster-macro)"
-      - name: is_actief_vandaag
-        description: "1 als de locatie vandaag actief is"
+      - name: is_actief
+        description: "1 als de locatie vandaag actief is, anders 0"
       - name: is_leaf_locatie
         description: "1 als de locatie geen kindlocaties heeft"
       - name: kostenplaats_id
-        description: "Kostenplaatscode (voor koppeling met ORTEC)"
+        description: "Kostenplaatscode (meest recent, bij voorkeur actief)"
       - name: aantal_actieve_clienten
-        description: "Aantal clienten met een actieve locatiekoppeling"
+        description: "Aantal clienten met een actieve locatiekoppeling vandaag"
 
   - name: mart_documenten
     description: >
@@ -408,10 +413,9 @@ models:
 
   - name: mart_feitelijk_geleverde_zorg
     description: >
-      Verantwoording feitelijk geleverde zorg per client. Bevat checks op
-      geldig zorgplan, recente rapportages, medicatietoediening en
+      Verantwoording feitelijk geleverde zorg per client in zorg (snapshot vandaag).
+      Bevat checks op geldig zorgplan, recente rapportages, medicatietoediening en
       zorgplaninzage, plus een totaalscore. Eén rij per client in zorg.
-      Gematerialiseerd als tabel voor gebruik in Power BI.
     columns:
       - name: client_id
         description: "Unieke identifier van de client"
@@ -485,15 +489,17 @@ models:
 
   - name: mart_wachtlijsten
     description: >
-      Snapshot op vandaag (GETDATE()). Cliënten met een actieve wachtlijstkoppeling,
-      inclusief hoofdlocatie, in-zorg vlag, leeftijd en huidige producten per locatiecluster.
-      Eén rij per cliënt per wachtlijstlocatie.
+      Alle wachtlijstkoppelingen (historisch + actueel) per cliënt, inclusief
+      hoofdlocatie en huidige producten per locatiecluster. Eén rij per cliënt
+      per wachtlijstlocatie. Gebruik mart_wachtlijsten_actueel voor alleen actieve wachtlijsten.
     columns:
       - name: client_id
         description: "Unieke identifier van de cliënt"
         tests: [not_null]
       - name: clientnummer
         description: "Extern cliëntnummer uit ONS"
+      - name: is_actief
+        description: "1 als de wachtlijstkoppeling vandaag actief is, anders 0"
       - name: hoofdlocatie_locatie_id
         description: "Locatie-ID van de meest recente actieve hoofdlocatie (MAIN)"
       - name: hoofdlocatie_locatienaam
@@ -522,16 +528,3 @@ models:
         description: "1 als cliënt een actieve Kind en gezin-koppeling heeft"
       - name: multidisciplinair_team
         description: "1 als cliënt een actieve Multidisciplinair Team-koppeling heeft"
-
-  - name: mart_actieve_producten
-    description: >
-      Actieve producten (locatieclusters) per cliënt op de wachtlijst. Eén rij
-      per cliënt per product. Bedoeld als bridge-tabel in Power BI zodat je met
-      een enkele slicer op product_naam kunt filteren.
-    columns:
-      - name: client_id
-        description: "Verwijzing naar de cliënt"
-        tests: [not_null]
-      - name: product_naam
-        description: "Naam van het product dat de cliënt afneemt (bijv. Ambulant, Wonen)"
-        tests: [not_null]
