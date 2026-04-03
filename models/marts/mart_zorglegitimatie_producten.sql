@@ -16,6 +16,12 @@ clienten as (
 
 ),
 
+productdefinities as (
+
+    select * from {{ ref('stg_onsdb__products') }}
+
+),
+
 financieringstypen as (
 
     select * from {{ ref('stg_onsdb__finance_types') }}
@@ -30,6 +36,8 @@ definitief as (
         producten.product_id,
 
         -- Product details
+        productdefinities.product_code,
+        productdefinities.product_omschrijving,
         producten.hoeveelheid_in_minuten,
         producten.startdatum,
         producten.einddatum,
@@ -67,6 +75,8 @@ definitief as (
         on zorglegitimaties.zorglegitimatie_id = producten.zorglegitimatie_id
     left join clienten
         on clienten.client_id = zorglegitimaties.client_id
+    left join productdefinities
+        on productdefinities.product_id = producten.product_id
     left join financieringstypen
         on financieringstypen.financieringstype_id = zorglegitimaties.financieringstype_id
 

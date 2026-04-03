@@ -1,6 +1,6 @@
 # Odion Data Platform
 
-dbt-project voor **Odion** dat data uit Nedap Ons, ORTEC en RPA-audits transformeert naar analytische modellen voor Power BI-rapportages over clienten, medewerkers, locaties en verantwoording feitelijk geleverde zorg.
+dbt-project voor **Odion** dat data uit Nedap Ons, ORTEC en RPA-audits transformeert naar analytische modellen voor Power BI-rapportages.
 
 ## Tech stack
 

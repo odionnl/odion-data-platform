@@ -72,6 +72,8 @@ definitief as (
         basis.huisnummer,
         basis.postcode,
         basis.plaatsnaam,
+        basis.latitude,
+        basis.longitude,
 
         -- Kostenplaats
         kostenplaatsen.kostenplaats_id,

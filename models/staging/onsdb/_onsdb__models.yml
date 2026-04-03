@@ -15,7 +15,7 @@ models:
       - name: geboortedatum
         description: "Geboortedatum van de client"
       - name: geslacht
-        description: "Geslacht (integer enum)"
+        description: "Geslacht (Onbekend, Mannelijk, Vrouwelijk, Niet Gespecificeerd)"
       - name: burgerlijke_staat
         description: "Burgerlijke staat (integer enum)"
       - name: bsn
@@ -240,6 +240,17 @@ models:
         description: "Ingangsdatum rekening houdend met andere zorglegitimaties"
       - name: einddatum_geldig
         description: "Einddatum geldigheid rekening houdend met andere zorglegitimaties"
+
+  - name: stg_onsdb__products
+    description: "Productdefinities met code en omschrijving."
+    columns:
+      - name: product_id
+        description: "Unieke identifier van het product"
+        tests: [unique, not_null]
+      - name: product_code
+        description: "Korte weergave / code van het product"
+      - name: product_omschrijving
+        description: "Beschrijving van het product"
 
   - name: stg_onsdb__care_order_products
     description: "Producten gekoppeld aan zorglegitimaties."

@@ -26,18 +26,28 @@ models:
         description: "Leeftijdsgroep: <18, 18-49, 50-64 of 65+"
       - name: in_zorg
         description: "1 als client een actieve zorgtoewijzing heeft op vandaag, anders 0"
-      - name: huidige_locatienaam
-        description: "Naam van de meest recente actieve locatie"
+      - name: huidige_hoofdlocatienaam
+        description: "Naam van de huidige hoofdlocatie (type MAIN) van de client"
       - name: financiering
         description: "Primaire financieringsvorm op basis van actieve zorglegitimaties (bijv. Zorgzwaartepakket)"
-      - name: aantal_zorglegitimaties
-        description: "Totaal aantal zorglegitimaties (alle tijd)"
+  - name: mart_clienten_urls
+    description: >
+      Deep-links naar ONS per client (administratie, zorgplan, rapportages, medicatie, agenda).
+      Eén rij per client.
+    columns:
+      - name: client_id
+        description: "Unieke identifier van de client"
+        tests: [unique, not_null]
       - name: url_ons_administratie
         description: "Deep-link naar ONS administratie van deze client"
       - name: url_ons_zorgplan
         description: "Deep-link naar het zorgplan van deze client in ONS dossier"
       - name: url_ons_rapportages
         description: "Deep-link naar de rapportages van deze client in ONS dossier"
+      - name: url_ons_medicatie
+        description: "Deep-link naar het medicatieoverzicht van deze client in ONS dossier"
+      - name: url_ons_agenda
+        description: "Deep-link naar de agenda van deze client in ONS dossier"
 
   - name: mart_medewerkers
     description: >

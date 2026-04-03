@@ -40,6 +40,8 @@ verrijkt as (
         a.huisnummer,
         a.postcode,
         a.plaatsnaam,
+        a.latitude,
+        a.longitude,
 
         -- hiërarchische kenmerken
         coalesce(k.aantal_kindlocaties, 0) as aantal_kindlocaties,

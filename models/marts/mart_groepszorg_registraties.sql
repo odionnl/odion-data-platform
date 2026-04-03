@@ -37,6 +37,8 @@ definitief as (
         r.registratie_datum,
         r.starttijd,
         r.eindtijd,
+        CAST(ROUND(DATEDIFF(minute, r.starttijd, r.eindtijd) / 60.0, 0) AS int) as aantal_uren,
+        CAST(ROUND(DATEDIFF(minute, r.starttijd, r.eindtijd) / 240.0, 0) AS int) as aantal_dagdelen,
         r.status_omschrijving as status,
         r.is_gefiatteerd,
 

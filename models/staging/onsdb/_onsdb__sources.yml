@@ -66,6 +66,9 @@ sources:
       - name: lst_address_types
         description: "Lookup: adrestypen (GBA adres, Correspondentieadres, Verblijfadres, etc.)."
 
+      - name: lst_genders
+        description: "Lookup: geslachten (Onbekend, Mannelijk, Vrouwelijk, Niet Gespecificeerd)."
+
       - name: locations
         description: "Locaties in het locatiegram (hierarchische structuur)."
         columns:
@@ -251,6 +254,13 @@ sources:
 
       - name: costcenters
         description: "Kostenplaatsen (voor koppeling met ORTEC)."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      # -- Producten --
+      - name: products
+        description: "Productdefinities (WLZ, WMO, Jeugdwet, etc.) met code en omschrijving."
         columns:
           - name: objectId
             tests: [unique, not_null]
