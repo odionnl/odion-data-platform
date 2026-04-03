@@ -52,7 +52,18 @@ definitief as (
         -- Vraag
         antwoorden.vragenlijst_vraag_id,
         cast(antwoorden.vraagtekst as nvarchar(2000)) as vraagtekst,
-        antwoorden.antwoord_type,
+        case antwoorden.antwoord_type
+            when 0 then 'Tekst'
+            when 1 then 'Selectie'
+            when 2 then 'Meerkeuze'
+            when 3 then 'Getal'
+            when 4 then 'Ja/Nee'
+            when 5 then 'Datum'
+            when 6 then 'Tekstveld'
+            when 7 then 'Tijd'
+            when 8 then 'Postcode'
+            else 'Onbekend'
+        end as antwoord_type,
         antwoorden.vraag_volgnummer,
 
         -- Antwoord

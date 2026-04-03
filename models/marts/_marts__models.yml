@@ -483,6 +483,15 @@ models:
       - name: gewijzigd_op
         description: "Tijdstip van laatste wijziging"
 
+  - name: mart_vragenlijst_antwoorden_intake_en_wachtlijst_3_0
+    description: >
+      Antwoorden op de vragenlijst "Intake en wachtlijst 3.0".
+      Gefilterde subset van mart_vragenlijst_antwoorden. Eén rij per antwoord.
+    columns:
+      - name: vragenlijst_antwoord_id
+        description: "Unieke identifier van het antwoord"
+        tests: [unique, not_null]
+
   - name: mart_feitelijk_geleverde_zorg
     description: >
       Verantwoording feitelijk geleverde zorg per client in zorg (snapshot vandaag).
