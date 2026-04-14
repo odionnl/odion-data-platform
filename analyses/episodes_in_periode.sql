@@ -1,8 +1,7 @@
--- Export: episodes aangemaakt in 2025
--- Direct uitvoerbaar in SSMS (geen dbt compile nodig)
+-- Export: episodes aangemaakt in periode
 
-declare @startdatum date = '2025-01-01';
-declare @einddatum  date = '2026-01-01';
+{% set startdatum = '2025-01-01' %}
+{% set einddatum  = '2026-04-01' %}
 
 select
   episode_id,
@@ -22,11 +21,13 @@ select
   medewerker_deskundigheden,
   medewerker_deskundigheidsgroepen,
   aangemaakt_op,
-  gewijzigd_op
+  gewijzigd_op,
+  year(aangemaakt_op)  as jaar,
+  month(aangemaakt_op) as maand
 
-from [OdionDataPlatform].[dbo].[mart_episodes]
+from {{ ref('mart_episodes') }}
 
-where aangemaakt_op >= @startdatum
-  and aangemaakt_op  < @einddatum
+where aangemaakt_op >= '{{ startdatum }}'
+  and aangemaakt_op  < '{{ einddatum }}'
 
 order by aangemaakt_op

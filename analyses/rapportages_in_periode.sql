@@ -1,8 +1,7 @@
--- Export: rapportages aangemaakt in 2025
--- Direct uitvoerbaar in SSMS (geen dbt compile nodig)
+-- Export: rapportages aangemaakt in periode
 
-declare @startdatum date = '2025-01-01';
-declare @einddatum  date = '2026-01-01';
+{% set startdatum = '2025-01-01' %}
+{% set einddatum  = '2026-04-01' %}
 
 select
   rapportage_id,
@@ -19,11 +18,13 @@ select
   medewerker_deskundigheden,
   medewerker_deskundigheidsgroepen,
   aangemaakt_op,
-  gewijzigd_op
+  gewijzigd_op,
+  year(rapportagedatum)  as jaar,
+  month(rapportagedatum) as maand
 
-from [OdionDataPlatform].[dbo].[mart_rapportages]
+from {{ ref('mart_rapportages') }}
 
-where rapportagedatum >= @startdatum
-  and rapportagedatum  < @einddatum
+where rapportagedatum >= '{{ startdatum }}'
+  and rapportagedatum  < '{{ einddatum }}'
 
 order by rapportagedatum
