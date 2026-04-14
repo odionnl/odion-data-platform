@@ -2,6 +2,18 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Privacy — BELANGRIJK
+
+**Lees nooit data uit de tabellen.** De database bevat privacygevoelige zorggegevens (cliënten, medewerkers, dossiers). Dit betekent:
+
+- **Geen** `dbt show`, `dbt run` of `dbt test` met het doel om data te inspecteren
+- **Geen** `SELECT`-queries uitvoeren op staging-, intermediate- of marts-tabellen
+- **Geen** preview of sample van tabelinhoud opvragen, ook niet voor debugging
+
+Wél toegestaan: SQL-modelbestanden (`.sql`), YAML-documentatie, macros en schema-definities lezen. Dat is code, geen data.
+
+Als je informatie nodig hebt over kolomwaarden of data-kwaliteit: **vraag het aan de gebruiker** in plaats van zelf te querien.
+
 ## Project
 
 dbt project voor **Odion** (zorgorganisatie), met als doel Power BI-rapportages over cliënten, medewerkers, locaties en verantwoording feitelijk geleverde zorg.
