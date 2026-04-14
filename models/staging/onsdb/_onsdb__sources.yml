@@ -75,6 +75,9 @@ sources:
           - name: objectId
             tests: [unique, not_null]
 
+      - name: lst_location_types
+        description: "Lookup: locatietypen (0 = Locatie, 1 = Kamer)."
+
       - name: location_assignments
         description: "Koppelingen tussen locaties en clienten."
         columns:

@@ -152,6 +152,15 @@ models:
       - name: adrestype
         description: "Beschrijving van het adrestype (bijv. GBA adres, Verblijfadres)"
 
+  - name: stg_onsdb__lst_location_types
+    description: "Lookup: locatietypen (0 = Locatie, 1 = Kamer)."
+    columns:
+      - name: locatietype_code
+        description: "Code van het locatietype"
+        tests: [unique, not_null]
+      - name: locatietype
+        description: "Beschrijving van het locatietype (Locatie, Kamer)"
+
   - name: stg_onsdb__locations
     description: "Locaties in de hierarchische locatiestructuur (locatiegram)."
     columns:
@@ -172,6 +181,8 @@ models:
         description: "Geeft aan of het om een intramurale locatie gaat"
       - name: capaciteit
         description: "Aantal clienten dat gekoppeld kan worden"
+      - name: locatietype
+        description: "Type locatie (Locatie of Kamer), via join op stg_onsdb__lst_location_types"
 
   - name: stg_onsdb__costcenter_assignments
     description: "Koppelingen tussen locaties en kostenplaatsen."
@@ -215,8 +226,6 @@ models:
         tests: [not_null]
       - name: type_toekenning
         description: "Type toekenning (MAIN, STANDARD, MEDICINE, GGZ of WAITING)"
-      - name: is_verblijfslocatie
-        description: "Of deze locatie de verblijfslocatie is van de client"
 
   # -- Zorg --
   - name: stg_onsdb__care_orders

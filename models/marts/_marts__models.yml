@@ -162,6 +162,8 @@ models:
         tests: [unique, not_null]
       - name: locatienaam
         description: "Naam van de locatie"
+      - name: ouder_locatie_id
+        description: "Verwijzing naar de bovenliggende locatie (NULL voor toplocaties)"
       - name: locatie_niveau
         description: "Diepte in de hiërarchie (1 = root)"
       - name: locatie_pad
@@ -174,6 +176,8 @@ models:
         description: "Naam van het derde hiërarchieniveau"
       - name: cluster
         description: "Zorgcluster (CC-specifiek via get_locatiecluster-macro)"
+      - name: locatietype
+        description: "Type locatie (Locatie of Kamer)"
       - name: is_actief
         description: "1 als de locatie vandaag actief is, anders 0"
       - name: is_leaf_locatie

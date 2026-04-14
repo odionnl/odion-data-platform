@@ -33,6 +33,7 @@ verrijkt as (
         l.einddatum_locatie,
         l.is_intramuraal,
         l.capaciteit,
+        l.locatietype,
         l.adres_id,
 
         -- adresvelden

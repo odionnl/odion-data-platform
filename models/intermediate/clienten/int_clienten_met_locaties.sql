@@ -19,6 +19,7 @@ locaties as (
 definitief as (
 
     select
+        locatiekoppelingen.locatiekoppeling_id,
         clienten.client_id,
         clienten.voornaam,
         clienten.achternaam,
@@ -27,8 +28,7 @@ definitief as (
         locaties.is_intramuraal,
         locatiekoppelingen.startdatum   as locatie_startdatum,
         locatiekoppelingen.einddatum    as locatie_einddatum,
-        locatiekoppelingen.type_toekenning,
-        locatiekoppelingen.is_verblijfslocatie
+        locatiekoppelingen.type_toekenning
 
     from clienten
     inner join locatiekoppelingen

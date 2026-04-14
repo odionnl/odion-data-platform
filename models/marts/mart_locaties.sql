@@ -54,6 +54,7 @@ definitief as (
         -- Sleutels & basis
         hierarchie.locatie_id,
         hierarchie.locatienaam,
+        hierarchie.ouder_locatie_id,
         hierarchie.startdatum,
         hierarchie.einddatum,
 
@@ -73,10 +74,11 @@ definitief as (
         hierarchie.niveau5,
         hierarchie.niveau6,
 
-        -- Cluster (CC-specifiek)
+        -- Cluster
         hierarchie.cluster,
 
         -- Locatie-eigenschappen
+        basis.locatietype,
         basis.is_intramuraal,
         basis.capaciteit,
 

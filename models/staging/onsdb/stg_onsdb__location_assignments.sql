@@ -13,7 +13,6 @@ definitief as (
         beginDate               as startdatum,
         endDate                 as einddatum,
         locationType            as type_toekenning,
-        residence               as is_verblijfslocatie,
         createdAt               as aangemaakt_op,
         updatedAt               as gewijzigd_op
 

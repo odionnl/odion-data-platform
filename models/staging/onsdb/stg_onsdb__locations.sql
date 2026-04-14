@@ -4,25 +4,34 @@ with bron as (
 
 ),
 
+locatietypen as (
+
+    select * from {{ ref('stg_onsdb__lst_location_types') }}
+
+),
+
 definitief as (
 
     select
-        objectId                as locatie_id,
-        name                    as locatienaam,
-        identificationNo        as identificatienummer,
-        agbCode                 as agb_code,
-        wzaCode                 as wza_code,
-        intramuralLocation      as is_intramuraal,
-        capacity                as capaciteit,
-        parentObjectId          as ouder_locatie_id,
-        addressObjectId         as adres_id,
-        materializedPath        as locatie_hierarchie_pad,
-        cast(beginDate as date) as startdatum_locatie,
-        cast(endDate as date)   as einddatum_locatie,
-        createdAt               as aangemaakt_op,
-        updatedAt               as gewijzigd_op
+        bron.objectId                as locatie_id,
+        bron.name                    as locatienaam,
+        bron.identificationNo        as identificatienummer,
+        bron.agbCode                 as agb_code,
+        bron.wzaCode                 as wza_code,
+        bron.intramuralLocation      as is_intramuraal,
+        bron.capacity                as capaciteit,
+        bron.parentObjectId          as ouder_locatie_id,
+        bron.addressObjectId         as adres_id,
+        bron.materializedPath        as locatie_hierarchie_pad,
+        cast(bron.beginDate as date) as startdatum_locatie,
+        cast(bron.endDate as date)   as einddatum_locatie,
+        locatietypen.locatietype,
+        bron.createdAt               as aangemaakt_op,
+        bron.updatedAt               as gewijzigd_op
 
     from bron
+    left join locatietypen
+        on locatietypen.locatietype_code = bron.[type]
 
 )
 

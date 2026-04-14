@@ -2,13 +2,21 @@ version: 2
 
 models:
   - name: int_clienten_met_locaties
-    description: "Clienten verrijkt met hun locatiekoppelingen."
+    description: "Clienten verrijkt met hun locatiekoppelingen. Eén rij per locatiekoppeling."
     columns:
+      - name: locatiekoppeling_id
+        description: "Unieke identifier van de locatiekoppeling"
+        tests: [unique, not_null]
       - name: client_id
         description: "Unieke identifier van de client"
         tests: [not_null]
+      - name: locatie_id
+        description: "Unieke identifier van de locatie"
+        tests: [not_null]
       - name: locatienaam
         description: "Naam van de locatie"
+      - name: type_toekenning
+        description: "Type toekenning (bv. MAIN, Ambulant, Dagbesteding)"
 
   - name: int_clienten_met_adressen
     description: "Clienten verrijkt met hun gekoppelde adressen en adrestype. Geen datumfilter (all-time)."
