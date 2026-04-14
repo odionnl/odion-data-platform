@@ -1,6 +1,20 @@
-with clienten as (
+with trainingslocatie_clienten as (
+
+    -- Cliënten met (historische) koppeling onder niveau2 '99. Trainingslocatie'
+    select distinct la.client_id
+    from {{ ref('stg_onsdb__location_assignments') }} la
+    inner join {{ ref('int_locatie_hierarchie') }} lh
+        on lh.locatie_id = la.locatie_id
+    where lh.niveau2 = '99. Trainingslocatie'
+
+),
+
+clienten as (
 
     select * from {{ ref('stg_onsdb__clients') }}
+    -- Testcliënten uitsluiten: vaste clientnummers + trainingslocatie
+    where clientnummer not in ('10510', '11428')
+      and client_id not in (select client_id from trainingslocatie_clienten)
 
 ),
 
@@ -49,10 +63,8 @@ definitief as (
         c.emailadres,
         c.mobiel_telefoonnummer,
 
-        -- Leeftijd en leeftijdsgroep
-        c.leeftijd,
-        {{ get_leeftijdsgroep1('c.leeftijd') }}                 as leeftijdsgroep1,
-        {{ get_leeftijdsgroep2('c.leeftijd') }}                 as leeftijdsgroep2,
+        -- Leeftijd (-1 = onbekend, voor join met mart_leeftijdsgroepen)
+        coalesce(c.leeftijd, -1) as leeftijd,
 
         -- In zorg vlag (1 = actieve zorgtoewijzing vandaag)
         case when in_zorg.client_id is not null then 1 else 0 end as is_in_zorg,

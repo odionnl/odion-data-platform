@@ -6,7 +6,7 @@ select
     wl.clientnummer,
 
     c.leeftijd,
-    c.leeftijdsgroep,
+    lg.leeftijdsgroep2 as leeftijdsgroep,
     c.is_in_zorg,
 
     wl.hoofdlocatie_locatie_id,
@@ -28,7 +28,9 @@ select
 
 from {{ ref('mart_wachtlijsten') }} wl
     inner join {{ ref('mart_clienten') }} c
-    on c.client_id = wl.client_id
+        on c.client_id = wl.client_id
+    left join {{ ref('mart_leeftijdsgroepen') }} lg
+        on lg.leeftijd = c.leeftijd
 
 where wl.wachtlijst_niveau3 in (N'LG (Wachtlijst)', N'VG (Wachtlijst)')
 

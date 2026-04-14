@@ -21,13 +21,32 @@ models:
       - name: achternaam
         description: "Achternaam van de client"
       - name: leeftijd
-        description: "Leeftijd in jaren, berekend op basis van vandaag"
-      - name: leeftijdsgroep1
-        description: "Leeftijdsgroep: <18, 18-49, 50-64 of 65+"
-      - name: leeftijdsgroep2
-        description: "Leeftijdsgroep fijnmazig: <18, 18-24, 25-34, 35-49, 50-64, 65-79 of 80+"
+        description: "Leeftijd in jaren, berekend op basis van vandaag. -1 = onbekend (geboortedatum ontbreekt). Sleutel voor relatie met mart_leeftijdsgroepen."
       - name: is_in_zorg
         description: "1 als client een actieve zorgtoewijzing heeft op vandaag, anders 0"
+
+  - name: mart_leeftijdsgroepen
+    description: >
+      Lookup-mart (dim-tabel) met één rij per leeftijd (-1 t/m 120) en de bijbehorende
+      leeftijdsgroep-labels + sorteerkolommen. In Power BI joinen via leeftijd op
+      mart_clienten. Leeftijd -1 is de sentinel voor onbekende leeftijd ('Onbekend').
+    columns:
+      - name: leeftijd
+        description: "Leeftijd in jaren (-1 t/m 120). -1 = onbekend. Sleutel voor relatie met mart_clienten."
+        tests: [unique, not_null]
+      - name: leeftijdsgroep1
+        description: "Leeftijdsgroep: <18, 18-49, 50-64, 65+ of Onbekend"
+      - name: leeftijdsgroep1_volgorde
+        description: "Sorteerkolom voor leeftijdsgroep1 (1=<18, 2=18-49, 3=50-64, 4=65+, 5=Onbekend). Gebruik in Power BI als 'Sort by column' voor leeftijdsgroep1."
+      - name: leeftijdsgroep2
+        description: "Leeftijdsgroep fijnmazig: <18, 18-30, 31-50, 50+ of Onbekend"
+      - name: leeftijdsgroep2_volgorde
+        description: "Sorteerkolom voor leeftijdsgroep2 (1=<18, 2=18-30, 3=31-50, 4=50+, 5=Onbekend). Gebruik in Power BI als 'Sort by column' voor leeftijdsgroep2."
+      - name: leeftijdsgroep3
+        description: "Leeftijdsgroep grofmazig: <18, 18-49, 50+ of Onbekend"
+      - name: leeftijdsgroep3_volgorde
+        description: "Sorteerkolom voor leeftijdsgroep3 (1=<18, 2=18-49, 3=50+, 4=Onbekend). Gebruik in Power BI als 'Sort by column' voor leeftijdsgroep3."
+
   - name: mart_clienten_urls
     description: >
       Deep-links naar ONS per client (administratie, zorgplan, rapportages, medicatie, agenda).

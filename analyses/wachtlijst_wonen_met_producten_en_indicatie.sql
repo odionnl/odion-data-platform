@@ -28,7 +28,7 @@ select
 
     c.is_in_zorg,
     c.leeftijd,
-    c.leeftijdsgroep2 as leeftijdsgroep,
+    lg.leeftijdsgroep2 as leeftijdsgroep,
 
     coalesce(i.indicatie, 'Onbekend') as indicatie,
 
@@ -60,6 +60,8 @@ from {{ ref
     inner join {{ ref
 ('mart_clienten') }} c
         on c.client_id = wl.client_id
+    left join {{ ref('mart_leeftijdsgroepen') }} lg
+        on lg.leeftijd = c.leeftijd
     left join indicatie i
         on i.client_id = wl.client_id
         and i.rn = 1
