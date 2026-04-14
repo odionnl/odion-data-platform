@@ -4,7 +4,8 @@ models:
   - name: mart_clienten_actueel
     description: >
       Snapshot: cliënten die vandaag in zorg zijn, verrijkt met huidige
-      hoofdlocatie en primaire financieringsvorm. View op mart_clienten.
+      hoofdlocatie, primaire financieringsvorm en vlag voor geldige zorglegitimatie.
+      View op mart_clienten.
     columns:
       - name: hoofdlocatie_id
         description: "Locatie-ID van de huidige hoofdlocatie (type MAIN)"
@@ -12,6 +13,8 @@ models:
         description: "Naam van de huidige hoofdlocatie"
       - name: financiering
         description: "Primaire financieringsvorm op basis van actieve zorglegitimaties (bijv. Zorgzwaartepakket)"
+      - name: heeft_geldige_legitimatie
+        description: "1 als client minstens één actieve zorglegitimatie heeft vandaag, anders 0"
 
   - name: mart_medewerkers_actueel
     description: >
