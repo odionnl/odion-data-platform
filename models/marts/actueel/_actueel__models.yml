@@ -23,10 +23,22 @@ models:
       Snapshot: alleen actieve (lopende) wachtlijstkoppelingen.
       View op mart_wachtlijsten met filter is_actief = 1.
 
+  - name: mart_locatiekoppelingen_actueel
+    description: >
+      Snapshot: alleen vandaag actieve cliënt-locatie koppelingen.
+      Bridge-mart voor de many-to-many relatie cliënt ↔ locatie in Power BI.
+      View op mart_locatiekoppelingen met filter is_actief = 1.
+
   - name: mart_locaties_actueel
     description: >
       Snapshot: alleen locaties die vandaag actief zijn.
       View op mart_locaties met filter is_actief = 1.
+
+  - name: mart_kamerbezetting_actueel
+    description: >
+      Snapshot: alleen kamers met een vandaag actieve cliënt-koppeling.
+      View op mart_kamerbezetting met filter is_actieve_koppeling = 1
+      (lege kamers worden dus niet meegenomen).
 
   - name: mart_zorglegitimaties_actueel
     description: >

@@ -206,6 +206,90 @@ models:
       - name: aantal_actieve_clienten
         description: "Aantal clienten met een actieve locatiekoppeling vandaag"
 
+  - name: mart_kamerbezetting
+    description: >
+      Alle kamers (locatietype = 'Kamer') met ouderlocatie en locatiekoppelingen
+      (cliënten toegewezen aan de kamer) over alle tijd. Grain: één rij per
+      (kamer × locatiekoppeling). Kamers zonder koppelingen krijgen één rij
+      met NULL voor client-/koppelingsvelden.
+    columns:
+      - name: kamer_id
+        description: "Locatie-ID van de kamer"
+        tests: [not_null]
+      - name: kamernaam
+        description: "Naam van de kamer"
+      - name: kamertype
+        description: "Afgeleid uit de kamernaam: 'Logeren' als de naam '(logeer)' bevat, anders 'Wonen'"
+      - name: capaciteit
+        description: "Capaciteit van de kamer"
+      - name: kamer_startdatum
+        description: "Datum waarop de kamer actief werd"
+      - name: kamer_einddatum
+        description: "Datum waarop de kamer inactief werd (NULL = nog actief)"
+      - name: is_actieve_kamer
+        description: "1 als de kamer vandaag actief is, anders 0"
+      - name: ouder_locatie_id
+        description: "Locatie-ID van de ouderlocatie (locatie waarin de kamer hangt)"
+      - name: ouder_locatienaam
+        description: "Naam van de ouderlocatie"
+      - name: locatiekoppeling_id
+        description: "Unieke identifier van de locatiekoppeling (NULL voor kamers zonder koppelingen)"
+      - name: startdatum
+        description: "Startdatum van de cliënt-kamer koppeling"
+      - name: einddatum
+        description: "Einddatum van de cliënt-kamer koppeling (NULL = nog actief)"
+      - name: is_actieve_koppeling
+        description: "1 als de koppeling vandaag actief is, anders 0"
+      - name: client_id
+        description: "Verwijzing naar de toegewezen client (NULL voor lege kamers)"
+      - name: clientnummer
+        description: "Clientnummer van de toegewezen client"
+      - name: clientnaam
+        description: "Volledige naam van de toegewezen client"
+
+  - name: mart_locatiekoppelingen
+    description: >
+      Bridge-mart voor de many-to-many relatie tussen cliënten en locaties.
+      Eén rij per cliënt-locatiekoppeling (historisch + actueel), inclusief
+      type_toekenning, hoofdlocatie-vlag en is_actief. Gebruik
+      mart_locatiekoppelingen_actueel voor alleen vandaag actieve koppelingen.
+    columns:
+      - name: locatiekoppeling_id
+        description: "Unieke identifier van de locatiekoppeling"
+        tests: [unique, not_null]
+      - name: client_id
+        description: "Verwijzing naar de client"
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('mart_clienten')
+                field: client_id
+      - name: clientnummer
+        description: "Extern cliëntnummer uit ONS"
+      - name: clientnaam
+        description: "Volledige naam van de client"
+      - name: locatie_id
+        description: "Verwijzing naar de locatie"
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('mart_locaties')
+                field: locatie_id
+      - name: locatienaam
+        description: "Naam van de locatie"
+      - name: type_toekenning
+        description: "Type toekenning (bv. MAIN, Ambulant, Dagbesteding, Logeren)"
+      - name: is_hoofdlocatie
+        description: "1 als type_toekenning = 'MAIN', anders 0"
+      - name: startdatum
+        description: "Startdatum van de koppeling"
+      - name: einddatum
+        description: "Einddatum van de koppeling (NULL = nog lopend)"
+      - name: is_actief
+        description: "1 als de koppeling vandaag actief is, anders 0"
+
   - name: mart_documenten
     description: >
       Breed documentenoverzicht met clientnaam, medewerkersnaam, labels en toegangsrechten.
