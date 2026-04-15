@@ -478,6 +478,47 @@ models:
       - name: url_ons_zorgplan
         description: "Deep-link naar het zorgplan van deze client in ONS dossier"
 
+  - name: mart_zorgplan_per_client
+    description: >
+      Zorgplan-status per cliënt in zorg (snapshot vandaag). Eén rij per cliënt uit
+      mart_clienten_actueel, met aparte kolommen voor het actieve zorgplan, het
+      concept-zorgplan en een samenvattende status. Een cliënt heeft maximaal één
+      Actief en maximaal één Concept zorgplan (systeem-invariant).
+    columns:
+      - name: client_id
+        description: "Unieke identifier van de client"
+        tests: [unique, not_null]
+      - name: clientnummer
+        description: "Extern cliëntnummer (identificationNo) uit ONS"
+      - name: clientnaam
+        description: "Volledige naam van de client (roepnaam + voorvoegsel + achternaam)"
+      - name: hoofdlocatie_id
+        description: "Locatie-ID van de huidige hoofdlocatie (type MAIN)"
+      - name: hoofdlocatienaam
+        description: "Naam van de huidige hoofdlocatie"
+      - name: actief_zorgplan_aanwezig
+        description: "1 als de client een zorgplan met status 'Actief' heeft, anders 0"
+      - name: actief_zorgplan_geldigheid
+        description: "Geldigheid van het actieve zorgplan: 'Geldig', 'Verlopen', 'Nog niet gestart' of 'Geen' (geen Actief zorgplan aanwezig)"
+      - name: actief_zorgplan_startdatum
+        description: "Startdatum van het actieve zorgplan (null als er geen Actief zorgplan is)"
+      - name: actief_zorgplan_einddatum
+        description: "Einddatum van het actieve zorgplan (null = open einde of geen Actief zorgplan)"
+      - name: concept_zorgplan_aanwezig
+        description: "1 als de client een zorgplan met status 'Concept' heeft, anders 0"
+      - name: concept_zorgplan_startdatum
+        description: "Startdatum van het concept-zorgplan (null als er geen concept is)"
+      - name: concept_zorgplan_einddatum
+        description: "Einddatum van het concept-zorgplan (null = open einde of geen concept)"
+      - name: concept_zorgplan_laatst_gewijzigd
+        description: "Tijdstip van de laatste wijziging aan het concept-zorgplan (null als er geen concept is)"
+      - name: client_zorgplan_status
+        description: >
+          Samenvattende status van de cliënt op basis van actief + concept zorgplan:
+          'Actief & geldig zorgplan', 'Verlopen zorgplan met concept',
+          'Verlopen zorgplan zonder concept', 'Nog niet gestart', 'Alleen concept'
+          of 'Geen zorgplan'.
+
   - name: mart_vragenlijst_resultaten
     description: >
       Historisch overzicht van alle ingevulde vragenlijsten per cliënt.
