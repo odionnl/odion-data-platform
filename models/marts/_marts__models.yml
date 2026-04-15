@@ -496,6 +496,10 @@ models:
         description: "Locatie-ID van de huidige hoofdlocatie (type MAIN)"
       - name: hoofdlocatienaam
         description: "Naam van de huidige hoofdlocatie"
+      - name: startdatum_in_zorg
+        description: "Vroegste startdatum van een vandaag actieve zorgtoewijzing van de cliënt"
+      - name: langer_dan_6_weken_in_zorg
+        description: "1 als startdatum_in_zorg meer dan 42 dagen (6 weken) geleden is, anders 0"
       - name: actief_zorgplan_aanwezig
         description: "1 als de client een zorgplan met status 'Actief' heeft, anders 0"
       - name: actief_zorgplan_geldigheid
@@ -504,6 +508,8 @@ models:
         description: "Startdatum van het actieve zorgplan (null als er geen Actief zorgplan is)"
       - name: actief_zorgplan_einddatum
         description: "Einddatum van het actieve zorgplan (null = open einde of geen Actief zorgplan)"
+      - name: langer_dan_8_weken_verlopen
+        description: "1 als het actieve zorgplan verlopen is én de einddatum meer dan 56 dagen (8 weken) geleden is, anders 0"
       - name: concept_zorgplan_aanwezig
         description: "1 als de client een zorgplan met status 'Concept' heeft, anders 0"
       - name: concept_zorgplan_startdatum

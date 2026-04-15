@@ -15,6 +15,18 @@ zorgplannen as (
 
 ),
 
+zorgtoewijzingen_actueel as (
+
+    -- Per cliënt max 1 actieve zorgtoewijzing (systeem-invariant)
+    select
+        client_id,
+        startdatum as startdatum_in_zorg
+    from {{ ref('stg_onsdb__care_allocations') }}
+    where startdatum <= cast(getdate() as date)
+      and (einddatum is null or einddatum > cast(getdate() as date))
+
+),
+
 actief_zorgplan as (
 
     select
@@ -48,11 +60,24 @@ definitief as (
         c.hoofdlocatie_id,
         c.hoofdlocatienaam,
 
+        -- In zorg
+        za.startdatum_in_zorg,
+        case
+            when za.startdatum_in_zorg is not null
+             and datediff(day, za.startdatum_in_zorg, cast(getdate() as date)) > 42 then 1
+            else 0
+        end as langer_dan_6_weken_in_zorg,
+
         -- Actief zorgplan
         case when az.client_id is not null then 1 else 0 end as actief_zorgplan_aanwezig,
         coalesce(az.geldigheid, 'Geen') as actief_zorgplan_geldigheid,
         az.startdatum                   as actief_zorgplan_startdatum,
         az.einddatum                    as actief_zorgplan_einddatum,
+        case
+            when az.geldigheid = 'Verlopen'
+             and datediff(day, az.einddatum, cast(getdate() as date)) > 56 then 1
+            else 0
+        end as langer_dan_8_weken_verlopen,
 
         -- Concept zorgplan
         case when cz.client_id is not null then 1 else 0 end as concept_zorgplan_aanwezig,
@@ -71,6 +96,8 @@ definitief as (
         end as client_zorgplan_status
 
     from clienten c
+    left join zorgtoewijzingen_actueel za
+        on za.client_id = c.client_id
     left join actief_zorgplan az
         on az.client_id = c.client_id
     left join concept_zorgplan cz
