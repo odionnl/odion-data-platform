@@ -58,6 +58,17 @@ models:
       - name: financiering
         description: "Primaire financieringsvorm (bijv. Zorgzwaartepakket, WMO, Jeugdwet, PGB)"
 
+  - name: int_testclienten
+    description: >
+      Testcliënten die uit alle marts en rapportages gefilterd worden.
+      Twee categorieën: vaste testclientnummers (10510, 11428) en cliënten
+      met een (historische) locatiekoppeling onder '99. Trainingslocatie'.
+      Grain: één rij per testcliënt.
+    columns:
+      - name: client_id
+        description: "Unieke identifier van de testcliënt"
+        tests: [unique, not_null]
+
   - name: int_clienten_in_zorg_actueel
     description: >
       Clients met een actieve zorgtoewijzing op vandaag (GETDATE()).

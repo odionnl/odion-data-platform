@@ -1,20 +1,13 @@
-with trainingslocatie_clienten as (
+with testclienten as (
 
-    -- Cliënten met (historische) koppeling onder niveau2 '99. Trainingslocatie'
-    select distinct la.client_id
-    from {{ ref('stg_onsdb__location_assignments') }} la
-    inner join {{ ref('int_locatie_hierarchie') }} lh
-        on lh.locatie_id = la.locatie_id
-    where lh.niveau2 = '99. Trainingslocatie'
+    select * from {{ ref('int_testclienten') }}
 
 ),
 
 clienten as (
 
     select * from {{ ref('stg_onsdb__clients') }}
-    -- Testcliënten uitsluiten: vaste clientnummers + trainingslocatie
-    where clientnummer not in ('10510', '11428')
-      and client_id not in (select client_id from trainingslocatie_clienten)
+    where client_id not in (select client_id from testclienten)
 
 ),
 

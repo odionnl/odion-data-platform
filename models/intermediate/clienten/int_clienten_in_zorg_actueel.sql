@@ -1,9 +1,16 @@
 -- Clients met een actieve zorgtoewijzing op vandaag (GETDATE()).
 -- Grain: één rij per actieve client.
 
-with clienten as (
+with testclienten as (
+
+    select * from {{ ref('int_testclienten') }}
+
+),
+
+clienten as (
 
     select * from {{ ref('stg_onsdb__clients') }}
+    where client_id not in (select client_id from testclienten)
 
 ),
 
