@@ -734,6 +734,65 @@ models:
       - name: gewijzigd_op
         description: "Tijdstip van laatste wijziging van de registratie"
 
+  - name: mart_groepszorg_vervoer
+    description: >
+      Groepszorg-registraties gefilterd op activiteit 'Vervoer ghz cat 0', verrijkt met
+      cliënt-woonadres (actief GBA-adres) en locatie-adres van de groep.
+      Eén rij per registratie. Geen datum- of statusfilter — Power BI filtert verder op
+      registratie_datum en status. Testcliënten (int_testclienten) zijn uitgesloten.
+    columns:
+      - name: groepszorg_registratie_id
+        description: "Unieke identifier van de registratie"
+        tests: [unique, not_null]
+      - name: registratie_datum
+        description: "Datum van de registratie"
+      - name: starttijd
+        description: "Starttijd van de registratie"
+      - name: eindtijd
+        description: "Eindtijd van de registratie"
+      - name: status
+        description: "Statuscode: 0=Aanwezig, 1=Afwezig, 2=Aangemaakt, 3=No-show"
+      - name: status_omschrijving
+        description: "Leesbare omschrijving van de status"
+      - name: is_gefiatteerd
+        description: "1 als de registratie gefiatteerd (goedgekeurd) is"
+      - name: activiteit_id
+        description: "ObjectId van de activiteit in Ons Administratie"
+      - name: activiteit_nummer
+        description: "Identificatienummer van de activiteit (hier altijd 'Vervoer ghz cat 0')"
+      - name: activiteit_beschrijving
+        description: "Beschrijving van de activiteit"
+      - name: client_id
+        description: "Verwijzing naar de cliënt in Ons Administratie"
+      - name: clientnummer
+        description: "Identificatienummer van de cliënt"
+      - name: clientnaam
+        description: "Samengestelde naam van de cliënt (roepnaam + voorvoegsel + achternaam)"
+      - name: woonadres
+        description: "Volledig woonadres van de cliënt (actief GBA-adres)"
+      - name: woonadres_postcode
+        description: "Postcode van het woonadres"
+      - name: woonadres_plaatsnaam
+        description: "Plaatsnaam van het woonadres"
+      - name: groepszorg_groep_id
+        description: "Verwijzing naar de groep"
+      - name: groepsnaam
+        description: "Naam van de groep"
+      - name: is_groep_gearchiveerd
+        description: "1 als de groep gearchiveerd is"
+      - name: groep_locatie_id
+        description: "Verwijzing naar de locatie van de groep (ObjectId in Ons Administratie)"
+      - name: groep_locatienaam
+        description: "Naam van de locatie waaraan de groep gekoppeld is"
+      - name: groep_postcode
+        description: "Postcode van het locatie-adres (bruikbaar voor Azure Maps / rit-analyses)"
+      - name: groep_plaatsnaam
+        description: "Plaatsnaam van het locatie-adres"
+      - name: aangemaakt_op
+        description: "Tijdstip van aanmaken van de registratie"
+      - name: gewijzigd_op
+        description: "Tijdstip van laatste wijziging van de registratie"
+
   - name: mart_wachtlijsten
     description: >
       Alle wachtlijstkoppelingen (historisch + actueel) per cliënt, inclusief

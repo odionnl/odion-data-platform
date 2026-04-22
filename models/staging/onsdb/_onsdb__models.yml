@@ -1063,3 +1063,23 @@ models:
         description: "Tijdstip van aanmaken"
       - name: gewijzigd_op
         description: "Tijdstip van laatste wijziging"
+
+  - name: stg_onsdb__groupcare_activities
+    description: "Bridge-tabel: koppelt groepszorg-activiteit-ID aan Ons Administratie activity-ID (uursoort)."
+    columns:
+      - name: groepszorg_activiteit_id
+        description: "Interne groepszorg-activiteit-ID (id)"
+        tests: [unique, not_null]
+      - name: activiteit_id
+        description: "ObjectId in Ons Administratie — bruikbaar voor joins naar stg_onsdb__activities"
+
+  - name: stg_onsdb__groupcare_activity_timelines
+    description: >
+      Koppeltabel tussen groepszorg-afspraken (timeline_id) en groepszorg-activiteiten (activity_id).
+      Eén afspraak kan in de tijd aan verschillende activiteiten gekoppeld zijn (versioning), dus
+      de combinatie is niet noodzakelijk uniek per afspraak.
+    columns:
+      - name: groupcare_afspraak_id
+        description: "Verwijzing naar de groepszorg-afspraak (timeline_id) — joint met stg_onsdb__groupcare_registrations.groupcare_afspraak_id"
+      - name: groepszorg_activiteit_id
+        description: "Verwijzing naar stg_onsdb__groupcare_activities.groepszorg_activiteit_id"
