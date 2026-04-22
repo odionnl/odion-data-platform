@@ -351,3 +351,12 @@ sources:
         columns:
           - name: id
             tests: [unique, not_null]
+
+      - name: groupcare_activities
+        description: "Bridge-tabel: koppeling tussen groepszorg-activiteit-ID en Ons Administratie activity (uursoort)."
+        columns:
+          - name: id
+            tests: [unique, not_null]
+
+      - name: groupcare_activity_timelines
+        description: "Koppeltabel tussen groepszorg-afspraken (timeline_id) en groepszorg-activiteiten. Eén timeline kan in de tijd aan verschillende activiteiten gekoppeld zijn."
