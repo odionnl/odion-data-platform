@@ -7,7 +7,7 @@ with bron as (
 definitief as (
 
     select
-        timeline_id     as groupcare_afspraak_id,       -- → stg_onsdb__groupcare_registrations.groupcare_afspraak_id
+        timeline_id     as groepszorg_afspraak_id,       -- → stg_onsdb__groupcare_registrations.groepszorg_afspraak_id
         activity_id     as groepszorg_activiteit_id     -- → stg_onsdb__groupcare_activities.groepszorg_activiteit_id
 
     from bron

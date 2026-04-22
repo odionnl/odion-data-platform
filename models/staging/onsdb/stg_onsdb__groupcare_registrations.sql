@@ -12,7 +12,7 @@ definitief as (
         client_external_id  as client_id,
         external_id         as booking_id,
         group_id            as groepszorg_groep_id,
-        timeline_id         as groupcare_afspraak_id,
+        timeline_id         as groepszorg_afspraak_id,
         team_cost_center    as kostenplaats_id,
         [date]              as registratie_datum,
         starts_at           as starttijd,

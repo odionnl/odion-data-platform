@@ -52,7 +52,7 @@ vervoer_registraties as (
 
     from registraties r
     inner join timelines t
-        on t.groupcare_afspraak_id = r.groupcare_afspraak_id
+        on t.groepszorg_afspraak_id = r.groepszorg_afspraak_id
     inner join gc_activiteiten ga
         on ga.groepszorg_activiteit_id = t.groepszorg_activiteit_id
     inner join activiteiten a
