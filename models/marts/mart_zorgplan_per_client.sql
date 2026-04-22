@@ -15,6 +15,16 @@ zorgplannen as (
 
 ),
 
+locatie_hierarchie as (
+
+    -- Voor elke locatie de bijbehorende niveau4-naam (ancestor of zichzelf)
+    select
+        locatie_id,
+        niveau4
+    from {{ ref('int_locatie_hierarchie') }}
+
+),
+
 zorgtoewijzingen_actueel as (
 
     -- Per cliënt max 1 actieve zorgtoewijzing (systeem-invariant)
@@ -59,6 +69,7 @@ definitief as (
         c.clientnaam,
         c.hoofdlocatie_id,
         c.hoofdlocatienaam,
+        lh.niveau4 as hoofdlocatienaam_niveau4,
 
         -- In zorg
         za.startdatum_in_zorg,
@@ -74,8 +85,20 @@ definitief as (
         az.startdatum                   as actief_zorgplan_startdatum,
         az.einddatum                    as actief_zorgplan_einddatum,
         case
+            when az.einddatum is null then null
+            else datediff(day, az.startdatum, az.einddatum) / 7
+        end                             as actief_zorgplan_geldigheidsduur_weken,
+        case
+            when az.client_id is null                                            then null
+            when az.geldigheid = 'Geldig'
+             and az.einddatum is not null
+             and az.einddatum <= dateadd(day, 56, cast(getdate() as date))       then 1
+            else 0
+        end as verloopt_binnen_8_weken,
+        case
+            when az.client_id is null                                            then null
             when az.geldigheid = 'Verlopen'
-             and datediff(day, az.einddatum, cast(getdate() as date)) > 56 then 1
+             and datediff(day, az.einddatum, cast(getdate() as date)) > 56       then 1
             else 0
         end as langer_dan_8_weken_verlopen,
 
@@ -84,6 +107,11 @@ definitief as (
         cz.startdatum                   as concept_zorgplan_startdatum,
         cz.einddatum                    as concept_zorgplan_einddatum,
         cz.gewijzigd_op                 as concept_zorgplan_laatst_gewijzigd,
+        case
+            when cz.client_id is null                                         then null
+            when datediff(day, cz.gewijzigd_op, cast(getdate() as date)) > 56 then 1
+            else 0
+        end as langer_dan_8_weken_geleden_bewerkt,
 
         -- Samenvatting
         case
@@ -96,6 +124,8 @@ definitief as (
         end as client_zorgplan_status
 
     from clienten c
+    left join locatie_hierarchie lh
+        on lh.locatie_id = c.hoofdlocatie_id
     left join zorgtoewijzingen_actueel za
         on za.client_id = c.client_id
     left join actief_zorgplan az

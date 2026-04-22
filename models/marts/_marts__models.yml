@@ -499,7 +499,9 @@ models:
       - name: hoofdlocatie_id
         description: "Locatie-ID van de huidige hoofdlocatie (type MAIN)"
       - name: hoofdlocatienaam
-        description: "Naam van de huidige hoofdlocatie"
+        description: "Naam van de huidige hoofdlocatie (zoals in mart_clienten_actueel)"
+      - name: hoofdlocatienaam_niveau4
+        description: "Niveau4-naam van de hoofdlocatie (ancestor in int_locatie_hierarchie; null als de hoofdlocatie boven niveau 4 hangt)"
       - name: startdatum_in_zorg
         description: "Vroegste startdatum van een vandaag actieve zorgtoewijzing van de cliënt"
       - name: langer_dan_6_weken_in_zorg
@@ -512,8 +514,12 @@ models:
         description: "Startdatum van het actieve zorgplan (null als er geen Actief zorgplan is)"
       - name: actief_zorgplan_einddatum
         description: "Einddatum van het actieve zorgplan (null = open einde of geen Actief zorgplan)"
+      - name: actief_zorgplan_geldigheidsduur_weken
+        description: "Geldigheidsduur van het actieve zorgplan in hele weken (einddatum − startdatum, integer-deling door 7). Null als er geen actief zorgplan is of als de einddatum ontbreekt (open einde)."
+      - name: verloopt_binnen_8_weken
+        description: "1 als het actieve zorgplan geldig is én de einddatum binnen 56 dagen (8 weken) vanaf vandaag valt, 0 anders. Null als er geen actief zorgplan is."
       - name: langer_dan_8_weken_verlopen
-        description: "1 als het actieve zorgplan verlopen is én de einddatum meer dan 56 dagen (8 weken) geleden is, anders 0"
+        description: "1 als het actieve zorgplan verlopen is én de einddatum meer dan 56 dagen (8 weken) geleden is, 0 anders. Null als er geen actief zorgplan is."
       - name: concept_zorgplan_aanwezig
         description: "1 als de client een zorgplan met status 'Concept' heeft, anders 0"
       - name: concept_zorgplan_startdatum
@@ -522,6 +528,8 @@ models:
         description: "Einddatum van het concept-zorgplan (null = open einde of geen concept)"
       - name: concept_zorgplan_laatst_gewijzigd
         description: "Tijdstip van de laatste wijziging aan het concept-zorgplan (null als er geen concept is)"
+      - name: langer_dan_8_weken_geleden_bewerkt
+        description: "1 als het concept-zorgplan meer dan 56 dagen (8 weken) geleden voor het laatst is bewerkt, 0 anders. Null als er geen concept-zorgplan is."
       - name: client_zorgplan_status
         description: >
           Samenvattende status van de cliënt op basis van actief + concept zorgplan:
