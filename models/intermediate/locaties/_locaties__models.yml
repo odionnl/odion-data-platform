@@ -15,6 +15,10 @@ models:
         description: "1 als de locatie geen kindlocaties heeft"
       - name: is_toplocatie
         description: "1 als de locatie geen ouder heeft (rootlocatie)"
+      - name: huisnummer_toevoeging
+        description: "Toevoeging bij het huisnummer"
+      - name: adres_volledig
+        description: "Samengesteld adresveld (straat huisnr, postcode plaats) — geschikt als locatieveld in Power BI Azure Maps"
       - name: is_actief_vandaag
         description: "1 als de locatie vandaag actief is"
       - name: aantal_kindlocaties

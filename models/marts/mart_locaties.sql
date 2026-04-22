@@ -85,8 +85,10 @@ definitief as (
         -- Adres
         basis.straatnaam,
         basis.huisnummer,
+        basis.huisnummer_toevoeging,
         basis.postcode,
         basis.plaatsnaam,
+        basis.adres_volledig,
         basis.latitude,
         basis.longitude,
 

@@ -41,6 +41,8 @@ models:
         description: "Postcode"
       - name: gemeentenaam
         description: "Gemeentenaam"
+      - name: adres_volledig
+        description: "Samengesteld adresveld (straat huisnr, postcode plaats) — geschikt als locatieveld in Power BI Azure Maps"
       - name: startdatum
         description: "Datum waarop het adres geldig werd"
       - name: einddatum

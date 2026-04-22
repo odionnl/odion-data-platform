@@ -28,6 +28,10 @@ definitief as (
         a.plaatsnaam,
         a.postcode,
         a.gemeentenaam,
+        concat_ws(', ',
+            nullif(concat_ws(' ', a.straatnaam, nullif(concat(a.huisnummer, a.huisnummer_toevoeging), '')), ''),
+            nullif(concat_ws(' ', a.postcode, a.plaatsnaam), '')
+        ) as adres_volledig,
         a.startdatum,
         a.einddatum
 
