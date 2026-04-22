@@ -15,11 +15,20 @@ def ons_audits():
     xlsx_files = list(base.rglob("*.xlsx"))
     print(f"  Gevonden: {len(xlsx_files)} Excel-bestanden in {folder}")
 
+    skipped = 0
     for xlsx_path in xlsx_files:
-        df = pd.read_excel(xlsx_path, sheet_name=0)
+        try:
+            df = pd.read_excel(xlsx_path, sheet_name=0)
+        except OSError as e:
+            print(f"  Overgeslagen (niet bereikbaar): {xlsx_path.name} ({e})")
+            skipped += 1
+            continue
         df["source_file"] = xlsx_path.name
         print(f"  Geladen: {len(df)} rijen uit {xlsx_path.name}")
         yield df.to_dict(orient="records")
+
+    if skipped:
+        print(f"  Waarschuwing: {skipped} bestanden overgeslagen (SharePoint niet bereikbaar?)")
 
 
 def ingest_ons_audits():
