@@ -834,3 +834,63 @@ models:
         description: "1 als cliënt een actieve Kind en gezin-koppeling heeft"
       - name: multidisciplinair_team
         description: "1 als cliënt een actieve Multidisciplinair Team-koppeling heeft"
+
+  - name: mart_zorgregels
+    description: >
+      Zorgregels (feitelijke tijdregistratie) met fiatteringsstatus.
+      Eén rij per zorgregel. Gefilterd op starttijd vanaf begin van het huidige jaar.
+      Verwijderde zorgregels (removed = 1) zijn uitgesloten in staging.
+      Testcliënten (int_testclienten) zijn uitgesloten; zorgregels zonder cliënt
+      (indirecte zorg) blijven behouden. Alleen IDs, geen cliënt- of medewerkernamen —
+      voor weergave joinen met mart_clienten / mart_medewerkers in Power BI.
+    columns:
+      - name: zorgregel_id
+        description: "Unieke identifier van de zorgregel"
+        tests: [unique, not_null]
+      - name: client_id
+        description: "Verwijzing naar de cliënt. Null = indirecte zorg (geen cliënt gekoppeld)"
+      - name: medewerker_id
+        description: "Verwijzing naar de medewerker. Null = geen medewerker"
+      - name: activiteit_id
+        description: "Verwijzing naar de activiteit/uursoort (mart_activiteiten / stg_onsdb__activities)"
+      - name: kostenplaats_id
+        description: "Kostenplaats van het team"
+      - name: starttijd
+        description: "Starttijd van de zorgregel (na afronding)"
+      - name: eindtijd
+        description: "Eindtijd van de zorgregel (na afronding)"
+      - name: datum
+        description: "Datum afgeleid uit starttijd"
+      - name: duur_minuten
+        description: "Duur in minuten (eindtijd - starttijd)"
+      - name: bron_type
+        description: "Integer enum met bron van de zorgregel (0-9)"
+      - name: bron_omschrijving
+        description: "Leesbare omschrijving van bron_type"
+      - name: is_gefiatteerd
+        description: "1 als de zorgregel gefiatteerd is"
+      - name: gefiatteerd_op
+        description: "Moment waarop de zorgregel gefiatteerd is"
+      - name: is_urenregistratie
+        description: "1 als dit een urenregistratie is"
+      - name: is_verloning
+        description: "1 als deze zorgregel voor verloning is"
+      - name: heeft_tijdsduur
+        description: "1 als de zorgregel een begin- en eindtijd heeft"
+      - name: is_automatisch_verdeeld
+        description: "1 als de zorgregel automatisch is verdeeld, 0 als handmatig"
+      - name: rooster_match_status
+        description: >
+          Check of de medewerker op de zorgregel-datum een ORTEC-dienst had.
+          Waarden: 'Match' (dienst aanwezig), 'Geen dienst' (medewerker wel in ORTEC,
+          maar geen dienst op die dag), 'Medewerker niet in ORTEC' (geen ORTEC-profiel
+          of geen enkele dienst bekend), 'Geen medewerker' (zorgregel zonder medewerker,
+          indirecte zorg).
+      - name: is_rooster_match
+        description: >
+          1 als de medewerker op de zorgregel-datum een dienst had, 0 bij 'Geen dienst',
+          NULL als niet te beoordelen ('Medewerker niet in ORTEC' of 'Geen medewerker').
+      - name: aangemaakt_op
+        description: "Moment van aanmaken"
+      - name: gewijzigd_op
+        description: "Moment van laatste wijziging"

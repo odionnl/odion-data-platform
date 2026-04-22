@@ -31,3 +31,17 @@ models:
         tests: [not_null]
       - name: contracttype_naam
         description: "Naam van het contracttype"
+
+  - name: int_medewerker_rooster_dagen
+    description: >
+      Per (medewerker_id, datum) één rij als er een ORTEC-dienst is op die dag.
+      Zowel startdatum als einddatum van een dienst tellen, zodat nachtdiensten
+      voor beide dagen meetellen. Mapping via stg_onsdb__employees.personeelsnummer.
+      Medewerkers zonder personeelsnummer komen niet voor.
+    columns:
+      - name: medewerker_id
+        description: "OnsDB medewerker_id (objectId)"
+        tests: [not_null]
+      - name: datum
+        description: "Datum waarop de medewerker minstens één dienst heeft"
+        tests: [not_null]
