@@ -8,6 +8,8 @@ models:
         description: "Tijdstip van de inzage"
         tests: [not_null]
       - name: medewerker_id
+        description: "OnsDB medewerker_id (ObjectId), gekoppeld via personeelsnummer. NULL als personeelsnummer niet matcht met een ONS-medewerker."
+      - name: personeelsnummer
         description: "Personeelsnummer van de medewerker (afgeleid uit gebruiker_medewerkernummer)"
         tests: [not_null]
       - name: clientnummer
@@ -19,7 +21,9 @@ models:
       hebben gedraaid in de evaluatieperiode (via ORTEC kostenplaatskoppeling).
     columns:
       - name: medewerker_id
-        description: "Personeelsnummer van de medewerker"
+        description: "OnsDB medewerker_id (ObjectId), gekoppeld via personeelsnummer. NULL als ORTEC-personeelsnummer niet matcht met een ONS-medewerker."
+      - name: personeelsnummer
+        description: "Personeelsnummer van de medewerker (EMPLOYEE_NUMBER uit ORTEC)"
         tests: [not_null]
       - name: locatienaam
         description: "Naam van de locatie waar de medewerker dienst had"

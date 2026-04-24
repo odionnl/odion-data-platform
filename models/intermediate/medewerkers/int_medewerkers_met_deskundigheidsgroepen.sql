@@ -34,7 +34,8 @@ groepen as (
 definitief as (
 
     select
-        medewerkers.personeelsnummer        as medewerker_id,
+        medewerkers.medewerker_id,
+        medewerkers.personeelsnummer,
         groepen.deskundigheidsgroep_naam    as deskundigheidsgroep,
         profielkoppelingen.startdatum,
         profielkoppelingen.einddatum

@@ -115,6 +115,12 @@ sources:
           - name: objectId
             tests: [unique, not_null]
 
+      - name: presence_logs
+        description: "Zorgregels: de feitelijke tijdregistratie per medewerker en cliënt, inclusief fiatteringsstatus."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
       # -- Zorgtoewijzingen --
       - name: care_allocations
         description: "Zorgtoewijzingen: koppeling van clienten aan zorg."

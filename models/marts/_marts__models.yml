@@ -834,3 +834,52 @@ models:
         description: "1 als cliënt een actieve Kind en gezin-koppeling heeft"
       - name: multidisciplinair_team
         description: "1 als cliënt een actieve Multidisciplinair Team-koppeling heeft"
+
+  - name: mart_zorgregels
+    description: >
+      Zorgregels (feitelijke tijdregistratie) uit ONS met fiatteringsstatus.
+      Eén rij per zorgregel. Gefilterd op starttijd vanaf begin van het huidige jaar.
+      Verwijderde zorgregels (removed = 1) zijn uitgesloten in staging.
+      Zorgregels zonder cliënt (indirecte zorg) blijven behouden. Voor weergave van
+      cliëntnamen in Power BI: joinen met mart_clienten.
+      Voor rooster-check tegen ORTEC: zie mart_zorgregels_rpa.
+    columns:
+      - name: zorgregel_id
+        description: "Unieke identifier van de zorgregel"
+        tests: [unique, not_null]
+      - name: client_id
+        description: "Verwijzing naar de cliënt. Null = indirecte zorg (geen cliënt gekoppeld)"
+      - name: clientnummer
+        description: "Extern cliëntnummer (identificationNo) uit ONS. Enkel voor debugging — voor weergave joinen met mart_clienten."
+      - name: medewerker_id
+        description: "Verwijzing naar de medewerker. Null = geen medewerker"
+      - name: personeelsnummer
+        description: "Personeelsnummer van de medewerker (uit stg_onsdb__employees). Enkel voor debugging — voor weergave joinen met mart_medewerkers."
+      - name: medewerker_naam
+        description: "Volledige naam van de medewerker (voornaam + achternaam, uit stg_onsdb__employees). Enkel voor debugging."
+      - name: activiteit_id
+        description: "Verwijzing naar de activiteit/uursoort (mart_activiteiten / stg_onsdb__activities)"
+      - name: uursoort_beschrijving
+        description: "Naam/omschrijving van de uursoort (join op stg_onsdb__activities)"
+      - name: team_id
+        description: "Verwijzing naar het team dat de zorgregel heeft geregistreerd (costClusterObjectId uit presence_logs → teams.objectId)"
+      - name: teamnaam
+        description: "Naam van het team (join op stg_onsdb__teams)"
+      - name: starttijd
+        description: "Starttijd van de zorgregel (na afronding)"
+      - name: eindtijd
+        description: "Eindtijd van de zorgregel (na afronding)"
+      - name: datum
+        description: "Datum afgeleid uit starttijd"
+      - name: duur_minuten
+        description: "Duur in minuten (eindtijd - starttijd)"
+      - name: is_gefiatteerd
+        description: "1 als de zorgregel gefiatteerd is"
+      - name: gefiatteerd_op
+        description: "Moment waarop de zorgregel gefiatteerd is"
+      - name: is_urenregistratie
+        description: "1 als dit een urenregistratie is"
+      - name: aangemaakt_op
+        description: "Moment van aanmaken"
+      - name: gewijzigd_op
+        description: "Moment van laatste wijziging"

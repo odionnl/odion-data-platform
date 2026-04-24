@@ -308,6 +308,47 @@ models:
       - name: is_groepszorg
         description: "Geeft aan of deze activiteit wordt gebruikt voor groepszorg"
 
+  - name: stg_onsdb__presence_logs
+    description: >
+      Zorgregels (presence_logs): feitelijke tijdregistratie per medewerker en cliënt,
+      inclusief fiatteringsstatus. Verwijderde zorgregels (removed = 1) zijn uitgefilterd.
+    columns:
+      - name: zorgregel_id
+        description: "Unieke identifier van de zorgregel (objectId)"
+        tests: [unique, not_null]
+      - name: activiteit_id
+        description: "Verwijzing naar de activiteit/uursoort"
+      - name: medewerker_id
+        description: "Verwijzing naar de medewerker. Null = geen medewerker"
+      - name: client_id
+        description: "Verwijzing naar de cliënt. Null = geen cliënt (indirecte zorg)"
+      - name: team_id
+        description: "Verwijzing naar het team dat de zorgregel heeft geregistreerd (costClusterObjectId → teams.objectId; 'cluster' = team in Nedap-taal)"
+      - name: starttijd
+        description: "Starttijd van de zorgregel, na afronding"
+      - name: eindtijd
+        description: "Eindtijd van de zorgregel, na afronding"
+      - name: starttijd_origineel
+        description: "Oorspronkelijke starttijd, voor afronding"
+      - name: eindtijd_origineel
+        description: "Oorspronkelijke eindtijd, voor afronding"
+      - name: starttijd_geregistreerd
+        description: "Starttijd zoals geregistreerd, voor afronding"
+      - name: eindtijd_geregistreerd
+        description: "Eindtijd zoals geregistreerd, voor afronding"
+      - name: heeft_tijdsduur
+        description: "1 als de zorgregel een begin- en eindtijd heeft"
+      - name: is_automatisch_verdeeld
+        description: "1 als de zorgregel automatisch is verdeeld, 0 als handmatig"
+      - name: is_gefiatteerd
+        description: "1 als de zorgregel gefiatteerd is"
+      - name: gefiatteerd_op
+        description: "Moment waarop de zorgregel gefiatteerd is"
+      - name: is_urenregistratie
+        description: "1 als dit een urenregistratie is"
+      - name: is_verloning
+        description: "1 als deze zorgregel voor verloning is"
+
   # -- Zorgtoewijzingen --
   - name: stg_onsdb__care_allocations
     description: "Zorgtoewijzingen van clienten aan zorg."

@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: stg_ons_audits__zorgplan_inzage
-    description: "Ruwe audit-logs van zorgplaninzage. Transformaties (medewerker_id extractie, filter) in int_zorgplan_inzage."
+    description: "Ruwe audit-logs van zorgplaninzage. Transformaties (personeelsnummer extractie, filter) in int_zorgplan_inzage."
     columns:
       - name: tijdstip
         description: "Tijdstip van de zorgplaninzage"
