@@ -39,3 +39,6 @@ models:
       actueel:
         +materialized: view
         +schema: marts
+    rpa:
+      +materialized: table
+      +schema: rpa
