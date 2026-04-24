@@ -11,7 +11,7 @@ definitief as (
         activityObjectId                as activiteit_id,
         employeeId                      as medewerker_id,
         clientId                        as client_id,
-        costClusterObjectId             as kostenplaats_id,
+        costClusterObjectId             as team_id,
         startDate                       as starttijd,
         endDate                         as eindtijd,
         origStartDate                   as starttijd_origineel,
@@ -20,20 +20,6 @@ definitief as (
         loggedEndDate                   as eindtijd_geregistreerd,
         cast(hasDuration as int)        as heeft_tijdsduur,
         cast(isAutomaticallyDivided as int) as is_automatisch_verdeeld,
-        sourceType                      as bron_type,
-        case sourceType
-            when 0 then 'Handmatige invoer'
-            when 1 then 'Zorgregels'
-            when 2 then 'ZZP-declaratie'
-            when 3 then 'Handmatige correctie'
-            when 4 then 'Declaratie'
-            when 5 then 'ZH308'
-            when 6 then 'ZH310'
-            when 7 then 'Dummy WLZ'
-            when 8 then 'Splitsing journalisering'
-            when 9 then 'PEZ'
-            else 'Onbekend'
-        end                             as bron_omschrijving,
         cast(verified as int)           as is_gefiatteerd,
         verifiedDate                    as gefiatteerd_op,
         cast(registration as int)       as is_urenregistratie,

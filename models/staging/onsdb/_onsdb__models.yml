@@ -322,8 +322,8 @@ models:
         description: "Verwijzing naar de medewerker. Null = geen medewerker"
       - name: client_id
         description: "Verwijzing naar de cliënt. Null = geen cliënt (indirecte zorg)"
-      - name: kostenplaats_id
-        description: "Kostenplaats van het team"
+      - name: team_id
+        description: "Verwijzing naar het team dat de zorgregel heeft geregistreerd (costClusterObjectId → teams.objectId; 'cluster' = team in Nedap-taal)"
       - name: starttijd
         description: "Starttijd van de zorgregel, na afronding"
       - name: eindtijd
@@ -340,10 +340,6 @@ models:
         description: "1 als de zorgregel een begin- en eindtijd heeft"
       - name: is_automatisch_verdeeld
         description: "1 als de zorgregel automatisch is verdeeld, 0 als handmatig"
-      - name: bron_type
-        description: "Integer enum met de bron van de zorgregel (0-9)"
-      - name: bron_omschrijving
-        description: "Leesbare omschrijving van bron_type (Handmatige invoer, Zorgregels, ZZP-declaratie, ...)"
       - name: is_gefiatteerd
         description: "1 als de zorgregel gefiatteerd is"
       - name: gefiatteerd_op
