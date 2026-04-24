@@ -1,6 +1,6 @@
 with diensten as (
 
-    select * from {{ ref('stg_ortec__diensten') }}
+    select * from {{ ref('int_geldige_diensten') }}
 
 ),
 
@@ -10,10 +10,22 @@ locaties as (
 
 ),
 
+medewerkers as (
+
+    select
+        medewerker_id,
+        personeelsnummer
+    from {{ ref('stg_onsdb__employees') }}
+    where personeelsnummer is not null
+      and personeelsnummer <> ''
+
+),
+
 definitief as (
 
     select distinct
-        diensten.medewerker_id,
+        medewerkers.medewerker_id,
+        diensten.personeelsnummer,
         locaties.locatienaam
 
     from diensten
@@ -23,6 +35,9 @@ definitief as (
         and locaties.startdatum_koppeling <= cast(diensten.starttijd as date)
         and (locaties.einddatum_koppeling is null
              or locaties.einddatum_koppeling > cast(diensten.starttijd as date))
+    left join medewerkers
+        on medewerkers.personeelsnummer collate database_default
+         = diensten.personeelsnummer collate database_default
     where diensten.starttijd >= dateadd(day, -{{ var('evaluatieperiode_dagen') }}, cast(getdate() as date))
       and diensten.starttijd <= cast(getdate() as date)
 

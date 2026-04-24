@@ -69,6 +69,7 @@ audits_met_client as (
     inner join clienten_met_nummer as c
         on cast(c.clientnummer as varchar(50)) collate database_default
          = cast(a.clientnummer as varchar(50)) collate database_default
+    where a.medewerker_id is not null
 
 ),
 
@@ -82,8 +83,7 @@ audits_zorgpersoneel as (
 
     from audits_met_client as a
     inner join deskundigheidsgroepen as eg
-        on eg.medewerker_id collate database_default
-         = a.medewerker_id collate database_default
+        on eg.medewerker_id = a.medewerker_id
         and eg.deskundigheidsgroep = 'Zorgpersoneel (tbv planning & control)'
         and eg.startdatum <= cast(getdate() as date)
         and (eg.einddatum is null or eg.einddatum >= dateadd(day, -{{ var('evaluatieperiode_dagen') }}, cast(getdate() as date)))
@@ -98,8 +98,7 @@ audits_met_locatie_overlap as (
 
     from audits_zorgpersoneel as az
     inner join dienst_locaties as dl
-        on dl.medewerker_id collate database_default
-         = az.medewerker_id collate database_default
+        on dl.medewerker_id = az.medewerker_id
     inner join client_locaties as cl
         on cl.client_id = az.client_id
         and cl.locatienaam collate database_default

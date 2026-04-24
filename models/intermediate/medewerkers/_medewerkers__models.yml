@@ -5,8 +5,10 @@ models:
     description: "Medewerkers verrijkt met hun deskundigheidsgroepen (via expertise-profielkoppelingen)."
     columns:
       - name: medewerker_id
-        description: "Personeelsnummer van de medewerker"
+        description: "OnsDB medewerker_id (ObjectId)"
         tests: [not_null]
+      - name: personeelsnummer
+        description: "Personeelsnummer van de medewerker"
       - name: deskundigheidsgroep
         description: "Naam van de deskundigheidsgroep (bijv. Zorgpersoneel)"
       - name: startdatum
@@ -32,9 +34,22 @@ models:
       - name: contracttype_naam
         description: "Naam van het contracttype"
 
+  - name: int_geldige_diensten
+    description: >
+      ORTEC-diensten die meetellen voor verantwoording- en RPA-checks.
+      Filter op roosterstatus in ('Processed', 'Published', 'Final') — concepten uitgesloten.
+      Wordt gebruikt door int_medewerker_rooster_dagen en int_medewerkers_met_dienst_locaties.
+    columns:
+      - name: dienst_id
+        description: "Unieke identifier van de dienst"
+        tests: [unique, not_null]
+      - name: personeelsnummer
+        description: "Personeelsnummer van de medewerker (EMPLOYEE_NUMBER uit ORTEC)"
+        tests: [not_null]
+
   - name: int_medewerker_rooster_dagen
     description: >
-      Per (medewerker_id, datum) één rij als er een ORTEC-dienst is op die dag.
+      Per (medewerker_id, datum) één rij als er een geldige ORTEC-dienst is op die dag.
       Zowel startdatum als einddatum van een dienst tellen, zodat nachtdiensten
       voor beide dagen meetellen. Mapping via stg_onsdb__employees.personeelsnummer.
       Medewerkers zonder personeelsnummer komen niet voor.
@@ -45,3 +60,5 @@ models:
       - name: datum
         description: "Datum waarop de medewerker minstens één dienst heeft"
         tests: [not_null]
+      - name: heeft_werk_tijd
+        description: "1 als minstens één dienst op die dag TIME_AT_WORK > 0 heeft (geen pure ziek/verlof/standby-dag)"
