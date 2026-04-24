@@ -50,9 +50,6 @@ definitief as (
         medewerker_naam,
         activiteit_id,
         uursoort_beschrijving,
-        is_werktijd,
-        is_direct,
-        is_reistijd,
         team_id,
         teamnaam,
 
@@ -61,13 +58,9 @@ definitief as (
         datum,
         duur_minuten,
 
+        is_urenregistratie,
         is_gefiatteerd,
         gefiatteerd_op,
-
-        is_urenregistratie,
-        is_verloning,
-        heeft_tijdsduur,
-        is_automatisch_verdeeld,
 
         -- Rooster-check: stond de medewerker die dag op het ORTEC-rooster?
         case
@@ -75,19 +68,15 @@ definitief as (
             when medewerker_in_ortec    = 0    then 'Medewerker niet in ORTEC'
             when heeft_dienst_op_datum  = 1    then 'Match'
             else 'Geen dienst'
-        end as rooster_match_status,
+        end as rooster_match_beschrijving,
 
-        -- Gecombineerde check: had de medewerker op die dag een ORTEC-dienst
-        -- met daadwerkelijk werk-tijd (TIME_AT_WORK > 0)? Dus: echte werkdag,
-        -- geen pure ziek/verlof/standby. NULL als niet te beoordelen
-        -- (geen medewerker of geen ORTEC-profiel).
+        -- Gecombineerde check: 1 als de medewerker op die dag een ORTEC-dienst
+        -- had mét TIME_AT_WORK > 0 (echte werkdag), anders 0. Dus ook 0 bij
+        -- ziek/verlof/standby, geen dienst, geen ORTEC-profiel of geen medewerker.
         case
-            when medewerker_id         is null then null
-            when medewerker_in_ortec    = 0    then null
-            when heeft_dienst_op_datum  = 0    then 0
-            when heeft_werk_tijd        = 1    then 1
+            when heeft_werk_tijd = 1 then 1
             else 0
-        end as is_tijdens_werkdag,
+        end as is_rooster_match,
 
         aangemaakt_op,
         gewijzigd_op

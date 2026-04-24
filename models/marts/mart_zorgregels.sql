@@ -50,9 +50,6 @@ definitief as (
         m.medewerker_naam,
         z.activiteit_id,
         a.beschrijving                              as uursoort_beschrijving,
-        a.is_werktijd,
-        a.is_direct,
-        a.is_reistijd,
         z.team_id,
         t.teamnaam,
 
@@ -61,13 +58,9 @@ definitief as (
         cast(z.starttijd as date)                   as datum,
         datediff(minute, z.starttijd, z.eindtijd)   as duur_minuten,
 
+        z.is_urenregistratie,
         z.is_gefiatteerd,
         z.gefiatteerd_op,
-
-        z.is_urenregistratie,
-        z.is_verloning,
-        z.heeft_tijdsduur,
-        z.is_automatisch_verdeeld,
 
         z.aangemaakt_op,
         z.gewijzigd_op
