@@ -2,25 +2,34 @@ import dlt
 import pandas as pd
 from sqlalchemy import URL, create_engine
 
-
 ORTEC_QUERY = """
 SELECT
+    fps.SHIFT_ID AS shift_id,
+    fps.NAME AS shift_code,
     CAST(CONCAT(FORMAT(dd.FULL_DATE, 'yyyy-MM-dd'), ' ',
          FORMAT(dt1.TIME24, 'HH:mm:ss')) AS DATETIME) AS start_time,
     CAST(CONCAT(FORMAT(dd.FULL_DATE, 'yyyy-MM-dd'), ' ',
          FORMAT(dt2.TIME24, 'HH:mm:ss')) AS DATETIME) AS end_time,
-    de.EMPLOYEE_NUMBER AS employee_id,
+    fps.TIME_AT_WORK AS time_at_work,
+    fps.ILLNESS_TIME AS illness_time,
+    fps.LEAVE_TIME AS leave_time,
+    fps.STANDBY_TIME AS standby_time,
+    de.EMPLOYEE_NUMBER AS employee_number,
     de.NAME AS employee_name,
     dcc.NAME AS cost_center_id,
-    dcc.DESCRIPTION AS cost_center_name
+    dcc.DESCRIPTION AS cost_center_name,
+    ddp.DEPARTMENT_KEY AS department_id,
+    ddp.NAME AS department_name,
+    fps.ROSTER_STATUS as roster_status
 FROM bi_support.FACT_PUBLISHED_SHIFT AS fps
     LEFT JOIN bi_support.DIM_COST_CENTER AS dcc ON dcc.COST_CENTER_KEY=fps.COST_CENTER_KEY
     LEFT JOIN bi_support.DIM_DATE AS dd ON dd.DATE_KEY=fps.BEGIN_DATE_KEY
     LEFT JOIN bi_support.DIM_TIME AS dt1 ON dt1.TIME_KEY=fps.START_TIME_KEY
     LEFT JOIN bi_support.DIM_TIME AS dt2 ON dt2.TIME_KEY=fps.END_TIME_KEY
     LEFT JOIN bi_support.DIM_EMPLOYEE AS de ON de.EMPLOYEE_KEY=fps.EMPLOYEE_KEY
+    LEFT JOIN bi_support.DIM_DEPARTMENT AS ddp ON ddp.DEPARTMENT_KEY=fps.DEPARTMENT_KEY
 WHERE FULL_DATE >= DATEADD(month, -3, CAST(GETDATE() AS DATE))
-    AND ROSTER_STATUS IN ('Processed', 'Published')
+    AND ROSTER_STATUS IN ('Processed', 'Published', 'Final')
 """
 
 
@@ -36,8 +45,10 @@ def ortec_diensten():
         database=creds["database"],
         username=creds.get("username") or None,
         password=creds.get("password") or None,
-        query={"driver": creds.get("driver", "ODBC Driver 17 for SQL Server"),
-               **creds.get("query", {})},
+        query={
+            "driver": creds.get("driver", "ODBC Driver 17 for SQL Server"),
+            **creds.get("query", {}),
+        },
     )
     engine = create_engine(url)
 

@@ -4,12 +4,25 @@ models:
   - name: stg_ortec__diensten
     description: "Gestaged overzicht van ORTEC roosterdata."
     columns:
+      - name: dienst_id
+        description: "Unieke identifier van de dienst (SHIFT_ID uit ORTEC)"
+        tests: [not_null, unique]
+      - name: dienstcode
+        description: "Code/afkorting van de dienst (NAME uit FACT_PUBLISHED_SHIFT)"
       - name: starttijd
         description: "Starttijd van de dienst"
       - name: eindtijd
         description: "Eindtijd van de dienst"
-      - name: medewerker_id
-        description: "Personeelsnummer van de medewerker"
+      - name: tijd_op_werk
+        description: "Gewerkte tijd volgens ORTEC (TIME_AT_WORK)"
+      - name: ziek_tijd
+        description: "Tijd afwezig wegens ziekte (ILLNESS_TIME)"
+      - name: verlof_tijd
+        description: "Tijd afwezig wegens verlof (LEAVE_TIME)"
+      - name: standby_tijd
+        description: "Standby/bereikbaarheidstijd (STANDBY_TIME)"
+      - name: personeelsnummer
+        description: "Personeelsnummer van de medewerker (EMPLOYEE_NUMBER uit ORTEC; koppelt aan stg_onsdb__employees.personeelsnummer)"
         tests: [not_null]
       - name: medewerker_naam
         description: "Naam van de medewerker"
@@ -17,3 +30,9 @@ models:
         description: "Kostenplaats-ID (voor koppeling met OnsDB locaties)"
       - name: kostenplaats_naam
         description: "Naam van de kostenplaats"
+      - name: afdeling_id
+        description: "Afdeling-ID (DEPARTMENT_KEY uit DIM_DEPARTMENT)"
+      - name: afdeling_naam
+        description: "Naam van de afdeling (DEPARTMENT_NAME uit DIM_DEPARTMENT)"
+      - name: roosterstatus
+        description: "Status van de dienst in het rooster (ROSTER_STATUS). Pipeline-filter laat 'Processed', 'Published', 'Final' door."
