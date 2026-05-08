@@ -11,17 +11,17 @@ teams as (
         medewerker_id,
         team_id,
         teamnaam,
-        teamkoppeling_startdatum,
-        teamkoppeling_einddatum,
+        startdatum_teamkoppeling,
+        einddatum_teamkoppeling,
         row_number() over (
             partition by medewerker_id
             order by
                 case
-                    when teamkoppeling_einddatum is null
-                      or teamkoppeling_einddatum >= cast(getdate() as date)
+                    when einddatum_teamkoppeling is null
+                      or einddatum_teamkoppeling >= cast(getdate() as date)
                     then 0 else 1
                 end,
-                teamkoppeling_startdatum desc
+                startdatum_teamkoppeling desc
         ) as rn
 
     from {{ ref('int_medewerkers_met_teams') }}
@@ -35,19 +35,19 @@ contracten as (
         medewerker_id,
         contract_id,
         contracttype_naam,
-        contract_startdatum,
-        contract_einddatum,
+        startdatum_contract,
+        einddatum_contract,
         normtijd_uren_per_week,
         variabele_uren_per_week,
         row_number() over (
             partition by medewerker_id
             order by
                 case
-                    when contract_einddatum is null
-                      or contract_einddatum >= cast(getdate() as date)
+                    when einddatum_contract is null
+                      or einddatum_contract >= cast(getdate() as date)
                     then 0 else 1
                 end,
-                contract_startdatum desc
+                startdatum_contract desc
         ) as rn
 
     from {{ ref('int_medewerkers_met_contracten') }}
@@ -68,8 +68,8 @@ definitief as (
 
         -- Actief vlag (1 = heeft actief contract vandaag)
         case
-            when contracten.contract_einddatum is null
-              or contracten.contract_einddatum >= cast(getdate() as date)
+            when contracten.einddatum_contract is null
+              or contracten.einddatum_contract >= cast(getdate() as date)
             then 1 else 0
         end as is_actief,
 
@@ -78,8 +78,8 @@ definitief as (
 
         -- Contract (meest recent, bij voorkeur actief)
         contracten.contracttype_naam                    as contracttype,
-        contracten.contract_startdatum,
-        contracten.contract_einddatum,
+        contracten.startdatum_contract,
+        contracten.einddatum_contract,
         contracten.normtijd_uren_per_week,
         contracten.variabele_uren_per_week,
 

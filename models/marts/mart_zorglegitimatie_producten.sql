@@ -48,8 +48,8 @@ definitief as (
         -- Legitimatie-context
         zorglegitimaties.zorglegitimatie_type,
         zorglegitimaties.legitimatienummer,
-        zorglegitimaties.startdatum                                 as legitimatie_startdatum,
-        zorglegitimaties.einddatum                                  as legitimatie_einddatum,
+        zorglegitimaties.startdatum                                 as startdatum_legitimatie,
+        zorglegitimaties.einddatum                                  as einddatum_legitimatie,
 
         -- Client
         zorglegitimaties.client_id,

@@ -24,8 +24,8 @@ definitief as (
         medewerkers.achternaam,
         teams.team_id,
         teams.teamnaam,
-        teamkoppelingen.startdatum  as teamkoppeling_startdatum,
-        teamkoppelingen.einddatum   as teamkoppeling_einddatum
+        teamkoppelingen.startdatum  as startdatum_teamkoppeling,
+        teamkoppelingen.einddatum   as einddatum_teamkoppeling
 
     from medewerkers
     inner join teamkoppelingen

@@ -23,8 +23,8 @@ wachtlijst_clienten as (
         locatie_id    as wachtlijst_locatie_id,
         locatienaam   as wachtlijst_locatienaam,
         niveau3       as wachtlijst_niveau3,
-        startdatum    as wachtlijst_startdatum,
-        einddatum     as wachtlijst_einddatum,
+        startdatum    as startdatum_wachtlijst,
+        einddatum     as einddatum_wachtlijst,
         case
             when einddatum is null or einddatum >= cast(getdate() as date)
             then 1 else 0
@@ -72,8 +72,8 @@ definitief as (
         wl.wachtlijst_locatie_id,
         wl.wachtlijst_locatienaam,
         wl.wachtlijst_niveau3,
-        wl.wachtlijst_startdatum,
-        wl.wachtlijst_einddatum,
+        wl.startdatum_wachtlijst,
+        wl.einddatum_wachtlijst,
 
         -- Huidige producten (1/0 per locatiecluster)
         max(case when ak.cluster = N'Ambulant'               then 1 else 0 end) as ambulant,
@@ -104,8 +104,8 @@ definitief as (
         wl.wachtlijst_locatie_id,
         wl.wachtlijst_locatienaam,
         wl.wachtlijst_niveau3,
-        wl.wachtlijst_startdatum,
-        wl.wachtlijst_einddatum
+        wl.startdatum_wachtlijst,
+        wl.einddatum_wachtlijst
 
 )
 

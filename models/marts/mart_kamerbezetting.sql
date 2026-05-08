@@ -15,8 +15,8 @@ kamers as (
         end                     as kamertype,
         ouder_locatie_id,
         capaciteit,
-        startdatum              as kamer_startdatum,
-        einddatum               as kamer_einddatum,
+        startdatum              as startdatum_kamer,
+        einddatum               as einddatum_kamer,
         is_actief               as is_actieve_kamer
 
     from locaties
@@ -54,8 +54,8 @@ definitief as (
         kamers.kamernaam,
         kamers.kamertype,
         kamers.capaciteit,
-        kamers.kamer_startdatum,
-        kamers.kamer_einddatum,
+        kamers.startdatum_kamer,
+        kamers.einddatum_kamer,
         kamers.is_actieve_kamer,
 
         -- Ouderlocatie

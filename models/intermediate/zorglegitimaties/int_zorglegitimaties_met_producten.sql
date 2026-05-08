@@ -17,14 +17,14 @@ definitief as (
         zorglegitimaties.client_id,
         zorglegitimaties.zorglegitimatie_type,
         zorglegitimaties.legitimatienummer,
-        zorglegitimaties.startdatum             as legitimatie_startdatum,
-        zorglegitimaties.einddatum              as legitimatie_einddatum,
+        zorglegitimaties.startdatum             as startdatum_legitimatie,
+        zorglegitimaties.einddatum              as einddatum_legitimatie,
         zorglegitimaties.team_id,
         zorglegitimatieproducten.zorglegitimatie_product_id,
         zorglegitimatieproducten.product_id,
         zorglegitimatieproducten.hoeveelheid_in_minuten,
-        zorglegitimatieproducten.startdatum     as product_startdatum,
-        zorglegitimatieproducten.einddatum      as product_einddatum
+        zorglegitimatieproducten.startdatum     as startdatum_product,
+        zorglegitimatieproducten.einddatum      as einddatum_product
 
     from zorglegitimaties
     left join zorglegitimatieproducten

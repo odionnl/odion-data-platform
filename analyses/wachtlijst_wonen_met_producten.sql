@@ -15,8 +15,8 @@ select
     wl.wachtlijst_locatie_id,
     wl.wachtlijst_locatienaam,
     wl.wachtlijst_niveau3,
-    wl.wachtlijst_startdatum,
-    wl.wachtlijst_einddatum,
+    wl.startdatum_wachtlijst,
+    wl.einddatum_wachtlijst,
 
     wl.ambulant,
     wl.dagbesteding,
@@ -36,4 +36,4 @@ where wl.wachtlijst_niveau3 in (N'LG (Wachtlijst)', N'VG (Wachtlijst)')
 
 order by
     wl.wachtlijst_locatienaam,
-    wl.wachtlijst_startdatum
+    wl.startdatum_wachtlijst

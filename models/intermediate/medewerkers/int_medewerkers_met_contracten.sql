@@ -24,8 +24,8 @@ definitief as (
         medewerkers.achternaam,
         contracten.contract_id,
         contracttypes.contracttype_naam,
-        contracten.startdatum           as contract_startdatum,
-        contracten.einddatum            as contract_einddatum,
+        contracten.startdatum           as startdatum_contract,
+        contracten.einddatum            as einddatum_contract,
         contracten.normtijd_uren_per_week,
         contracten.variabele_uren_per_week
 
