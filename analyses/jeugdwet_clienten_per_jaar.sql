@@ -9,45 +9,61 @@
 -- (ten tijde van de zorglegitimatie). Cliënten zonder geboortedatum worden
 -- uitgesloten.
 
-with legitimaties as (
+-- TODO: cijfers dubbelchecken (afwijkend van zorgmonitor)
 
-    select
-        legit.client_id,
-        legit.startdatum,
-        legit.einddatum
-    from {{ ref('mart_zorglegitimaties') }} as legit
-    inner join {{ ref('stg_onsdb__clients') }} as cli
+with
+    legitimaties
+    as
+    (
+
+        select
+            legit.client_id,
+            legit.startdatum,
+            legit.einddatum
+        from {{ ref
+    ('mart_zorglegitimaties') }} as legit
+    inner join {{ ref
+('stg_onsdb__clients') }} as cli
         on cli.client_id = legit.client_id
     where legit.financieringstype_naam = 'Jeugdwet'
       and cli.geboortedatum is not null
-      and legit.startdatum < dateadd(year, 18, cli.geboortedatum)
+      and legit.startdatum < dateadd
+(year, 18, cli.geboortedatum)
 
 ),
 
-jaren as (
+jaren as
+(
 
     select 2021 as jaar
-    union all select 2022
-    union all select 2023
-    union all select 2024
-    union all select 2025
-    union all select 2026
+union all
+    select 2022
+union all
+    select 2023
+union all
+    select 2024
+union all
+    select 2025
+union all
+    select 2026
 
-),
+)
+,
 
-overlap as (
+overlap as
+(
 
     select
-        jaren.jaar,
-        legitimaties.client_id
-    from jaren
+    jaren.jaar,
+    legitimaties.client_id
+from jaren
     inner join legitimaties
-        on legitimaties.startdatum <= datefromparts(jaren.jaar, 12, 31)
-       and (
+    on legitimaties.startdatum <= datefromparts(jaren.jaar, 12, 31)
+        and (
                 legitimaties.einddatum is null
-             or legitimaties.einddatum >= datefromparts(jaren.jaar, 1, 1)
+        or legitimaties.einddatum >= datefromparts(jaren.jaar, 1, 1)
            )
-    where jaren.jaar <= year(cast(getdate() as date))
+where jaren.jaar <= year(cast(getdate() as date))
 
 )
 
