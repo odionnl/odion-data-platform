@@ -105,7 +105,7 @@ Regel: gebruik altijd `GETDATE()` direct — **geen** dbt-variabelen of macros v
 
 - Geen soft-delete kolom (`deletedAt`) op de tabellen die we gebruiken — gebruik datumfilters
 - `care_allocations` bevat: `outOfCareReason`, `outOfCareDestination`, `comments`
-- `finance_types` bevat: `id`, `description`, `category`, `financeTypeGroup`, `beginDate`, `endDate`
+- `finance_types` bevat: `id`, `description`, `category`, `beginDate`, `endDate` (`financeTypeGroup` bestaat wel in de bron, maar gebruiken we niet)
 - `clients` bevat: `dateOfBirth`, geen `deletedAt`
 
 ## Documentatiestructuur

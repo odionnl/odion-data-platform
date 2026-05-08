@@ -11,7 +11,6 @@ definitief as (
         id                  as financieringstype_code,
         description         as financieringstype_naam,
         category            as categorie,
-        financeTypeGroup    as financieringsgroep,
         beginDate           as startdatum,
         endDate             as einddatum,
         createdAt           as aangemaakt_op,

@@ -115,8 +115,6 @@ models:
         description: "Verwijzing naar het financieringstype"
       - name: financieringstype_naam
         description: "Naam van het financieringstype (bijv. ZZP, WMO, Jeugdwet)"
-      - name: financieringsgroep
-        description: "Groep van het financieringstype"
       - name: debiteur_id
         description: "Verwijzing naar de debiteur"
       - name: uitsluiten_van_facturatie

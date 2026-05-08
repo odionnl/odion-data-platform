@@ -799,8 +799,6 @@ models:
         description: "Naam / omschrijving van het financieringstype"
       - name: categorie
         description: "Categorie van het financieringstype"
-      - name: financieringsgroep
-        description: "Groepering van financieringstypes (financeTypeGroup)"
       - name: startdatum
         description: "Datum waarop het financieringstype geldig werd"
       - name: einddatum

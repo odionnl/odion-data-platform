@@ -53,7 +53,6 @@ definitief as (
         -- Financiering
         zorglegitimaties.financieringstype_id,
         financieringstypen.financieringstype_naam,
-        financieringstypen.financieringsgroep,
 
         -- Debiteur
         zorglegitimaties.debiteur_id,
