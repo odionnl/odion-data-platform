@@ -20,11 +20,11 @@ hoofdlocatie as (
             partition by client_id
             order by
                 case
-                    when locatie_einddatum is null
-                      or locatie_einddatum >= cast(getdate() as date)
+                    when einddatum_locatie is null
+                      or einddatum_locatie >= cast(getdate() as date)
                     then 0 else 1
                 end,
-                locatie_startdatum desc
+                startdatum_locatie desc
         ) as rn
 
     from {{ ref('int_clienten_met_locaties') }}

@@ -42,9 +42,9 @@ select
     l.niveau2,
     l.niveau3,
     l.niveau4,
-    wl.wachtlijst_startdatum,
-    wl.wachtlijst_einddatum,
-    datediff(month, wl.wachtlijst_startdatum, getdate()) as wachtduur_maanden,
+    wl.startdatum_wachtlijst,
+    wl.einddatum_wachtlijst,
+    datediff(month, wl.startdatum_wachtlijst, getdate()) as wachtduur_maanden,
 
     wl.ambulant,
     wl.dagbesteding,

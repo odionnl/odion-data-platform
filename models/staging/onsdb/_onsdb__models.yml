@@ -242,13 +242,13 @@ models:
       - name: legitimatienummer
         description: "Nummer van de zorglegitimatie"
       - name: startdatum
-        description: "startdatum van de zorglegitimatie"
+        description: "Effectieve ingangsdatum van de zorglegitimatie, geknipt op andere zorglegitimaties (beginDateClipped)"
       - name: einddatum
-        description: "Einddatum van de zorglegitimatie"
-      - name: ingangsdatum_geldig
-        description: "Ingangsdatum rekening houdend met andere zorglegitimaties"
-      - name: einddatum_geldig
-        description: "Einddatum geldigheid rekening houdend met andere zorglegitimaties"
+        description: "Effectieve einddatum van de zorglegitimatie, geknipt op andere zorglegitimaties (endDateClipped)"
+      - name: startdatum_origineel
+        description: "Administratief ingevoerde startdatum, vóór overlap-correctie (beginDate)"
+      - name: einddatum_origineel
+        description: "Administratief ingevoerde einddatum, vóór overlap-correctie (endDate)"
 
   - name: stg_onsdb__products
     description: "Productdefinities met code en omschrijving."

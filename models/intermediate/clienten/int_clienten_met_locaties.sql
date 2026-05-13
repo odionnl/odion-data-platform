@@ -26,8 +26,8 @@ definitief as (
         locaties.locatie_id,
         locaties.locatienaam,
         locaties.is_intramuraal,
-        locatiekoppelingen.startdatum   as locatie_startdatum,
-        locatiekoppelingen.einddatum    as locatie_einddatum,
+        locatiekoppelingen.startdatum   as startdatum_locatie,
+        locatiekoppelingen.einddatum    as einddatum_locatie,
         locatiekoppelingen.type_toekenning
 
     from clienten

@@ -100,13 +100,13 @@ models:
       - name: legitimatienummer
         description: "Nummer van de zorglegitimatie"
       - name: startdatum
-        description: "Startdatum van de zorglegitimatie"
+        description: "Effectieve startdatum van de zorglegitimatie, geknipt op overlap met andere zorglegitimaties (beginDateClipped)"
       - name: einddatum
-        description: "Einddatum van de zorglegitimatie"
-      - name: ingangsdatum_geldig
-        description: "Geclipte startdatum (overlap-correctie)"
-      - name: einddatum_geldig
-        description: "Geclipte einddatum (overlap-correctie)"
+        description: "Effectieve einddatum van de zorglegitimatie, geknipt op overlap met andere zorglegitimaties (endDateClipped)"
+      - name: startdatum_origineel
+        description: "Administratief ingevoerde startdatum, vóór overlap-correctie (beginDate)"
+      - name: einddatum_origineel
+        description: "Administratief ingevoerde einddatum, vóór overlap-correctie (endDate)"
       - name: client_id
         description: "Verwijzing naar de client"
       - name: client_naam
@@ -142,25 +142,25 @@ models:
       - name: hoeveelheid_in_minuten
         description: "Aantal minuten van het product"
       - name: startdatum
-        description: "Startdatum van het product"
+        description: "Effectieve startdatum van het product, geknipt op overlap met andere zorglegitimaties (beginDateClipped)"
       - name: einddatum
-        description: "Einddatum van het product"
-      - name: ingangsdatum_geldig
-        description: "Geclipte startdatum (overlap-correctie)"
-      - name: einddatum_geldig
-        description: "Geclipte einddatum (overlap-correctie)"
-      - name: awbz_klasse_id
-        description: "Verwijzing naar de AWBZ-klasse"
+        description: "Effectieve einddatum van het product, geknipt op overlap met andere zorglegitimaties (endDateClipped)"
+      - name: startdatum_origineel
+        description: "Administratief ingevoerde startdatum van het product, vóór overlap-correctie (beginDate)"
+      - name: einddatum_origineel
+        description: "Administratief ingevoerde einddatum van het product, vóór overlap-correctie (endDate)"
       - name: zorglegitimatie_type
         description: "Type van de bijbehorende zorglegitimatie"
       - name: legitimatienummer
         description: "Nummer van de bijbehorende zorglegitimatie"
-      - name: legitimatie_startdatum
+      - name: startdatum_legitimatie
         description: "Startdatum van de bijbehorende zorglegitimatie"
-      - name: legitimatie_einddatum
+      - name: einddatum_legitimatie
         description: "Einddatum van de bijbehorende zorglegitimatie"
       - name: client_id
         description: "Verwijzing naar de client"
+      - name: clientnummer
+        description: "Extern clientnummer (identificationNo)"
       - name: client_naam
         description: "Volledige naam van de client (roepnaam + voorvoegsel + achternaam)"
       - name: financieringstype_naam
@@ -224,9 +224,9 @@ models:
         description: "Afgeleid uit de kamernaam: 'Logeren' als de naam '(logeer)' bevat, anders 'Wonen'"
       - name: capaciteit
         description: "Capaciteit van de kamer"
-      - name: kamer_startdatum
+      - name: startdatum_kamer
         description: "Datum waarop de kamer actief werd"
-      - name: kamer_einddatum
+      - name: einddatum_kamer
         description: "Datum waarop de kamer inactief werd (NULL = nog actief)"
       - name: is_actieve_kamer
         description: "1 als de kamer vandaag actief is, anders 0"
@@ -508,9 +508,9 @@ models:
         description: "1 als de client een zorgplan met status 'Actief' heeft, anders 0"
       - name: actief_zorgplan_geldigheid
         description: "Geldigheid van het actieve zorgplan: 'Geldig', 'Verlopen', 'Nog niet gestart' of 'Geen' (geen Actief zorgplan aanwezig)"
-      - name: actief_zorgplan_startdatum
+      - name: startdatum_actief_zorgplan
         description: "Startdatum van het actieve zorgplan (null als er geen Actief zorgplan is)"
-      - name: actief_zorgplan_einddatum
+      - name: einddatum_actief_zorgplan
         description: "Einddatum van het actieve zorgplan (null = open einde of geen Actief zorgplan)"
       - name: actief_zorgplan_geldigheidsduur_weken
         description: "Geldigheidsduur van het actieve zorgplan in hele weken (einddatum − startdatum, integer-deling door 7). Null als er geen actief zorgplan is of als de einddatum ontbreekt (open einde)."
@@ -520,9 +520,9 @@ models:
         description: "1 als het actieve zorgplan verlopen is én de einddatum meer dan 56 dagen (8 weken) geleden is, 0 anders. Null als er geen actief zorgplan is."
       - name: concept_zorgplan_aanwezig
         description: "1 als de client een zorgplan met status 'Concept' heeft, anders 0"
-      - name: concept_zorgplan_startdatum
+      - name: startdatum_concept_zorgplan
         description: "Startdatum van het concept-zorgplan (null als er geen concept is)"
-      - name: concept_zorgplan_einddatum
+      - name: einddatum_concept_zorgplan
         description: "Einddatum van het concept-zorgplan (null = open einde of geen concept)"
       - name: concept_zorgplan_laatst_gewijzigd
         description: "Tijdstip van de laatste wijziging aan het concept-zorgplan (null als er geen concept is)"
@@ -814,9 +814,9 @@ models:
         description: "Naam van de wachtlijstlocatie"
       - name: wachtlijst_niveau3
         description: "Niveau 3 in de locatiehiërarchie van de wachtlijstlocatie"
-      - name: wachtlijst_startdatum
+      - name: startdatum_wachtlijst
         description: "Startdatum van de wachtlijstkoppeling"
-      - name: wachtlijst_einddatum
+      - name: einddatum_wachtlijst
         description: "Einddatum van de wachtlijstkoppeling (null = nog actief)"
       - name: ambulant
         description: "1 als cliënt een actieve Ambulant-koppeling heeft"

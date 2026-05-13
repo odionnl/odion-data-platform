@@ -82,8 +82,8 @@ definitief as (
         -- Actief zorgplan
         case when az.client_id is not null then 1 else 0 end as actief_zorgplan_aanwezig,
         coalesce(az.geldigheid, 'Geen') as actief_zorgplan_geldigheid,
-        az.startdatum                   as actief_zorgplan_startdatum,
-        az.einddatum                    as actief_zorgplan_einddatum,
+        az.startdatum                   as startdatum_actief_zorgplan,
+        az.einddatum                    as einddatum_actief_zorgplan,
         case
             when az.einddatum is null then null
             else datediff(day, az.startdatum, az.einddatum) / 7
@@ -104,8 +104,8 @@ definitief as (
 
         -- Concept zorgplan
         case when cz.client_id is not null then 1 else 0 end as concept_zorgplan_aanwezig,
-        cz.startdatum                   as concept_zorgplan_startdatum,
-        cz.einddatum                    as concept_zorgplan_einddatum,
+        cz.startdatum                   as startdatum_concept_zorgplan,
+        cz.einddatum                    as einddatum_concept_zorgplan,
         cz.gewijzigd_op                 as concept_zorgplan_laatst_gewijzigd,
         case
             when cz.client_id is null                                         then null

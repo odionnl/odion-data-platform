@@ -41,18 +41,18 @@ definitief as (
         producten.hoeveelheid_in_minuten,
         producten.startdatum,
         producten.einddatum,
-        producten.ingangsdatum_geldig,
-        producten.einddatum_geldig,
-        producten.awbz_klasse_id,
+        producten.startdatum_origineel,
+        producten.einddatum_origineel,
 
         -- Legitimatie-context
         zorglegitimaties.zorglegitimatie_type,
         zorglegitimaties.legitimatienummer,
-        zorglegitimaties.startdatum                                 as legitimatie_startdatum,
-        zorglegitimaties.einddatum                                  as legitimatie_einddatum,
+        zorglegitimaties.startdatum                                 as startdatum_legitimatie,
+        zorglegitimaties.einddatum                                  as einddatum_legitimatie,
 
         -- Client
         zorglegitimaties.client_id,
+        clienten.clientnummer,
         clienten.clientnaam                                         as client_naam,
 
         -- Financiering
