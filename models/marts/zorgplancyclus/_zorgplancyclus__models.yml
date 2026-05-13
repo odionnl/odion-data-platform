@@ -85,3 +85,43 @@ models:
           'Concept' (geen Actueel, wel Concept),
           'Gearchiveerd' (alleen Gearchiveerd),
           'Geen' (geen enkele Levensloop-vragenlijst voltooid).
+
+  - name: mart_zorgplan_verantwoording_per_client
+    description: >
+      Zorgplan-verantwoording-status per cliënt in zorg (snapshot vandaag).
+      Eén rij per cliënt uit mart_clienten_actueel, met aantallen vragenlijsten
+      "Zorgplan, welke keuzes hebben we gemaakt?" per status (Actueel /
+      Concept / Gearchiveerd) en een samenvattende categorie. Een Actuele
+      vragenlijst die meer dan 1 jaar niet is bijgewerkt (gewijzigd_op > 1 jaar
+      geleden) krijgt categorie 'Verlopen'. Geen doelgroep-filter — alle
+      cliënten in zorg.
+    columns:
+      - name: client_id
+        description: "Unieke identifier van de cliënt"
+        tests: [unique, not_null]
+      - name: clientnummer
+        description: "Extern cliëntnummer (identificationNo) uit ONS"
+      - name: clientnaam
+        description: "Volledige naam van de cliënt"
+      - name: hoofdlocatie_id
+        description: "Locatie-ID van de huidige hoofdlocatie (type MAIN)"
+      - name: hoofdlocatienaam
+        description: "Naam van de huidige hoofdlocatie"
+      - name: hoofdlocatienaam_niveau4
+        description: "Niveau4-naam van de hoofdlocatie (ancestor in int_locatie_hierarchie; null als de hoofdlocatie boven niveau 4 hangt)"
+      - name: aantal_zorgplan_verantwoording_actueel
+        description: "Aantal vragenlijsten met status 'Actueel' (0 als er geen zijn)"
+      - name: aantal_zorgplan_verantwoording_concept
+        description: "Aantal vragenlijsten met status 'Concept' (0 als er geen zijn)"
+      - name: aantal_zorgplan_verantwoording_gearchiveerd
+        description: "Aantal vragenlijsten met status 'Gearchiveerd' (0 als er geen zijn)"
+      - name: laatst_bijgewerkt_actueel
+        description: "Tijdstip van de laatste wijziging (gewijzigd_op) op een Actuele vragenlijst (null als er geen Actuele is). Sleutel voor de 'Verlopen'-categorie (> 1 jaar geleden)."
+      - name: zorgplan_verantwoording_status
+        description: >
+          Samenvattende categorie:
+          'Actueel' (minstens één Actueel, binnen 1 jaar bijgewerkt),
+          'Verlopen' (Actueel maar laatst bijgewerkt > 1 jaar geleden),
+          'Concept' (geen Actueel, wel Concept),
+          'Gearchiveerd' (alleen Gearchiveerd),
+          'Geen' (geen enkele vragenlijst voltooid).

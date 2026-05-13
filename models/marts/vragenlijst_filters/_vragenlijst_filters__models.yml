@@ -46,3 +46,15 @@ models:
       - name: vragenlijst_resultaat_id
         description: "Unieke identifier van de ingevulde vragenlijst"
         tests: [unique, not_null]
+
+  - name: mart_vragenlijst_resultaten_zorgplan_verantwoording
+    description: >
+      Ingevulde vragenlijsten met titel "Zorgplan, welke keuzes hebben we gemaakt?".
+      Gefilterde subset van mart_vragenlijst_resultaten (vragenlijst_titel =
+      'Zorgplan, welke keuzes hebben we gemaakt?'). Gematerialiseerd als view;
+      kolommen en betekenis zijn identiek aan mart_vragenlijst_resultaten.
+      Eén rij per ingevulde vragenlijst.
+    columns:
+      - name: vragenlijst_resultaat_id
+        description: "Unieke identifier van de ingevulde vragenlijst"
+        tests: [unique, not_null]
