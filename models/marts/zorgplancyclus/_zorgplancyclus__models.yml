@@ -125,6 +125,20 @@ models:
           'Verlopen' (Actief plan met geldigheid 'Verlopen'),
           'Concept' (geen Actief plan, wel een Concept),
           'Geen' (geen Actief en geen Concept zorgplan).
+      - name: ondersteuningsvragen_gearchiveerd
+        description: >
+          Check op vragenlijst-administratie. 'Ja' als er geen Actuele of Concept
+          versie van "Ondersteuningsvragen voor volwassenen" meer aanwezig is.
+          'Nee' als er nog wel een Actuele/Concept versie open staat.
+          'Niet van toepassing' als de check niet relevant is (zorgplan_versie
+          niet 'Nieuw' of zorgplan_status niet 'Actueel').
+      - name: persoonsbeeld_gearchiveerd
+        description: >
+          Check op vragenlijst-administratie. 'Ja' als er geen Actuele of Concept
+          versie van "Persoonsbeeld, bejegening, signaleringsplan" meer aanwezig
+          is. 'Nee' als er nog wel een Actuele/Concept versie open staat.
+          'Niet van toepassing' als de check niet relevant is (zorgplan_versie
+          niet 'Nieuw' of zorgplan_status niet 'Actueel').
 
   - name: mart_zorgplan_verantwoording_per_client
     description: >

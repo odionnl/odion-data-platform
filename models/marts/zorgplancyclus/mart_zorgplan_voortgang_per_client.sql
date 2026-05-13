@@ -5,6 +5,11 @@
 --     het Actuele zorgplan, met fallback naar Concept als er geen Actueel is
 --   - zorgplan_status (Actueel/Concept/Verlopen/Geen) op basis van
 --     status_omschrijving + geldigheid van het Actuele en Concept zorgplan
+--   - Twee 'gearchiveerd'-checks voor oude vragenlijsten:
+--     ondersteuningsvragen_gearchiveerd en persoonsbeeld_gearchiveerd.
+--     Waarde 'Ja'/'Nee' wanneer zorgplan_versie='Nieuw' en
+--     zorgplan_status='Actueel'; 'Niet van toepassing' anders.
+--     'Ja' = geen Actuele of Concept versie van de vragenlijst meer aanwezig.
 -- Invariant: een cliënt heeft maximaal 1 Actief en maximaal 1 Concept zorgplan.
 
 with clienten as (
@@ -49,6 +54,28 @@ concept_zorgplan as (
 
 ),
 
+ondersteuningsvragen_per_client as (
+
+    -- Aantal niet-gearchiveerde versies (status in Actueel of Concept)
+    select
+        client_id,
+        sum(case when status in ('Actueel', 'Concept') then 1 else 0 end) as aantal_niet_gearchiveerd
+    from {{ ref('mart_vragenlijst_resultaten_ondersteuningsvragen_volwassenen') }}
+    group by client_id
+
+),
+
+persoonsbeeld_per_client as (
+
+    -- Aantal niet-gearchiveerde versies (status in Actueel of Concept)
+    select
+        client_id,
+        sum(case when status in ('Actueel', 'Concept') then 1 else 0 end) as aantal_niet_gearchiveerd
+    from {{ ref('mart_vragenlijst_resultaten_persoonsbeeld_bejegening_signaleringsplan') }}
+    group by client_id
+
+),
+
 definitief as (
 
     select
@@ -71,7 +98,11 @@ definitief as (
             when az.geldigheid = 'Verlopen'                       then 'Verlopen'
             when cz.client_id is not null                         then 'Concept'
             else 'Geen'
-        end as zorgplan_status
+        end as zorgplan_status,
+
+        -- Tellingen voor de check (intern, niet in output)
+        coalesce(ov.aantal_niet_gearchiveerd, 0) as ov_niet_gearchiveerd,
+        coalesce(pb.aantal_niet_gearchiveerd, 0) as pb_niet_gearchiveerd
 
     from clienten c
     left join locatie_hierarchie lh
@@ -80,7 +111,34 @@ definitief as (
         on az.client_id = c.client_id
     left join concept_zorgplan cz
         on cz.client_id = c.client_id
+    left join ondersteuningsvragen_per_client ov
+        on ov.client_id = c.client_id
+    left join persoonsbeeld_per_client pb
+        on pb.client_id = c.client_id
 
 )
 
-select * from definitief
+select
+    client_id,
+    clientnummer,
+    clientnaam,
+    hoofdlocatie_id,
+    hoofdlocatienaam,
+    hoofdlocatienaam_niveau4,
+    zorgplan_versie,
+    zorgplan_status,
+
+    -- Check alleen relevant bij Nieuw + Actueel zorgplan
+    case
+        when zorgplan_versie = 'Nieuw' and zorgplan_status = 'Actueel'
+            then case when ov_niet_gearchiveerd = 0 then 'Ja' else 'Nee' end
+        else 'Niet van toepassing'
+    end as ondersteuningsvragen_gearchiveerd,
+
+    case
+        when zorgplan_versie = 'Nieuw' and zorgplan_status = 'Actueel'
+            then case when pb_niet_gearchiveerd = 0 then 'Ja' else 'Nee' end
+        else 'Niet van toepassing'
+    end as persoonsbeeld_gearchiveerd
+
+from definitief
