@@ -91,6 +91,41 @@ models:
           'Gearchiveerd' (alleen Gearchiveerd),
           'Geen' (geen enkele Levensloop-vragenlijst voltooid).
 
+  - name: mart_zorgplan_voortgang_per_client
+    description: >
+      Zorgplan-voortgang per cliënt in zorg (snapshot vandaag). Eén rij per
+      cliënt uit mart_clienten_actueel. Per cliënt de zorgplan_versie
+      (Nieuw/Oud/Mix/Leeg/Geen) en zorgplan_status (Actueel/Concept/Verlopen/Geen)
+      op basis van status_omschrijving + geldigheid van het Actuele en Concept
+      zorgplan. Invariant: maximaal 1 Actief en 1 Concept zorgplan per cliënt.
+    columns:
+      - name: client_id
+        description: "Unieke identifier van de cliënt"
+        tests: [unique, not_null]
+      - name: clientnummer
+        description: "Extern cliëntnummer (identificationNo) uit ONS"
+      - name: clientnaam
+        description: "Volledige naam van de cliënt"
+      - name: hoofdlocatie_id
+        description: "Locatie-ID van de huidige hoofdlocatie (type MAIN)"
+      - name: hoofdlocatienaam
+        description: "Naam van de huidige hoofdlocatie"
+      - name: hoofdlocatienaam_niveau4
+        description: "Niveau4-naam van de hoofdlocatie (ancestor in int_locatie_hierarchie; null als de hoofdlocatie boven niveau 4 hangt)"
+      - name: zorgplan_versie
+        description: >
+          Versie van het Actuele zorgplan op basis van de domeinen van de
+          zorgplanregels: 'Nieuw', 'Oud', 'Mix' of 'Leeg' (geen geldige regels).
+          Fallback naar het Concept zorgplan als er geen Actueel is.
+          'Geen' als de cliënt geen Actueel én geen Concept zorgplan heeft.
+      - name: zorgplan_status
+        description: >
+          Samenvattende status:
+          'Actueel' (Actief plan met geldigheid 'Geldig' of 'Nog niet gestart'),
+          'Verlopen' (Actief plan met geldigheid 'Verlopen'),
+          'Concept' (geen Actief plan, wel een Concept),
+          'Geen' (geen Actief en geen Concept zorgplan).
+
   - name: mart_zorgplan_verantwoording_per_client
     description: >
       Zorgplan-verantwoording-status per cliënt in zorg (snapshot vandaag).
