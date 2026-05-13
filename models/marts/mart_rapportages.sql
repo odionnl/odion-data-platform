@@ -158,7 +158,7 @@ definitief as (
         rap.rapportage_type_id,
         rt.rapportage_type,
         rap.rapportagedatum,
-        rap.status_code,
+        rap.status_code                                        as status,
         rap.is_gemarkeerd,
         rap.is_verborgen,
 

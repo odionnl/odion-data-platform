@@ -421,7 +421,7 @@ models:
         description: "Naam van het rapportage-type"
       - name: rapportagedatum
         description: "Datum van de rapportage"
-      - name: status_code
+      - name: status
         description: "Status van de rapportage (open/closed)"
       - name: is_gemarkeerd
         description: "1 als de medewerker de rapportage als belangrijk heeft gemarkeerd"
@@ -539,7 +539,7 @@ models:
     description: >
       Historisch overzicht van alle ingevulde vragenlijsten per cliënt.
       Bevat vragenlijsttitel, cliëntnaam, invullende medewerker, invuldatum en leesbare statusomschrijving.
-      Geen datumfilter — Power BI filtert op ingevuld_op. Eén rij per ingevulde vragenlijst.
+      Geen datumfilter — Power BI filtert op voltooid_op. Eén rij per ingevulde vragenlijst.
     columns:
       - name: vragenlijst_resultaat_id
         description: "Unieke identifier van de ingevulde vragenlijst"
@@ -556,16 +556,12 @@ models:
         description: "Volledige naam van de cliënt (voornaam + achternaam)"
       - name: medewerker_id
         description: "Verwijzing naar de medewerker die de vragenlijst heeft ingevuld"
-      - name: ingevuld_door
+      - name: medewerker_naam
         description: "Naam van de medewerker die de vragenlijst heeft ingevuld"
-      - name: ingevuld_op
+      - name: voltooid_op
         description: "Datum/tijd waarop de vragenlijst is ingevuld"
-      - name: status_code
-        description: "Ruwe statuscode van de ingevulde vragenlijst"
-      - name: status_omschrijving
-        description: "Leesbare statusomschrijving (via lst_vragenlijst_resultaat_statussen)"
-      - name: is_readonly
-        description: "1 als de vragenlijst afgesloten is voor verdere wijzigingen"
+      - name: status
+        description: "Leesbare status van de ingevulde vragenlijst (via lst_vragenlijst_resultaat_statussen)"
       - name: aangemaakt_op
         description: "Tijdstip van aanmaken"
       - name: gewijzigd_op
@@ -575,7 +571,7 @@ models:
     description: >
       Alle antwoorden op ingevulde vragenlijsten, verrijkt met vragenlijststructuur
       (categorie/groep), cliëntnaam, medewerker en statusomschrijving. Eén rij per antwoord.
-      Geen datumfilter — Power BI filtert op ingevuld_op.
+      Geen datumfilter — Power BI filtert op voltooid_op.
     columns:
       - name: vragenlijst_antwoord_id
         description: "Unieke identifier van het antwoord"
@@ -595,14 +591,12 @@ models:
         description: "Volledige naam van de cliënt (voornaam + achternaam)"
       - name: medewerker_id
         description: "Verwijzing naar de medewerker die de vragenlijst heeft ingevuld"
-      - name: ingevuld_door
+      - name: medewerker_naam
         description: "Naam van de medewerker die de vragenlijst heeft ingevuld"
-      - name: ingevuld_op
+      - name: voltooid_op
         description: "Datum/tijd waarop de vragenlijst is ingevuld"
-      - name: status_code
-        description: "Ruwe statuscode van de ingevulde vragenlijst"
-      - name: status_omschrijving
-        description: "Leesbare statusomschrijving (via lst_vragenlijst_resultaat_statussen)"
+      - name: status
+        description: "Leesbare status van de ingevulde vragenlijst (via lst_vragenlijst_resultaat_statussen)"
       - name: vragenlijst_categorie_id
         description: "Verwijzing naar de categorie binnen de vragenlijst"
       - name: categorie_titel
@@ -650,10 +644,35 @@ models:
   - name: mart_vragenlijst_antwoorden_intake_en_wachtlijst_3_0
     description: >
       Antwoorden op de vragenlijst "Intake en wachtlijst 3.0".
-      Gefilterde subset van mart_vragenlijst_antwoorden. Eén rij per antwoord.
+      Gefilterde subset van mart_vragenlijst_antwoorden (vragenlijst_titel =
+      'Intake en wachtlijst 3.0'). Gematerialiseerd als view; kolommen en
+      betekenis zijn identiek aan mart_vragenlijst_antwoorden. Eén rij per antwoord.
     columns:
       - name: vragenlijst_antwoord_id
         description: "Unieke identifier van het antwoord"
+        tests: [unique, not_null]
+
+  - name: mart_vragenlijst_antwoorden_integratief_persoonsbeeld
+    description: >
+      Antwoorden op de vragenlijst "Integratief persoonsbeeld".
+      Gefilterde subset van mart_vragenlijst_antwoorden (vragenlijst_titel =
+      'Integratief persoonsbeeld'). Gematerialiseerd als view; kolommen en
+      betekenis zijn identiek aan mart_vragenlijst_antwoorden. Eén rij per antwoord.
+    columns:
+      - name: vragenlijst_antwoord_id
+        description: "Unieke identifier van het antwoord"
+        tests: [unique, not_null]
+
+  - name: mart_vragenlijst_resultaten_integratief_persoonsbeeld
+    description: >
+      Ingevulde vragenlijsten met titel "Integratief persoonsbeeld".
+      Gefilterde subset van mart_vragenlijst_resultaten (vragenlijst_titel =
+      'Integratief persoonsbeeld'). Gematerialiseerd als view; kolommen en
+      betekenis zijn identiek aan mart_vragenlijst_resultaten.
+      Eén rij per ingevulde vragenlijst.
+    columns:
+      - name: vragenlijst_resultaat_id
+        description: "Unieke identifier van de ingevulde vragenlijst"
         tests: [unique, not_null]
 
   - name: mart_feitelijk_geleverde_zorg
@@ -698,9 +717,7 @@ models:
       - name: eindtijd
         description: "Eindtijd van de registratie"
       - name: status
-        description: "Statuscode: 0=Aanwezig, 1=Afwezig, 2=Aangemaakt, 3=No-show"
-      - name: status_omschrijving
-        description: "Leesbare omschrijving van de status"
+        description: "Leesbare status: Aanwezig, Afwezig, Aangemaakt of No-show"
       - name: is_gefiatteerd
         description: "1 als de registratie gefiatteerd (goedgekeurd) is"
       - name: client_id
@@ -749,9 +766,7 @@ models:
       - name: eindtijd
         description: "Eindtijd van de registratie"
       - name: status
-        description: "Statuscode: 0=Aanwezig, 1=Afwezig, 2=Aangemaakt, 3=No-show"
-      - name: status_omschrijving
-        description: "Leesbare omschrijving van de status"
+        description: "Leesbare status: Aanwezig, Afwezig, Aangemaakt of No-show"
       - name: is_gefiatteerd
         description: "1 als de registratie gefiatteerd (goedgekeurd) is"
       - name: activiteit_id

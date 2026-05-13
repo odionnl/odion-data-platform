@@ -119,8 +119,7 @@ definitief as (
         v.registratie_datum,
         v.starttijd,
         v.eindtijd,
-        v.status,
-        v.status_omschrijving,
+        v.status_omschrijving as status,
         v.is_gefiatteerd,
 
         -- Activiteit
