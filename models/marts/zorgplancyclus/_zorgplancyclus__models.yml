@@ -1,0 +1,36 @@
+version: 2
+
+models:
+  - name: mart_integratief_persoonsbeeld_per_client
+    description: >
+      IGB-status per cliënt in zorg (snapshot vandaag). Eén rij per cliënt uit
+      mart_clienten_actueel, met aantallen IGB-vragenlijsten per status
+      (Actueel / Concept / Gearchiveerd), de laatste Actuele IGB en een
+      samenvattende categorie.
+    columns:
+      - name: client_id
+        description: "Unieke identifier van de cliënt"
+        tests: [unique, not_null]
+      - name: clientnummer
+        description: "Extern cliëntnummer (identificationNo) uit ONS"
+      - name: clientnaam
+        description: "Volledige naam van de cliënt"
+      - name: hoofdlocatie_id
+        description: "Locatie-ID van de huidige hoofdlocatie (type MAIN)"
+      - name: hoofdlocatienaam
+        description: "Naam van de huidige hoofdlocatie"
+      - name: hoofdlocatienaam_niveau4
+        description: "Niveau4-naam van de hoofdlocatie (ancestor in int_locatie_hierarchie; null als de hoofdlocatie boven niveau 4 hangt)"
+      - name: aantal_igb_actueel
+        description: "Aantal IGB-vragenlijsten met status 'Actueel' (0 als er geen zijn)"
+      - name: aantal_igb_concept
+        description: "Aantal IGB-vragenlijsten met status 'Concept' (0 als er geen zijn)"
+      - name: aantal_igb_gearchiveerd
+        description: "Aantal IGB-vragenlijsten met status 'Gearchiveerd' (0 als er geen zijn)"
+      - name: igb_status
+        description: >
+          Samenvattende categorie:
+          'Actueel' (minstens één Actueel),
+          'Concept' (geen Actueel, wel Concept),
+          'Gearchiveerd' (alleen Gearchiveerd),
+          'Geen' (geen enkele IGB-vragenlijst voltooid).
