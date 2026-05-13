@@ -1,3 +1,5 @@
+{{ config(materialized='view') }}
+
 -- Alleen antwoorden op de vragenlijst "Intake en wachtlijst 3.0".
 
 select * from {{ ref('mart_vragenlijst_antwoorden') }}
