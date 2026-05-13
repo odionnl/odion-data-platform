@@ -3,10 +3,12 @@ version: 2
 models:
   - name: mart_integratief_persoonsbeeld_per_client
     description: >
-      IGB-status per cliënt in zorg (snapshot vandaag). Eén rij per cliënt uit
-      mart_clienten_actueel, met aantallen IGB-vragenlijsten per status
-      (Actueel / Concept / Gearchiveerd), de laatste Actuele IGB en een
-      samenvattende categorie.
+      IPB-status per cliënt in zorg (snapshot vandaag). Eén rij per cliënt uit
+      mart_clienten_actueel, met aantallen IPB-vragenlijsten per status
+      (Actueel / Concept / Gearchiveerd) en een samenvattende categorie.
+      IPB is alleen van toepassing voor cliënten met een actief product uit de
+      IPB-doelgroep (VG 5-8, LG 4-7, ZG aud 2-3, ZG vis 2-3); voor overige
+      cliënten is ipb_status 'Niet van toepassing'.
     columns:
       - name: client_id
         description: "Unieke identifier van de cliënt"
@@ -21,16 +23,19 @@ models:
         description: "Naam van de huidige hoofdlocatie"
       - name: hoofdlocatienaam_niveau4
         description: "Niveau4-naam van de hoofdlocatie (ancestor in int_locatie_hierarchie; null als de hoofdlocatie boven niveau 4 hangt)"
-      - name: aantal_igb_actueel
-        description: "Aantal IGB-vragenlijsten met status 'Actueel' (0 als er geen zijn)"
-      - name: aantal_igb_concept
-        description: "Aantal IGB-vragenlijsten met status 'Concept' (0 als er geen zijn)"
-      - name: aantal_igb_gearchiveerd
-        description: "Aantal IGB-vragenlijsten met status 'Gearchiveerd' (0 als er geen zijn)"
-      - name: igb_status
+      - name: actuele_productcodes
+        description: "Actieve productcodes van de cliënt, alfabetisch gesorteerd en gescheiden door ' | ' (null als er geen actieve producten zijn)"
+      - name: aantal_ipb_actueel
+        description: "Aantal IPB-vragenlijsten met status 'Actueel' (0 als er geen zijn)"
+      - name: aantal_ipb_concept
+        description: "Aantal IPB-vragenlijsten met status 'Concept' (0 als er geen zijn)"
+      - name: aantal_ipb_gearchiveerd
+        description: "Aantal IPB-vragenlijsten met status 'Gearchiveerd' (0 als er geen zijn)"
+      - name: ipb_status
         description: >
           Samenvattende categorie:
+          'Niet van toepassing' (geen actief product uit de IPB-doelgroep),
           'Actueel' (minstens één Actueel),
           'Concept' (geen Actueel, wel Concept),
           'Gearchiveerd' (alleen Gearchiveerd),
-          'Geen' (geen enkele IGB-vragenlijst voltooid).
+          'Geen' (geen enkele IPB-vragenlijst voltooid).
