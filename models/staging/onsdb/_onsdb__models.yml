@@ -963,7 +963,7 @@ models:
         tests: [not_null]
       - name: medewerker_id
         description: "Verwijzing naar de medewerker die de vragenlijst heeft ingevuld (employeeObjectId)"
-      - name: ingevuld_op
+      - name: voltooid_op
         description: "Datum waarop de vragenlijst is ingevuld (completedAt)"
       - name: status_code
         description: "Statuscode — resolv naar omschrijving via stg_onsdb__lst_vragenlijst_resultaat_statussen"

@@ -9,10 +9,10 @@ with
         select
             client_id,
             antwoord_tekst as indicatie,
-            ingevuld_op,
+            voltooid_op,
             row_number() over (
             partition by client_id
-            order by ingevuld_op desc
+            order by voltooid_op desc
         ) as rn
 
         from {{ ref
