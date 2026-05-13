@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: mart_feitelijk_geleverde_zorg
+    description: >
+      Verantwoording feitelijk geleverde zorg per client in zorg (snapshot vandaag).
+      Bevat checks op geldig zorgplan, recente rapportages, medicatietoediening en
+      zorgplaninzage, plus een totaalscore. Eén rij per client in zorg.
+    columns:
+      - name: client_id
+        description: "Unieke identifier van de client"
+        tests: [unique, not_null]
+      - name: client_naam
+        description: "Naam van de client (roepnaam + achternaam)"
+      - name: geldig_zorgplan
+        description: "1 als client een actief zorgplan heeft op peildatum, anders 0"
+      - name: recente_rapportages
+        description: "1 als client minstens 1 rapportage heeft in evaluatieperiode, anders 0"
+      - name: medicatie_toegediend
+        description: "1 als medicatie correct toegediend, 0 als niet, NULL als geen medicatie"
+      - name: zorgplan_ingezien
+        description: "1 als zorgplan ingezien door relevant zorgpersoneel op dezelfde locatie, anders 0"
+      - name: client_score
+        description: "Percentage score (0-100) over alle datapunten"
+      - name: peildatum
+        description: "Gebruikte peildatum voor de berekening"
+      - name: startdatum
+        description: "Begin van de evaluatieperiode (peildatum - 28 dagen)"
