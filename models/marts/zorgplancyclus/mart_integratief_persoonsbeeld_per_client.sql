@@ -1,8 +1,11 @@
 -- IPB-status per cliënt in zorg (snapshot vandaag).
 -- Grain: één rij per cliënt uit mart_clienten_actueel.
--- IPB is alleen van toepassing voor cliënten met een actief product uit de
--- IPB-doelgroep (VG 5-8, LG 4-7, ZG aud 2-3, ZG vis 2-3). Voor overige
--- cliënten is ipb_status 'Niet van toepassing'.
+-- IPB is van toepassing voor cliënten die voldoen aan minstens één van:
+--   - actief ZZP-product uit de IPB-doelgroep
+--     (VG 5-8, LG 4-7, ZG aud 2-3, ZG vis 2-3)
+--   - hoofdlocatie hangt onder niveau4 in de IPB-locatielijst
+--     (Dynamica ODC, Boomgaard ODC de, Gezinsbehandeling)
+-- Voor overige cliënten is ipb_status 'Niet van toepassing'.
 
 with clienten as (
 
@@ -48,14 +51,28 @@ actuele_productcodes_per_client as (
 
 ipb_van_toepassing as (
 
-    -- Cliënten met minstens één actief product uit de IPB-doelgroep
+    -- Via ZZP-product uit de IPB-doelgroep
     select distinct client_id
     from producten_actueel
-    where product_code in (
-        'VG 5', 'VG 6', 'VG 7', 'VG 8',
-        'LG 4', 'LG 5', 'LG 6', 'LG 7',
-        'ZG aud 2', 'ZG aud 3',
-        'ZG vis 2', 'ZG vis 3'
+    where financieringstype_product = 'Zorgzwaartepakket'
+      and product_code in (
+          'VG 5', 'VG 6', 'VG 7', 'VG 8',
+          'LG 4', 'LG 5', 'LG 6', 'LG 7',
+          'ZG aud 2', 'ZG aud 3',
+          'ZG vis 2', 'ZG vis 3'
+      )
+
+    union
+
+    -- Via hoofdlocatie (niveau4 in de IPB-locatielijst)
+    select c.client_id
+    from clienten c
+    inner join locatie_hierarchie lh
+        on lh.locatie_id = c.hoofdlocatie_id
+    where lh.niveau4 in (
+        'Dynamica ODC',
+        'Boomgaard ODC, de',
+        'Gezinsbehandeling'
     )
 
 ),
@@ -86,6 +103,9 @@ definitief as (
 
         -- Actuele producten
         pc.actuele_productcodes,
+
+        -- IPB-doelgroep
+        case when vt.client_id is not null then 1 else 0 end as ipb_van_toepassing,
 
         -- Aantallen per status
         coalesce(a.aantal_ipb_actueel, 0)      as aantal_ipb_actueel,

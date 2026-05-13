@@ -6,9 +6,11 @@ models:
       IPB-status per cliënt in zorg (snapshot vandaag). Eén rij per cliënt uit
       mart_clienten_actueel, met aantallen IPB-vragenlijsten per status
       (Actueel / Concept / Gearchiveerd) en een samenvattende categorie.
-      IPB is alleen van toepassing voor cliënten met een actief product uit de
-      IPB-doelgroep (VG 5-8, LG 4-7, ZG aud 2-3, ZG vis 2-3); voor overige
-      cliënten is ipb_status 'Niet van toepassing'.
+      IPB is van toepassing voor cliënten die voldoen aan minstens één van:
+      (a) actief ZZP-product uit de IPB-doelgroep (VG 5-8, LG 4-7,
+      ZG aud 2-3, ZG vis 2-3), of (b) hoofdlocatie onder niveau4 in de
+      IPB-locatielijst (Dynamica ODC, Boomgaard ODC de, Gezinsbehandeling).
+      Voor overige cliënten is ipb_status 'Niet van toepassing'.
     columns:
       - name: client_id
         description: "Unieke identifier van de cliënt"
@@ -25,6 +27,11 @@ models:
         description: "Niveau4-naam van de hoofdlocatie (ancestor in int_locatie_hierarchie; null als de hoofdlocatie boven niveau 4 hangt)"
       - name: actuele_productcodes
         description: "Actieve productcodes van de cliënt, alfabetisch gesorteerd en gescheiden door ' | ' (null als er geen actieve producten zijn)"
+      - name: ipb_van_toepassing
+        description: >
+          1 als IPB van toepassing is voor de cliënt (actief ZZP-product uit de
+          IPB-doelgroep óf hoofdlocatie onder een niveau4 uit de IPB-locatielijst),
+          anders 0.
       - name: aantal_ipb_actueel
         description: "Aantal IPB-vragenlijsten met status 'Actueel' (0 als er geen zijn)"
       - name: aantal_ipb_concept
@@ -34,7 +41,7 @@ models:
       - name: ipb_status
         description: >
           Samenvattende categorie:
-          'Niet van toepassing' (geen actief product uit de IPB-doelgroep),
+          'Niet van toepassing' (geen actief ZZP-product uit de IPB-doelgroep én geen hoofdlocatie in de IPB-locatielijst),
           'Actueel' (minstens één Actueel),
           'Concept' (geen Actueel, wel Concept),
           'Gearchiveerd' (alleen Gearchiveerd),
