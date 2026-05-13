@@ -1,5 +1,3 @@
-{{ config(materialized='view') }}
-
 -- Alleen ingevulde vragenlijsten met titel "Integratief persoonsbeeld".
 
 select * from {{ ref('mart_vragenlijst_resultaten') }}
