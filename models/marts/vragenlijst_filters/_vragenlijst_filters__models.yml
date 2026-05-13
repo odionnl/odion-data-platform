@@ -34,3 +34,15 @@ models:
       - name: vragenlijst_resultaat_id
         description: "Unieke identifier van de ingevulde vragenlijst"
         tests: [unique, not_null]
+
+  - name: mart_vragenlijst_resultaten_levensloop
+    description: >
+      Ingevulde vragenlijsten met titel "Levensloop".
+      Gefilterde subset van mart_vragenlijst_resultaten (vragenlijst_titel =
+      'Levensloop'). Gematerialiseerd als view; kolommen en betekenis zijn
+      identiek aan mart_vragenlijst_resultaten.
+      Eén rij per ingevulde vragenlijst.
+    columns:
+      - name: vragenlijst_resultaat_id
+        description: "Unieke identifier van de ingevulde vragenlijst"
+        tests: [unique, not_null]
