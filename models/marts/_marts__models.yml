@@ -100,13 +100,13 @@ models:
       - name: legitimatienummer
         description: "Nummer van de zorglegitimatie"
       - name: startdatum
-        description: "Startdatum van de zorglegitimatie"
+        description: "Effectieve startdatum van de zorglegitimatie, geknipt op overlap met andere zorglegitimaties (beginDateClipped)"
       - name: einddatum
-        description: "Einddatum van de zorglegitimatie"
-      - name: ingangsdatum_geldig
-        description: "Geclipte startdatum (overlap-correctie)"
-      - name: einddatum_geldig
-        description: "Geclipte einddatum (overlap-correctie)"
+        description: "Effectieve einddatum van de zorglegitimatie, geknipt op overlap met andere zorglegitimaties (endDateClipped)"
+      - name: startdatum_origineel
+        description: "Administratief ingevoerde startdatum, vóór overlap-correctie (beginDate)"
+      - name: einddatum_origineel
+        description: "Administratief ingevoerde einddatum, vóór overlap-correctie (endDate)"
       - name: client_id
         description: "Verwijzing naar de client"
       - name: client_naam
@@ -142,15 +142,13 @@ models:
       - name: hoeveelheid_in_minuten
         description: "Aantal minuten van het product"
       - name: startdatum
-        description: "Startdatum van het product"
+        description: "Effectieve startdatum van het product, geknipt op overlap met andere zorglegitimaties (beginDateClipped)"
       - name: einddatum
-        description: "Einddatum van het product"
-      - name: ingangsdatum_geldig
-        description: "Geclipte startdatum (overlap-correctie)"
-      - name: einddatum_geldig
-        description: "Geclipte einddatum (overlap-correctie)"
-      - name: awbz_klasse_id
-        description: "Verwijzing naar de AWBZ-klasse"
+        description: "Effectieve einddatum van het product, geknipt op overlap met andere zorglegitimaties (endDateClipped)"
+      - name: startdatum_origineel
+        description: "Administratief ingevoerde startdatum van het product, vóór overlap-correctie (beginDate)"
+      - name: einddatum_origineel
+        description: "Administratief ingevoerde einddatum van het product, vóór overlap-correctie (endDate)"
       - name: zorglegitimatie_type
         description: "Type van de bijbehorende zorglegitimatie"
       - name: legitimatienummer
@@ -161,6 +159,8 @@ models:
         description: "Einddatum van de bijbehorende zorglegitimatie"
       - name: client_id
         description: "Verwijzing naar de client"
+      - name: clientnummer
+        description: "Extern clientnummer (identificationNo)"
       - name: client_naam
         description: "Volledige naam van de client (roepnaam + voorvoegsel + achternaam)"
       - name: financieringstype_naam

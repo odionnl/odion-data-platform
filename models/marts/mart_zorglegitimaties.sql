@@ -43,8 +43,8 @@ definitief as (
         zorglegitimaties.legitimatienummer,
         zorglegitimaties.startdatum,
         zorglegitimaties.einddatum,
-        zorglegitimaties.ingangsdatum_geldig,
-        zorglegitimaties.einddatum_geldig,
+        zorglegitimaties.startdatum_origineel,
+        zorglegitimaties.einddatum_origineel,
 
         -- Client
         zorglegitimaties.client_id,
