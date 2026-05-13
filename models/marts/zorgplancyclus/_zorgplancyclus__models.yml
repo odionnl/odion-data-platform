@@ -77,6 +77,11 @@ models:
         description: "Aantal Levensloop-vragenlijsten met status 'Gearchiveerd' (0 als er geen zijn)"
       - name: laatst_bijgewerkt_actueel
         description: "Tijdstip van de laatste wijziging (gewijzigd_op) op een Actuele Levensloop (null als er geen Actuele is). Sleutel voor de 'Verlopen'-categorie (> 1 jaar geleden)."
+      - name: nieuwe_vragen_gevuld
+        description: >
+          1 als de cliënt op een Actuele Levensloop een gevuld tekst_antwoord heeft
+          op alle drie de 'nieuwe' vragen (praktische informatie, gebeurtenis met
+          invloed op dagelijks leven, palliatieve wensen). 0 anders.
       - name: levensloop_status
         description: >
           Samenvattende categorie:

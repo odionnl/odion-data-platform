@@ -39,6 +39,31 @@ levensloop_aggregaten as (
 
 ),
 
+nieuwe_vragen_per_client as (
+
+    -- Heeft de cliënt op een Actuele Levensloop een gevuld tekst_antwoord voor
+    -- elk van de drie 'nieuwe' vragen?
+    select
+        client_id,
+        max(case
+            when vraagtekst = 'Welke praktische informatie is belangrijk om te noteren?'
+            then 1 else 0
+        end) as heeft_praktische_info,
+        max(case
+            when vraagtekst = 'Is er sprake van een gebeurtenis die nu nog invloed heeft op het dagelijks leven van de cliënt?'
+            then 1 else 0
+        end) as heeft_gebeurtenis,
+        max(case
+            when vraagtekst = 'Heeft de cliënt wensen voor de palliatieve fase van het leven en de uitvaart?'
+            then 1 else 0
+        end) as heeft_palliatieve_wensen
+    from {{ ref('mart_vragenlijst_antwoorden_levensloop') }}
+    where status = 'Actueel'
+      and tekst_antwoord is not null
+    group by client_id
+
+),
+
 definitief as (
 
     select
@@ -59,6 +84,14 @@ definitief as (
         -- Laatste wijziging op een Actuele Levensloop
         a.laatst_bijgewerkt_actueel,
 
+        -- Drie 'nieuwe' vragen volledig ingevuld op Actuele Levensloop
+        case
+            when coalesce(nv.heeft_praktische_info, 0) = 1
+             and coalesce(nv.heeft_gebeurtenis, 0) = 1
+             and coalesce(nv.heeft_palliatieve_wensen, 0) = 1
+            then 1 else 0
+        end as nieuwe_vragen_gevuld,
+
         -- Samenvattende categorie
         case
             when coalesce(a.aantal_levensloop_actueel, 0) > 0
@@ -75,6 +108,8 @@ definitief as (
         on lh.locatie_id = c.hoofdlocatie_id
     left join levensloop_aggregaten a
         on a.client_id = c.client_id
+    left join nieuwe_vragen_per_client nv
+        on nv.client_id = c.client_id
 
 )
 

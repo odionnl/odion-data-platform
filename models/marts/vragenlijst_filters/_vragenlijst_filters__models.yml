@@ -47,6 +47,17 @@ models:
         description: "Unieke identifier van de ingevulde vragenlijst"
         tests: [unique, not_null]
 
+  - name: mart_vragenlijst_antwoorden_levensloop
+    description: >
+      Antwoorden op de vragenlijst "Levensloop".
+      Gefilterde subset van mart_vragenlijst_antwoorden (vragenlijst_titel =
+      'Levensloop'). Gematerialiseerd als view; kolommen en betekenis zijn
+      identiek aan mart_vragenlijst_antwoorden. Eén rij per antwoord.
+    columns:
+      - name: vragenlijst_antwoord_id
+        description: "Unieke identifier van het antwoord"
+        tests: [unique, not_null]
+
   - name: mart_vragenlijst_resultaten_zorgplan_verantwoording
     description: >
       Ingevulde vragenlijsten met titel "Zorgplan, welke keuzes hebben we gemaakt?".
