@@ -112,9 +112,9 @@ models:
       - name: client_naam
         description: "Volledige naam van de client (roepnaam + voorvoegsel + achternaam)"
       - name: financieringstype_id
-        description: "Verwijzing naar het financieringstype"
-      - name: financieringstype_naam
-        description: "Naam van het financieringstype (bijv. ZZP, WMO, Jeugdwet)"
+        description: "Verwijzing naar het financieringstype van de zorglegitimatie"
+      - name: financieringstype_legitimatie
+        description: "Naam van het financieringstype van de zorglegitimatie (bijv. ZZP, WMO, Jeugdwet)"
       - name: debiteur_id
         description: "Verwijzing naar de debiteur"
       - name: uitsluiten_van_facturatie
@@ -163,8 +163,10 @@ models:
         description: "Extern clientnummer (identificationNo)"
       - name: client_naam
         description: "Volledige naam van de client (roepnaam + voorvoegsel + achternaam)"
-      - name: financieringstype_naam
-        description: "Naam van het financieringstype (bijv. ZZP, WMO, Jeugdwet)"
+      - name: financieringstype_legitimatie
+        description: "Naam van het financieringstype op zorglegitimatie-niveau (uit care_orders.financeTypeObjectId)"
+      - name: financieringstype_product
+        description: "Naam van het financieringstype op product-niveau (uit products.financeTypeObjectId) — kan afwijken van financieringstype_legitimatie"
       - name: is_actief
         description: "Of het product vandaag actief is (0/1)"
 

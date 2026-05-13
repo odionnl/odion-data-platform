@@ -25,7 +25,7 @@ with
     inner join {{ ref
 ('stg_onsdb__clients') }} as cli
         on cli.client_id = legit.client_id
-    where legit.financieringstype_naam = 'Jeugdwet'
+    where legit.financieringstype_legitimatie = 'Jeugdwet'
       and cli.geboortedatum is not null
       and legit.startdatum < dateadd
 (year, 18, cli.geboortedatum)

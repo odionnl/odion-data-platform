@@ -260,6 +260,8 @@ models:
         description: "Korte weergave / code van het product"
       - name: product_omschrijving
         description: "Beschrijving van het product"
+      - name: financieringstype_id
+        description: "Verwijzing naar het financieringstype van het product (financeTypeObjectId)"
 
   - name: stg_onsdb__care_order_products
     description: "Producten gekoppeld aan zorglegitimaties."
