@@ -83,7 +83,8 @@ ipb_aggregaten as (
         client_id,
         sum(case when status = 'Actueel'      then 1 else 0 end) as aantal_ipb_actueel,
         sum(case when status = 'Concept'      then 1 else 0 end) as aantal_ipb_concept,
-        sum(case when status = 'Gearchiveerd' then 1 else 0 end) as aantal_ipb_gearchiveerd
+        sum(case when status = 'Gearchiveerd' then 1 else 0 end) as aantal_ipb_gearchiveerd,
+        max(case when status = 'Actueel' then gewijzigd_op end)  as laatst_bijgewerkt_actueel
     from ipb
     group by client_id
 
@@ -112,21 +113,31 @@ definitief as (
         coalesce(a.aantal_ipb_concept, 0)      as aantal_ipb_concept,
         coalesce(a.aantal_ipb_gearchiveerd, 0) as aantal_ipb_gearchiveerd,
 
+        -- Laatste wijziging op een Actuele IPB
+        a.laatst_bijgewerkt_actueel,
+
         -- Samenvattende categorie + sorteervolgorde (zelfde WHEN-volgorde
-        -- voor 1-op-1 mapping in Power BI 'Sort by column')
+        -- voor 1-op-1 mapping in Power BI 'Sort by column').
+        -- 'Verlopen': er is een Actuele IPB maar laatst bijgewerkt > 1 jaar geleden.
         case
-            when vt.client_id is null                       then 'N.v.t.'
+            when vt.client_id is null then 'N.v.t.'
+            when coalesce(a.aantal_ipb_actueel, 0) > 0
+                 and a.laatst_bijgewerkt_actueel < dateadd(year, -1, cast(getdate() as date))
+                then 'Verlopen'
             when coalesce(a.aantal_ipb_actueel, 0)      > 0 then 'Actueel'
             when coalesce(a.aantal_ipb_concept, 0)      > 0 then 'Concept'
             when coalesce(a.aantal_ipb_gearchiveerd, 0) > 0 then 'Gearchiveerd'
             else 'Geen'
         end as ipb_status,
         case
-            when vt.client_id is null                       then 5
+            when vt.client_id is null then 6
+            when coalesce(a.aantal_ipb_actueel, 0) > 0
+                 and a.laatst_bijgewerkt_actueel < dateadd(year, -1, cast(getdate() as date))
+                then 3
             when coalesce(a.aantal_ipb_actueel, 0)      > 0 then 1
             when coalesce(a.aantal_ipb_concept, 0)      > 0 then 2
-            when coalesce(a.aantal_ipb_gearchiveerd, 0) > 0 then 3
-            else 4
+            when coalesce(a.aantal_ipb_gearchiveerd, 0) > 0 then 4
+            else 5
         end as ipb_status_volgorde
 
     from clienten c

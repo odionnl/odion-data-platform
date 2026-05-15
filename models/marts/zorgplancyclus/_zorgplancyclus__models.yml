@@ -38,16 +38,19 @@ models:
         description: "Aantal IPB-vragenlijsten met status 'Concept' (0 als er geen zijn)"
       - name: aantal_ipb_gearchiveerd
         description: "Aantal IPB-vragenlijsten met status 'Gearchiveerd' (0 als er geen zijn)"
+      - name: laatst_bijgewerkt_actueel
+        description: "Tijdstip van de laatste wijziging (gewijzigd_op) op een Actuele IPB (null als er geen Actuele is)."
       - name: ipb_status
         description: >
           Samenvattende categorie:
           'N.v.t.' (geen actief ZZP-product uit de IPB-doelgroep én geen hoofdlocatie in de IPB-locatielijst),
-          'Actueel' (minstens één Actueel),
+          'Actueel' (minstens één Actueel, binnen 1 jaar bijgewerkt),
+          'Verlopen' (Actueel maar laatst bijgewerkt > 1 jaar geleden),
           'Concept' (geen Actueel, wel Concept),
           'Gearchiveerd' (alleen Gearchiveerd),
           'Geen' (geen enkele IPB-vragenlijst voltooid).
       - name: ipb_status_volgorde
-        description: "Sorteerkolom voor ipb_status (1=Actueel, 2=Concept, 3=Gearchiveerd, 4=Geen, 5=N.v.t.). Gebruik in Power BI als 'Sort by column'."
+        description: "Sorteerkolom voor ipb_status (1=Actueel, 2=Concept, 3=Verlopen, 4=Gearchiveerd, 5=Geen, 6=N.v.t.). Gebruik in Power BI als 'Sort by column'."
 
   - name: mart_levensloop_per_client
     description: >
@@ -81,9 +84,13 @@ models:
         description: "Tijdstip van de laatste wijziging (gewijzigd_op) op een Actuele Levensloop (null als er geen Actuele is). Sleutel voor de 'Verlopen'-categorie (> 1 jaar geleden)."
       - name: nieuwe_vragen_gevuld
         description: >
-          1 als de cliënt op een Actuele Levensloop een gevuld tekst_antwoord heeft
-          op alle drie de 'nieuwe' vragen (praktische informatie, gebeurtenis met
-          invloed op dagelijks leven, palliatieve wensen). 0 anders.
+          'Ja' als de cliënt op een Actuele Levensloop een gevuld tekst_antwoord
+          heeft op alle drie de 'nieuwe' vragen (praktische informatie,
+          gebeurtenis met invloed op dagelijks leven, palliatieve wensen).
+          'Nee' als de cliënt wel een Actuele Levensloop heeft maar niet alle
+          drie gevuld zijn. 'N.v.t.' als de cliënt geen Actuele Levensloop heeft.
+      - name: nieuwe_vragen_gevuld_volgorde
+        description: "Sorteerkolom voor nieuwe_vragen_gevuld (1=Ja, 2=Nee, 3=N.v.t.). Gebruik in Power BI als 'Sort by column'."
       - name: levensloop_status
         description: >
           Samenvattende categorie:

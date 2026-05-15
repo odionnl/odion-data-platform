@@ -84,13 +84,22 @@ definitief as (
         -- Laatste wijziging op een Actuele Levensloop
         a.laatst_bijgewerkt_actueel,
 
-        -- Drie 'nieuwe' vragen volledig ingevuld op Actuele Levensloop
+        -- Drie 'nieuwe' vragen volledig ingevuld op Actuele Levensloop.
+        -- 'N.v.t.' als de cliënt geen Actuele Levensloop heeft.
         case
+            when coalesce(a.aantal_levensloop_actueel, 0) = 0 then 'N.v.t.'
             when coalesce(nv.heeft_praktische_info, 0) = 1
              and coalesce(nv.heeft_gebeurtenis, 0) = 1
              and coalesce(nv.heeft_palliatieve_wensen, 0) = 1
-            then 1 else 0
+            then 'Ja' else 'Nee'
         end as nieuwe_vragen_gevuld,
+        case
+            when coalesce(a.aantal_levensloop_actueel, 0) = 0 then 3
+            when coalesce(nv.heeft_praktische_info, 0) = 1
+             and coalesce(nv.heeft_gebeurtenis, 0) = 1
+             and coalesce(nv.heeft_palliatieve_wensen, 0) = 1
+            then 1 else 2
+        end as nieuwe_vragen_gevuld_volgorde,
 
         -- Samenvattende categorie + sorteervolgorde (zelfde WHEN-volgorde
         -- voor 1-op-1 mapping in Power BI 'Sort by column')
