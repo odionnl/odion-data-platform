@@ -104,6 +104,25 @@ rapportages_telling as (
 
 ),
 
+doelen_per_actief_zorgplan as (
+
+    -- Aantal regels in het Actuele zorgplan op aandachtsgebied 'Thuis' of
+    -- 'Daginvulling' (alleen de actuele aandachtspunt-categorie van Odion,
+    -- d.w.z. is_verborgen_aandachtspunt = 1).
+    select
+        az.client_id,
+        sum(case
+            when r.aandachtspunt_naam in ('Thuis', 'Daginvulling')
+             and r.is_verborgen_aandachtspunt = 1
+            then 1 else 0
+        end) as aantal_doelen
+    from actief_zorgplan az
+    left join {{ ref('mart_zorgplanregels') }} r
+        on r.zorgplan_id = az.zorgplan_id
+    group by az.client_id
+
+),
+
 definitief as (
 
     select
@@ -135,7 +154,8 @@ definitief as (
         -- Heeft de cliënt een Actief zorgplan, en is daarop gerapporteerd?
         case when az.client_id is not null then 1 else 0 end as heeft_actief_zorgplan,
         coalesce(rt.aantal_rapportages_op_zorgplan, 0) as aantal_rapportages_op_zorgplan,
-        coalesce(rt.aantal_overige_rapportages, 0)    as aantal_overige_rapportages
+        coalesce(rt.aantal_overige_rapportages, 0)    as aantal_overige_rapportages,
+        coalesce(dz.aantal_doelen, 0)                 as aantal_doelen
 
     from clienten c
     left join locatie_hierarchie lh
@@ -150,6 +170,8 @@ definitief as (
         on pb.client_id = c.client_id
     left join rapportages_telling rt
         on rt.client_id = c.client_id
+    left join doelen_per_actief_zorgplan dz
+        on dz.client_id = c.client_id
 
 )
 
@@ -234,6 +256,24 @@ select
 
     -- Aantallen sinds startdatum van het Actuele zorgplan (null als geen Actief zorgplan)
     case when heeft_actief_zorgplan = 1 then aantal_rapportages_op_zorgplan end as aantal_rapportages_op_zorgplan,
-    case when heeft_actief_zorgplan = 1 then aantal_overige_rapportages    end as aantal_overige_rapportages
+    case when heeft_actief_zorgplan = 1 then aantal_overige_rapportages    end as aantal_overige_rapportages,
+
+    -- Doelen-norm: 1 tot 2 doelen op aandachtsgebied 'Thuis' of 'Daginvulling'
+    -- in het Actuele zorgplan. Alleen relevant wanneer zorgplan_versie='Nieuw'
+    -- en zorgplan_status='Actueel' (= voortgang 'Nieuw & actueel'); anders 'N.v.t.'.
+    case
+        when zorgplan_versie = 'Nieuw' and zorgplan_status = 'Actueel'
+            then case when aantal_doelen between 1 and 2 then 'Ja' else 'Nee' end
+        else 'N.v.t.'
+    end as doelen_in_norm,
+    case
+        when zorgplan_versie = 'Nieuw' and zorgplan_status = 'Actueel'
+            then case when aantal_doelen between 1 and 2 then 1 else 2 end
+        else 3
+    end as doelen_in_norm_volgorde,
+    case
+        when zorgplan_versie = 'Nieuw' and zorgplan_status = 'Actueel'
+            then aantal_doelen
+    end as aantal_doelen
 
 from definitief
