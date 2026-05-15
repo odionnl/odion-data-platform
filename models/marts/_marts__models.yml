@@ -486,6 +486,66 @@ models:
       - name: url_ons_zorgplan
         description: "Deep-link naar het zorgplan van deze client in ONS dossier"
 
+  - name: mart_zorgplanregels
+    description: >
+      Brede zorgplanregels-mart met per regel de context van zorgplan
+      (status, versie, geldigheid, looptijd), cliënt, domein, aandachtspunt
+      (Thuis/Daginvulling/Mijn verhaal — alleen actuele categorieën) en doel.
+      Grain: één rij per zorgplanregel. Geen datumfilter (historisch + actueel).
+    columns:
+      - name: zorgplanregel_id
+        description: "Unieke identifier van de zorgplanregel"
+        tests: [unique, not_null]
+      - name: zorgplanregel_link_id
+        description: "Stabiele link-ID van de regel; gelijk bij gekopieerde regels in een nieuw zorgplan"
+      - name: zorgplan_id
+        description: "Verwijzing naar het zorgplan"
+        tests: [not_null]
+      - name: zorgplan_status
+        description: "Status van het zorgplan (bv. Actief, Concept)"
+      - name: zorgplan_versie_plan
+        description: "Versie van het zorgplan o.b.v. alle regels: Leeg, Oud, Nieuw of Mix"
+      - name: zorgplan_geldigheid
+        description: "Geldig, Verlopen of Nog niet gestart — op basis van zorgplan-start/einddatum vs vandaag"
+      - name: startdatum_zorgplan
+        description: "Startdatum van het zorgplan"
+      - name: einddatum_zorgplan
+        description: "Einddatum van het zorgplan (null = open einde)"
+      - name: client_id
+        description: "Verwijzing naar de cliënt"
+      - name: clientnummer
+        description: "Extern cliëntnummer (identificationNo) uit ONS"
+      - name: client_naam
+        description: "Volledige naam van de cliënt"
+      - name: domein_definitie_id
+        description: "Verwijzing naar de domeindefinitie"
+      - name: domein_naam
+        description: "Naam van het domein"
+      - name: domein_versie
+        description: "Oud, Nieuw of Onbekend — afgeleid van is_oud_domein op de domeindefinitie"
+      - name: aandachtspuntdefinitie_id
+        description: "Verwijzing naar de aandachtspuntdefinitie (null als de regel niet aan een aandachtspunt hangt)"
+      - name: aandachtspunt_naam
+        description: "Naam van het aandachtspunt (bv. 'Thuis', 'Daginvulling', 'Mijn verhaal'). Alle records meegenomen; filter op is_verborgen_aandachtspunt=1 voor alleen actuele Odion-categorieën."
+      - name: is_verborgen_aandachtspunt
+        description: "Hidden-flag van de aandachtspuntdefinitie. 1 = actuele/relevante categorie voor Odion, 0 = oud."
+      - name: doeldefinitie_id
+        description: "Verwijzing naar de doeldefinitie"
+      - name: doel_naam
+        description: "Naam van het doel (template-tekst uit de doeldefinitie)"
+      - name: doel_titel
+        description: "Overschreven titel van het doel op deze specifieke regel"
+      - name: doel_opmerking
+        description: "Vrij tekstveld bij het doel"
+      - name: streefdatum
+        description: "Streefdatum van het doel"
+      - name: percentage_gerealiseerd
+        description: "Percentage waarmee het doel gerealiseerd is (0-100)"
+      - name: aangemaakt_op
+        description: "Tijdstip waarop de regel is aangemaakt"
+      - name: gewijzigd_op
+        description: "Tijdstip van de laatste wijziging op de regel"
+
   - name: mart_zorgplan_per_client
     description: >
       Zorgplan-status per cliënt in zorg (snapshot vandaag). Eén rij per cliënt uit

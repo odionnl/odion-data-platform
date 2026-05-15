@@ -3,8 +3,10 @@ version: 2
 models:
   - name: int_zorgplanregels_met_domeinen
     description: >
-      Zorgplanregels verrijkt met domeinnaam en domein_versie (Oud/Nieuw/Onbekend).
-      domein_versie is 'Oud' als de domeindefinitie hidden=1 heeft, 'Nieuw' als hidden=0.
+      Classificeert elke zorgplanregel op domein_versie (Oud/Nieuw/Onbekend).
+      Slank gehouden: alleen de kolommen die int_zorgplannen_met_versie nodig
+      heeft voor de versie-aggregatie per zorgplan. Voor brede regel-info met
+      doel, aandachtspunt en client-context, zie mart_zorgplanregels.
       Grain: één rij per zorgplanregel. Geen datumfilter (all-time).
     columns:
       - name: zorgplanregel_id

@@ -455,6 +455,31 @@ models:
         description: "Naam van het doel (template-tekst)"
       - name: is_opmerking_toegestaan
         description: "1 als een vrij tekstveld bij het doel ingevuld mag worden"
+
+  - name: stg_onsdb__careplan_demand_definitions
+    description: >
+      Aandachtspuntdefinities gekoppeld aan een domein. De aandachtspunt_naam
+      bevat o.a. waarden als 'Thuis', 'Daginvulling' en 'Mijn verhaal'.
+      Let op: voor Odion zijn alleen records met is_verborgen = 1 de
+      actuele/relevante categorieën — filter daarop in downstream-modellen.
+      Het naam-veld wordt getrimd (spaties weg) want in de bron staan soms
+      extra spaties.
+    columns:
+      - name: aandachtspuntdefinitie_id
+        description: "Unieke identifier van de aandachtspuntdefinitie"
+        tests: [unique, not_null]
+      - name: domein_definitie_id
+        description: "Verwijzing naar het domein (careplan_domain_definitions)"
+      - name: aandachtspunt_naam
+        description: "Naam van het aandachtspunt (bv. 'Thuis', 'Daginvulling', 'Mijn verhaal'); getrimd"
+      - name: is_verborgen
+        description: "Bron-kolom 'hidden'. Voor Odion: 1 = actuele/relevante categorie, 0 = oud/niet meer in gebruik."
+      - name: classificatie_id
+        description: "Classificatie-ID van deze aandachtspuntdefinitie"
+      - name: aangemaakt_op
+        description: "Moment van aanmaken"
+      - name: gewijzigd_op
+        description: "Moment van laatste wijziging"
       - name: is_voortgang_bijhouden
         description: "1 als voortgang (percentage) op dit doel vastgelegd kan worden"
       - name: is_titel_aanpasbaar
