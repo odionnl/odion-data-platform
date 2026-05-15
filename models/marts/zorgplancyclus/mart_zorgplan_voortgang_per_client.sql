@@ -108,12 +108,12 @@ doelen_per_actief_zorgplan as (
 
     -- Aantal regels in het Actuele zorgplan op aandachtsgebied 'Thuis' of
     -- 'Daginvulling' (alleen de actuele aandachtspunt-categorie van Odion,
-    -- d.w.z. is_verborgen_aandachtspunt = 1).
+    -- d.w.z. is_verborgen_aandachtspunt = 0).
     select
         az.client_id,
         sum(case
             when r.aandachtspunt_naam in ('Thuis', 'Daginvulling')
-             and r.is_verborgen_aandachtspunt = 1
+             and r.is_verborgen_aandachtspunt = 0
             then 1 else 0
         end) as aantal_doelen
     from actief_zorgplan az

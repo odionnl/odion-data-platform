@@ -460,7 +460,7 @@ models:
     description: >
       Aandachtspuntdefinities gekoppeld aan een domein. De aandachtspunt_naam
       bevat o.a. waarden als 'Thuis', 'Daginvulling' en 'Mijn verhaal'.
-      Let op: voor Odion zijn alleen records met is_verborgen = 1 de
+      Let op: voor Odion zijn alleen records met is_verborgen = 0 de
       actuele/relevante categorieën — filter daarop in downstream-modellen.
       Het naam-veld wordt getrimd (spaties weg) want in de bron staan soms
       extra spaties.
@@ -473,7 +473,7 @@ models:
       - name: aandachtspunt_naam
         description: "Naam van het aandachtspunt (bv. 'Thuis', 'Daginvulling', 'Mijn verhaal'); getrimd"
       - name: is_verborgen
-        description: "Bron-kolom 'hidden'. Voor Odion: 1 = actuele/relevante categorie, 0 = oud/niet meer in gebruik."
+        description: "Bron-kolom 'hidden'. Voor Odion: 0 = actuele/relevante categorie, 1 = oud/niet meer in gebruik."
       - name: classificatie_id
         description: "Classificatie-ID van deze aandachtspuntdefinitie"
       - name: aangemaakt_op

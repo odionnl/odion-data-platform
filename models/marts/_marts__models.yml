@@ -526,9 +526,9 @@ models:
       - name: aandachtspuntdefinitie_id
         description: "Verwijzing naar de aandachtspuntdefinitie (null als de regel niet aan een aandachtspunt hangt)"
       - name: aandachtspunt_naam
-        description: "Naam van het aandachtspunt (bv. 'Thuis', 'Daginvulling', 'Mijn verhaal'). Alle records meegenomen; filter op is_verborgen_aandachtspunt=1 voor alleen actuele Odion-categorieën."
+        description: "Naam van het aandachtspunt (bv. 'Thuis', 'Daginvulling', 'Mijn verhaal'). Alle records meegenomen; filter op is_verborgen_aandachtspunt=0 voor alleen actuele Odion-categorieën."
       - name: is_verborgen_aandachtspunt
-        description: "Hidden-flag van de aandachtspuntdefinitie. 1 = actuele/relevante categorie voor Odion, 0 = oud."
+        description: "Hidden-flag van de aandachtspuntdefinitie. 0 = actuele/relevante categorie voor Odion, 1 = oud."
       - name: doeldefinitie_id
         description: "Verwijzing naar de doeldefinitie"
       - name: doel_naam

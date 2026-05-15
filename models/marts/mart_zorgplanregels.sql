@@ -69,7 +69,7 @@ select
         else 'Onbekend'
     end                                          as domein_versie,
 
-    -- Aandachtspunt (alle records; filter op is_verborgen_aandachtspunt = 1
+    -- Aandachtspunt (alle records; filter op is_verborgen_aandachtspunt = 0
     -- voor alleen Odion's actuele categorieën Thuis/Daginvulling/Mijn verhaal)
     r.aandachtspuntdefinitie_id,
     aandacht.aandachtspunt_naam,

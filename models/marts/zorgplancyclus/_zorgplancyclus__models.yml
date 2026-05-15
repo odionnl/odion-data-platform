@@ -193,14 +193,14 @@ models:
         description: >
           Check op de doelen-norm: 'Ja' als het Actuele zorgplan 1 of 2 regels
           heeft met aandachtspunt 'Thuis' of 'Daginvulling' (alleen
-          is_verborgen_aandachtspunt = 1 telt mee). 'Nee' als 0 of meer dan 2
+          is_verborgen_aandachtspunt = 0 telt mee). 'Nee' als 0 of meer dan 2
           doelen. 'N.v.t.' wanneer zorgplan_voortgang niet 'Nieuw & actueel' is.
       - name: doelen_in_norm_volgorde
         description: "Sorteerkolom voor doelen_in_norm (1=Ja, 2=Nee, 3=N.v.t.). Gebruik in Power BI als 'Sort by column'."
       - name: aantal_doelen
         description: >
           Aantal regels in het Actuele zorgplan met aandachtspunt 'Thuis' of
-          'Daginvulling' (is_verborgen_aandachtspunt = 1). NULL wanneer
+          'Daginvulling' (is_verborgen_aandachtspunt = 0). NULL wanneer
           zorgplan_voortgang niet 'Nieuw & actueel' is.
 
   - name: mart_zorgplan_verantwoording_per_client
