@@ -10,7 +10,7 @@ models:
       (a) actief ZZP-product uit de IPB-doelgroep (VG 5-8, LG 4-7,
       ZG aud 2-3, ZG vis 2-3), of (b) hoofdlocatie onder niveau4 in de
       IPB-locatielijst (Dynamica ODC, Boomgaard ODC de, Gezinsbehandeling).
-      Voor overige cliënten is ipb_status 'Niet van toepassing'.
+      Voor overige cliënten is ipb_status 'N.v.t.'.
     columns:
       - name: client_id
         description: "Unieke identifier van de cliënt"
@@ -41,7 +41,7 @@ models:
       - name: ipb_status
         description: >
           Samenvattende categorie:
-          'Niet van toepassing' (geen actief ZZP-product uit de IPB-doelgroep én geen hoofdlocatie in de IPB-locatielijst),
+          'N.v.t.' (geen actief ZZP-product uit de IPB-doelgroep én geen hoofdlocatie in de IPB-locatielijst),
           'Actueel' (minstens één Actueel),
           'Concept' (geen Actueel, wel Concept),
           'Gearchiveerd' (alleen Gearchiveerd),
@@ -118,6 +118,8 @@ models:
           zorgplanregels: 'Nieuw', 'Oud', 'Mix' of 'Leeg' (geen geldige regels).
           Fallback naar het Concept zorgplan als er geen Actueel is.
           'Geen' als de cliënt geen Actueel én geen Concept zorgplan heeft.
+      - name: zorgplan_versie_volgorde
+        description: "Sorteerkolom voor zorgplan_versie (1=Nieuw, 2=Oud, 3=Mix, 4=Leeg/Geen). Gebruik in Power BI als 'Sort by column'."
       - name: zorgplan_status
         description: >
           Samenvattende status:
@@ -125,20 +127,37 @@ models:
           'Verlopen' (Actief plan met geldigheid 'Verlopen'),
           'Concept' (geen Actief plan, wel een Concept),
           'Geen' (geen Actief en geen Concept zorgplan).
+      - name: zorgplan_status_volgorde
+        description: "Sorteerkolom voor zorgplan_status (1=Actueel, 2=Concept, 3=Verlopen, 4=Geen). Gebruik in Power BI als 'Sort by column'."
+      - name: zorgplan_voortgang
+        description: >
+          Samenvattende voortgang-categorie op basis van zorgplan_versie x
+          zorgplan_status:
+          'Nieuw & actueel' (Actueel + Nieuw),
+          'Oud' (versie 'Oud', ongeacht of Actueel of Concept),
+          'In ontwikkeling' (Actueel + Mix, of Concept + Nieuw/Mix),
+          'Verlopen' (Verlopen-status),
+          'Geen' (geen zorgplan of versie 'Leeg').
+      - name: zorgplan_voortgang_volgorde
+        description: "Sorteerkolom voor zorgplan_voortgang (1=Nieuw & actueel, 2=In ontwikkeling, 3=Oud, 4=Verlopen, 5=Geen). Gebruik in Power BI als 'Sort by column'."
       - name: ondersteuningsvragen_gearchiveerd
         description: >
           Check op vragenlijst-administratie. 'Ja' als er geen Actuele of Concept
           versie van "Ondersteuningsvragen voor volwassenen" meer aanwezig is.
           'Nee' als er nog wel een Actuele/Concept versie open staat.
-          'Niet van toepassing' als de check niet relevant is (zorgplan_versie
+          'N.v.t.' als de check niet relevant is (zorgplan_versie
           niet 'Nieuw' of zorgplan_status niet 'Actueel').
+      - name: ondersteuningsvragen_gearchiveerd_volgorde
+        description: "Sorteerkolom voor ondersteuningsvragen_gearchiveerd (1=Ja, 2=Nee, 3=N.v.t.). Gebruik in Power BI als 'Sort by column'."
       - name: persoonsbeeld_gearchiveerd
         description: >
           Check op vragenlijst-administratie. 'Ja' als er geen Actuele of Concept
           versie van "Persoonsbeeld, bejegening, signaleringsplan" meer aanwezig
           is. 'Nee' als er nog wel een Actuele/Concept versie open staat.
-          'Niet van toepassing' als de check niet relevant is (zorgplan_versie
+          'N.v.t.' als de check niet relevant is (zorgplan_versie
           niet 'Nieuw' of zorgplan_status niet 'Actueel').
+      - name: persoonsbeeld_gearchiveerd_volgorde
+        description: "Sorteerkolom voor persoonsbeeld_gearchiveerd (1=Ja, 2=Nee, 3=N.v.t.). Gebruik in Power BI als 'Sort by column'."
 
   - name: mart_zorgplan_verantwoording_per_client
     description: >

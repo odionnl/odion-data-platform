@@ -5,7 +5,7 @@
 --     (VG 5-8, LG 4-7, ZG aud 2-3, ZG vis 2-3)
 --   - hoofdlocatie hangt onder niveau4 in de IPB-locatielijst
 --     (Dynamica ODC, Boomgaard ODC de, Gezinsbehandeling)
--- Voor overige cliënten is ipb_status 'Niet van toepassing'.
+-- Voor overige cliënten is ipb_status 'N.v.t.'.
 
 with clienten as (
 
@@ -114,7 +114,7 @@ definitief as (
 
         -- Samenvattende categorie
         case
-            when vt.client_id is null                       then 'Niet van toepassing'
+            when vt.client_id is null                       then 'N.v.t.'
             when coalesce(a.aantal_ipb_actueel, 0)      > 0 then 'Actueel'
             when coalesce(a.aantal_ipb_concept, 0)      > 0 then 'Concept'
             when coalesce(a.aantal_ipb_gearchiveerd, 0) > 0 then 'Gearchiveerd'

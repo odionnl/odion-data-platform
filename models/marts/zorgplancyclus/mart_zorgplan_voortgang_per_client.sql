@@ -8,9 +8,16 @@
 --   - Twee 'gearchiveerd'-checks voor oude vragenlijsten:
 --     ondersteuningsvragen_gearchiveerd en persoonsbeeld_gearchiveerd.
 --     Waarde 'Ja'/'Nee' wanneer zorgplan_versie='Nieuw' en
---     zorgplan_status='Actueel'; 'Niet van toepassing' anders.
+--     zorgplan_status='Actueel'; 'N.v.t.' anders.
 --     'Ja' = geen Actuele of Concept versie van de vragenlijst meer aanwezig.
 -- Invariant: een cliënt heeft maximaal 1 Actief en maximaal 1 Concept zorgplan.
+
+
+-- TODO: Staan er maximaal twee doelen in het nieuwe zorgplan (op thuis en daginvulling, niet op verhaal)?
+-- Thuis / Daginvulling = doel (tellen, norm = minimaal 1 en maximaal 2 voor het hele zorgplan, niet per domein)
+-- Mijn verhaal = verhaal
+-- wordt er gerapporteerd op doelen?
+-- Hoe vaak wordt er op 'overige rapportage' gerapporteerd
 
 with clienten as (
 
@@ -126,19 +133,63 @@ select
     hoofdlocatienaam,
     hoofdlocatienaam_niveau4,
     zorgplan_versie,
+    case zorgplan_versie
+        when 'Nieuw' then 1
+        when 'Oud'   then 2
+        when 'Mix'   then 3
+        when 'Leeg'  then 4
+        when 'Geen'  then 4
+    end as zorgplan_versie_volgorde,
     zorgplan_status,
+    case zorgplan_status
+        when 'Actueel'  then 1
+        when 'Concept'  then 2
+        when 'Verlopen' then 3
+        when 'Geen'     then 4
+    end as zorgplan_status_volgorde,
+
+    -- Samenvattende voortgang-categorie op basis van versie + status.
+    -- De label- en volgorde-CASE delen exact dezelfde WHEN-volgorde zodat
+    -- elke voortgang-waarde 1-op-1 mapt op één volgorde-waarde (Power BI eist
+    -- dit voor 'Sort by column').
+    case
+        when zorgplan_status = 'Geen' or zorgplan_versie = 'Leeg'         then 'Geen'
+        when zorgplan_status = 'Verlopen'                                  then 'Verlopen'
+        when zorgplan_versie = 'Oud'                                       then 'Oud'
+        when zorgplan_status = 'Actueel' and zorgplan_versie = 'Nieuw'     then 'Nieuw & actueel'
+        when zorgplan_status = 'Actueel' and zorgplan_versie = 'Mix'       then 'In ontwikkeling'
+        when zorgplan_status = 'Concept' and zorgplan_versie in ('Nieuw', 'Mix') then 'In ontwikkeling'
+    end as zorgplan_voortgang,
+    case
+        when zorgplan_status = 'Geen' or zorgplan_versie = 'Leeg'         then 5
+        when zorgplan_status = 'Verlopen'                                  then 4
+        when zorgplan_versie = 'Oud'                                       then 3
+        when zorgplan_status = 'Actueel' and zorgplan_versie = 'Nieuw'     then 1
+        when zorgplan_status = 'Actueel' and zorgplan_versie = 'Mix'       then 2
+        when zorgplan_status = 'Concept' and zorgplan_versie in ('Nieuw', 'Mix') then 2
+    end as zorgplan_voortgang_volgorde,
 
     -- Check alleen relevant bij Nieuw + Actueel zorgplan
     case
         when zorgplan_versie = 'Nieuw' and zorgplan_status = 'Actueel'
             then case when ov_niet_gearchiveerd = 0 then 'Ja' else 'Nee' end
-        else 'Niet van toepassing'
+        else 'N.v.t.'
     end as ondersteuningsvragen_gearchiveerd,
+    case
+        when zorgplan_versie = 'Nieuw' and zorgplan_status = 'Actueel'
+            then case when ov_niet_gearchiveerd = 0 then 1 else 2 end
+        else 3
+    end as ondersteuningsvragen_gearchiveerd_volgorde,
 
     case
         when zorgplan_versie = 'Nieuw' and zorgplan_status = 'Actueel'
             then case when pb_niet_gearchiveerd = 0 then 'Ja' else 'Nee' end
-        else 'Niet van toepassing'
-    end as persoonsbeeld_gearchiveerd
+        else 'N.v.t.'
+    end as persoonsbeeld_gearchiveerd,
+    case
+        when zorgplan_versie = 'Nieuw' and zorgplan_status = 'Actueel'
+            then case when pb_niet_gearchiveerd = 0 then 1 else 2 end
+        else 3
+    end as persoonsbeeld_gearchiveerd_volgorde
 
 from definitief
