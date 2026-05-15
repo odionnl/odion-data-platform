@@ -138,6 +138,10 @@ models:
           'Verlopen' (Actief plan met geldigheid 'Verlopen'),
           'Concept' (geen Actief plan, wel een Concept),
           'Geen' (geen Actief en geen Concept zorgplan).
+      - name: startdatum_actief_zorgplan
+        description: "Startdatum van het Actieve zorgplan (null als de cliënt geen Actief zorgplan heeft)"
+      - name: einddatum_actief_zorgplan
+        description: "Einddatum van het Actieve zorgplan; null bij open einde of als de cliënt geen Actief zorgplan heeft"
       - name: zorgplan_status_volgorde
         description: "Sorteerkolom voor zorgplan_status (1=Actueel, 2=Concept, 3=Verlopen, 4=Geen). Gebruik in Power BI als 'Sort by column'."
       - name: zorgplan_voortgang

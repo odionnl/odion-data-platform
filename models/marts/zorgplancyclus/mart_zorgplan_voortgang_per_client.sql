@@ -46,6 +46,7 @@ actief_zorgplan as (
         client_id,
         zorgplan_id,
         startdatum,
+        einddatum,
         geldigheid,
         zorgplan_versie
     from zorgplannen
@@ -151,6 +152,10 @@ definitief as (
         coalesce(ov.aantal_niet_gearchiveerd, 0) as ov_niet_gearchiveerd,
         coalesce(pb.aantal_niet_gearchiveerd, 0) as pb_niet_gearchiveerd,
 
+        -- Looptijd van het Actuele zorgplan
+        az.startdatum as startdatum_actief_zorgplan,
+        az.einddatum  as einddatum_actief_zorgplan,
+
         -- Heeft de cliënt een Actief zorgplan, en is daarop gerapporteerd?
         case when az.client_id is not null then 1 else 0 end as heeft_actief_zorgplan,
         coalesce(rt.aantal_rapportages_op_zorgplan, 0) as aantal_rapportages_op_zorgplan,
@@ -191,6 +196,8 @@ select
         when 'Geen'  then 4
     end as zorgplan_versie_volgorde,
     zorgplan_status,
+    startdatum_actief_zorgplan,
+    einddatum_actief_zorgplan,
     case zorgplan_status
         when 'Actueel'  then 1
         when 'Concept'  then 2
