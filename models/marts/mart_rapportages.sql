@@ -137,6 +137,18 @@ rapportage_typen as (
 
 ),
 
+zorgplanregels as (
+
+    -- Lookup zorgplan_id per zorgplanregel; mart_rapportages exposeert deze
+    -- zodat downstream-marts (bv. mart_zorgplan_voortgang_per_client) kunnen
+    -- checken of een rapportage aan een specifiek zorgplan hangt.
+    select
+        zorgplanregel_id,
+        zorgplan_id
+    from {{ ref('stg_onsdb__careplan_entries') }}
+
+),
+
 definitief as (
 
     select
@@ -161,6 +173,10 @@ definitief as (
         rap.status_code                                        as status,
         rap.is_gemarkeerd,
         rap.is_verborgen,
+
+        -- Zorgplan-koppeling (null als rapportage niet aan een zorgplanregel hangt)
+        rap.zorgplanregel_id,
+        zr.zorgplan_id,
 
         -- Toegangsbeperking
         r.afgeschermd_voor,
@@ -191,6 +207,8 @@ definitief as (
         on m.medewerker_id = rap.medewerker_id
     left join rapportage_typen rt
         on rt.rapportage_type_id = rap.rapportage_type_id
+    left join zorgplanregels zr
+        on zr.zorgplanregel_id = rap.zorgplanregel_id
 
 )
 

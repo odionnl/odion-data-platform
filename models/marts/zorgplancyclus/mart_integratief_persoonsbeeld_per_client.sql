@@ -112,14 +112,22 @@ definitief as (
         coalesce(a.aantal_ipb_concept, 0)      as aantal_ipb_concept,
         coalesce(a.aantal_ipb_gearchiveerd, 0) as aantal_ipb_gearchiveerd,
 
-        -- Samenvattende categorie
+        -- Samenvattende categorie + sorteervolgorde (zelfde WHEN-volgorde
+        -- voor 1-op-1 mapping in Power BI 'Sort by column')
         case
             when vt.client_id is null                       then 'N.v.t.'
             when coalesce(a.aantal_ipb_actueel, 0)      > 0 then 'Actueel'
             when coalesce(a.aantal_ipb_concept, 0)      > 0 then 'Concept'
             when coalesce(a.aantal_ipb_gearchiveerd, 0) > 0 then 'Gearchiveerd'
             else 'Geen'
-        end as ipb_status
+        end as ipb_status,
+        case
+            when vt.client_id is null                       then 5
+            when coalesce(a.aantal_ipb_actueel, 0)      > 0 then 1
+            when coalesce(a.aantal_ipb_concept, 0)      > 0 then 2
+            when coalesce(a.aantal_ipb_gearchiveerd, 0) > 0 then 3
+            else 4
+        end as ipb_status_volgorde
 
     from clienten c
     left join locatie_hierarchie lh

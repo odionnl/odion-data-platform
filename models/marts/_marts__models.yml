@@ -425,6 +425,10 @@ models:
         description: "Datum van de rapportage"
       - name: status
         description: "Status van de rapportage (open/closed)"
+      - name: zorgplanregel_id
+        description: "Verwijzing naar de gekoppelde zorgplanregel (null als de rapportage niet aan een zorgplanregel hangt)"
+      - name: zorgplan_id
+        description: "Verwijzing naar het zorgplan waar de zorgplanregel onder valt (afgeleid via careplan_entries; null als de rapportage niet aan een zorgplanregel hangt)"
       - name: is_gemarkeerd
         description: "1 als de medewerker de rapportage als belangrijk heeft gemarkeerd"
       - name: is_verborgen

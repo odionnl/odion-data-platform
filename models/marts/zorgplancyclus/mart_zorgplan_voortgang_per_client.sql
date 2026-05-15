@@ -44,6 +44,8 @@ actief_zorgplan as (
 
     select
         client_id,
+        zorgplan_id,
+        startdatum,
         geldigheid,
         zorgplan_versie
     from zorgplannen
@@ -83,6 +85,25 @@ persoonsbeeld_per_client as (
 
 ),
 
+rapportages_telling as (
+
+    -- Voor cliënten met een Actief zorgplan: tel rapportages sinds startdatum
+    -- van het Actuele zorgplan, gesplitst op zorgplan-koppeling.
+    -- 'op_zorgplan' = rapportage linkt aan een regel van het Actuele zorgplan
+    -- (objectId-match). 'overige' = rapportage zonder die koppeling.
+    select
+        az.client_id,
+        sum(case when r.zorgplan_id = az.zorgplan_id then 1 else 0 end)                 as aantal_rapportages_op_zorgplan,
+        sum(case when r.zorgplan_id is null or r.zorgplan_id <> az.zorgplan_id then 1
+                 else 0 end)                                                              as aantal_overige_rapportages
+    from actief_zorgplan az
+    left join {{ ref('mart_rapportages') }} r
+        on r.client_id = az.client_id
+       and r.rapportagedatum >= az.startdatum
+    group by az.client_id
+
+),
+
 definitief as (
 
     select
@@ -109,7 +130,12 @@ definitief as (
 
         -- Tellingen voor de check (intern, niet in output)
         coalesce(ov.aantal_niet_gearchiveerd, 0) as ov_niet_gearchiveerd,
-        coalesce(pb.aantal_niet_gearchiveerd, 0) as pb_niet_gearchiveerd
+        coalesce(pb.aantal_niet_gearchiveerd, 0) as pb_niet_gearchiveerd,
+
+        -- Heeft de cliënt een Actief zorgplan, en is daarop gerapporteerd?
+        case when az.client_id is not null then 1 else 0 end as heeft_actief_zorgplan,
+        coalesce(rt.aantal_rapportages_op_zorgplan, 0) as aantal_rapportages_op_zorgplan,
+        coalesce(rt.aantal_overige_rapportages, 0)    as aantal_overige_rapportages
 
     from clienten c
     left join locatie_hierarchie lh
@@ -122,6 +148,8 @@ definitief as (
         on ov.client_id = c.client_id
     left join persoonsbeeld_per_client pb
         on pb.client_id = c.client_id
+    left join rapportages_telling rt
+        on rt.client_id = c.client_id
 
 )
 
@@ -190,6 +218,22 @@ select
         when zorgplan_versie = 'Nieuw' and zorgplan_status = 'Actueel'
             then case when pb_niet_gearchiveerd = 0 then 1 else 2 end
         else 3
-    end as persoonsbeeld_gearchiveerd_volgorde
+    end as persoonsbeeld_gearchiveerd_volgorde,
+
+    -- Rapportages op het Actuele zorgplan (alleen relevant als er een Actief zorgplan is)
+    case
+        when heeft_actief_zorgplan = 1
+            then case when aantal_rapportages_op_zorgplan > 0 then 'Ja' else 'Nee' end
+        else 'N.v.t.'
+    end as rapportages_op_zorgplan,
+    case
+        when heeft_actief_zorgplan = 1
+            then case when aantal_rapportages_op_zorgplan > 0 then 1 else 2 end
+        else 3
+    end as rapportages_op_zorgplan_volgorde,
+
+    -- Aantallen sinds startdatum van het Actuele zorgplan (null als geen Actief zorgplan)
+    case when heeft_actief_zorgplan = 1 then aantal_rapportages_op_zorgplan end as aantal_rapportages_op_zorgplan,
+    case when heeft_actief_zorgplan = 1 then aantal_overige_rapportages    end as aantal_overige_rapportages
 
 from definitief

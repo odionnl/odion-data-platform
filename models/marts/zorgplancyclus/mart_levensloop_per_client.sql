@@ -92,7 +92,8 @@ definitief as (
             then 1 else 0
         end as nieuwe_vragen_gevuld,
 
-        -- Samenvattende categorie
+        -- Samenvattende categorie + sorteervolgorde (zelfde WHEN-volgorde
+        -- voor 1-op-1 mapping in Power BI 'Sort by column')
         case
             when coalesce(a.aantal_levensloop_actueel, 0) > 0
                  and a.laatst_bijgewerkt_actueel < dateadd(year, -1, cast(getdate() as date))
@@ -101,7 +102,16 @@ definitief as (
             when coalesce(a.aantal_levensloop_concept, 0)      > 0 then 'Concept'
             when coalesce(a.aantal_levensloop_gearchiveerd, 0) > 0 then 'Gearchiveerd'
             else 'Geen'
-        end as levensloop_status
+        end as levensloop_status,
+        case
+            when coalesce(a.aantal_levensloop_actueel, 0) > 0
+                 and a.laatst_bijgewerkt_actueel < dateadd(year, -1, cast(getdate() as date))
+                then 3
+            when coalesce(a.aantal_levensloop_actueel, 0)      > 0 then 1
+            when coalesce(a.aantal_levensloop_concept, 0)      > 0 then 2
+            when coalesce(a.aantal_levensloop_gearchiveerd, 0) > 0 then 4
+            else 5
+        end as levensloop_status_volgorde
 
     from clienten c
     left join locatie_hierarchie lh

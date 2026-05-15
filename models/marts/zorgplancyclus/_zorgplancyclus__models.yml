@@ -46,6 +46,8 @@ models:
           'Concept' (geen Actueel, wel Concept),
           'Gearchiveerd' (alleen Gearchiveerd),
           'Geen' (geen enkele IPB-vragenlijst voltooid).
+      - name: ipb_status_volgorde
+        description: "Sorteerkolom voor ipb_status (1=Actueel, 2=Concept, 3=Gearchiveerd, 4=Geen, 5=N.v.t.). Gebruik in Power BI als 'Sort by column'."
 
   - name: mart_levensloop_per_client
     description: >
@@ -90,6 +92,8 @@ models:
           'Concept' (geen Actueel, wel Concept),
           'Gearchiveerd' (alleen Gearchiveerd),
           'Geen' (geen enkele Levensloop-vragenlijst voltooid).
+      - name: levensloop_status_volgorde
+        description: "Sorteerkolom voor levensloop_status (1=Actueel, 2=Concept, 3=Verlopen, 4=Gearchiveerd, 5=Geen). Gebruik in Power BI als 'Sort by column'."
 
   - name: mart_zorgplan_voortgang_per_client
     description: >
@@ -158,6 +162,26 @@ models:
           niet 'Nieuw' of zorgplan_status niet 'Actueel').
       - name: persoonsbeeld_gearchiveerd_volgorde
         description: "Sorteerkolom voor persoonsbeeld_gearchiveerd (1=Ja, 2=Nee, 3=N.v.t.). Gebruik in Power BI als 'Sort by column'."
+      - name: rapportages_op_zorgplan
+        description: >
+          'Ja' als de cliënt sinds de startdatum van het Actuele zorgplan
+          minstens één rapportage heeft die linkt aan een regel van dat
+          zorgplan (objectId-match). 'Nee' als er wel een Actief zorgplan is
+          maar geen gekoppelde rapportages sinds startdatum. 'N.v.t.' als de
+          cliënt geen Actief zorgplan heeft.
+      - name: rapportages_op_zorgplan_volgorde
+        description: "Sorteerkolom voor rapportages_op_zorgplan (1=Ja, 2=Nee, 3=N.v.t.). Gebruik in Power BI als 'Sort by column'."
+      - name: aantal_rapportages_op_zorgplan
+        description: >
+          Aantal rapportages van de cliënt sinds de startdatum van het Actuele
+          zorgplan die linken aan een regel van dat zorgplan (objectId-match).
+          NULL als de cliënt geen Actief zorgplan heeft.
+      - name: aantal_overige_rapportages
+        description: >
+          Aantal rapportages van de cliënt sinds de startdatum van het Actuele
+          zorgplan die NIET aan een regel van dat zorgplan gekoppeld zijn
+          (geen zorgplan_id of een ander zorgplan_id). NULL als de cliënt geen
+          Actief zorgplan heeft.
 
   - name: mart_zorgplan_verantwoording_per_client
     description: >
@@ -198,3 +222,5 @@ models:
           'Concept' (geen Actueel, wel Concept),
           'Gearchiveerd' (alleen Gearchiveerd),
           'Geen' (geen enkele vragenlijst voltooid).
+      - name: zorgplan_verantwoording_status_volgorde
+        description: "Sorteerkolom voor zorgplan_verantwoording_status (1=Actueel, 2=Concept, 3=Verlopen, 4=Gearchiveerd, 5=Geen). Gebruik in Power BI als 'Sort by column'."
