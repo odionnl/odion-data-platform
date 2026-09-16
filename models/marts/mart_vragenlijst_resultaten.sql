@@ -11,11 +11,9 @@ select
     client_id,
     client_naam,
     medewerker_id,
-    ingevuld_door,
-    ingevuld_op,
-    status_code,
-    status_omschrijving,
-    is_readonly,
+    medewerker_naam,
+    voltooid_op,
+    status_omschrijving as status,
     aangemaakt_op,
     gewijzigd_op
 

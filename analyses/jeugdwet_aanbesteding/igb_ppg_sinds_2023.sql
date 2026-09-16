@@ -19,7 +19,7 @@ select
     zlp.client_id,
     zlp.clientnummer,
     zlp.client_naam,
-    zlp.financieringstype_naam,
+    zlp.financieringstype_legitimatie,
     zlp.is_actief,
     zlp.aangemaakt_op,
     zlp.gewijzigd_op

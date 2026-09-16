@@ -22,7 +22,7 @@ resultaten as (
         vragenlijst_resultaat_id,
         vragenlijst_id,
         client_id,
-        ingevuld_op
+        voltooid_op
 
     from {{ ref('stg_onsdb__vragenlijst_resultaten') }}
 
@@ -35,7 +35,7 @@ definitief as (
         antwoorden.vragenlijst_resultaat_id,
         resultaten.vragenlijst_id,
         resultaten.client_id,
-        resultaten.ingevuld_op,
+        resultaten.voltooid_op,
         antwoorden.vragenlijst_vraag_id,
         vragen.vraagtekst,
         vragen.antwoord_type,

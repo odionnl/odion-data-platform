@@ -39,6 +39,9 @@ models:
       actueel:
         +materialized: view
         +schema: marts
+      vragenlijst_filters:
+        +materialized: view
+        +schema: marts
     rpa:
       +materialized: table
       +schema: rpa

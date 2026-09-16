@@ -10,6 +10,7 @@ definitief as (
         objectId                as product_id,
         id                      as product_code,
         [description]           as product_omschrijving,
+        financeTypeObjectId     as financieringstype_id,
         beginDate               as startdatum,
         endDate                 as einddatum
 

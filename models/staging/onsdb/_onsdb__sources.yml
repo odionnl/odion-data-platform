@@ -156,6 +156,12 @@ sources:
           - name: objectId
             tests: [unique, not_null]
 
+      - name: careplan_demand_definitions
+        description: "Aandachtspuntdefinities gekoppeld aan een domein. Bevat o.a. categorieën als Thuis, Daginvulling, Mijn verhaal."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
       # -- Rapportages --
       - name: careplan_reports
         description: "Rapportages bij zorgplannen: tekstuele notities, SOEP-rapportages en metingen per cliënt."

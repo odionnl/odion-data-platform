@@ -11,7 +11,7 @@ definitief as (
         surveyObjectId                  as vragenlijst_id,
         clientObjectId                  as client_id,
         employeeObjectId                as medewerker_id,
-        completedAt                     as ingevuld_op,
+        completedAt                     as voltooid_op,
         status                          as status_code,
         readOnly                        as is_readonly,
         createdAt                       as aangemaakt_op,

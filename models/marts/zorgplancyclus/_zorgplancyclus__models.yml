@@ -1,0 +1,250 @@
+version: 2
+
+models:
+  - name: mart_integratief_persoonsbeeld_per_client
+    description: >
+      IPB-status per cliënt in zorg (snapshot vandaag). Eén rij per cliënt uit
+      mart_clienten_actueel, met aantallen IPB-vragenlijsten per status
+      (Actueel / Concept / Gearchiveerd) en een samenvattende categorie.
+      IPB is van toepassing voor cliënten die voldoen aan minstens één van:
+      (a) actief ZZP-product uit de IPB-doelgroep (VG 5-8, LG 4-7,
+      ZG aud 2-3, ZG vis 2-3), of (b) hoofdlocatie onder niveau4 in de
+      IPB-locatielijst (Dynamica ODC, Boomgaard ODC de, Gezinsbehandeling).
+      Voor overige cliënten is ipb_status 'N.v.t.'.
+    columns:
+      - name: client_id
+        description: "Unieke identifier van de cliënt"
+        tests: [unique, not_null]
+      - name: clientnummer
+        description: "Extern cliëntnummer (identificationNo) uit ONS"
+      - name: clientnaam
+        description: "Volledige naam van de cliënt"
+      - name: hoofdlocatie_id
+        description: "Locatie-ID van de huidige hoofdlocatie (type MAIN)"
+      - name: hoofdlocatienaam
+        description: "Naam van de huidige hoofdlocatie"
+      - name: hoofdlocatienaam_niveau4
+        description: "Niveau4-naam van de hoofdlocatie (ancestor in int_locatie_hierarchie; null als de hoofdlocatie boven niveau 4 hangt)"
+      - name: actuele_productcodes
+        description: "Actieve productcodes van de cliënt, alfabetisch gesorteerd en gescheiden door ' | ' (null als er geen actieve producten zijn)"
+      - name: ipb_van_toepassing
+        description: >
+          1 als IPB van toepassing is voor de cliënt (actief ZZP-product uit de
+          IPB-doelgroep óf hoofdlocatie onder een niveau4 uit de IPB-locatielijst),
+          anders 0.
+      - name: aantal_ipb_actueel
+        description: "Aantal IPB-vragenlijsten met status 'Actueel' (0 als er geen zijn)"
+      - name: aantal_ipb_concept
+        description: "Aantal IPB-vragenlijsten met status 'Concept' (0 als er geen zijn)"
+      - name: aantal_ipb_gearchiveerd
+        description: "Aantal IPB-vragenlijsten met status 'Gearchiveerd' (0 als er geen zijn)"
+      - name: laatst_bijgewerkt_actueel
+        description: "Tijdstip van de laatste wijziging (gewijzigd_op) op een Actuele IPB (null als er geen Actuele is)."
+      - name: ipb_status
+        description: >
+          Samenvattende categorie:
+          'N.v.t.' (geen actief ZZP-product uit de IPB-doelgroep én geen hoofdlocatie in de IPB-locatielijst),
+          'Actueel' (minstens één Actueel, binnen 1 jaar bijgewerkt),
+          'Verlopen' (Actueel maar laatst bijgewerkt > 1 jaar geleden),
+          'Concept' (geen Actueel, wel Concept),
+          'Gearchiveerd' (alleen Gearchiveerd),
+          'Geen' (geen enkele IPB-vragenlijst voltooid).
+      - name: ipb_status_volgorde
+        description: "Sorteerkolom voor ipb_status (1=Actueel, 2=Concept, 3=Verlopen, 4=Gearchiveerd, 5=Geen, 6=N.v.t.). Gebruik in Power BI als 'Sort by column'."
+
+  - name: mart_levensloop_per_client
+    description: >
+      Levensloop-status per cliënt in zorg (snapshot vandaag). Eén rij per
+      cliënt uit mart_clienten_actueel, met aantallen Levensloop-vragenlijsten
+      per status (Actueel / Concept / Gearchiveerd) en een samenvattende
+      categorie. Een Actuele Levensloop die meer dan 1 jaar niet is bijgewerkt
+      (gewijzigd_op > 1 jaar geleden) krijgt categorie 'Verlopen'. Geen
+      doelgroep-filter — alle cliënten in zorg.
+    columns:
+      - name: client_id
+        description: "Unieke identifier van de cliënt"
+        tests: [unique, not_null]
+      - name: clientnummer
+        description: "Extern cliëntnummer (identificationNo) uit ONS"
+      - name: clientnaam
+        description: "Volledige naam van de cliënt"
+      - name: hoofdlocatie_id
+        description: "Locatie-ID van de huidige hoofdlocatie (type MAIN)"
+      - name: hoofdlocatienaam
+        description: "Naam van de huidige hoofdlocatie"
+      - name: hoofdlocatienaam_niveau4
+        description: "Niveau4-naam van de hoofdlocatie (ancestor in int_locatie_hierarchie; null als de hoofdlocatie boven niveau 4 hangt)"
+      - name: aantal_levensloop_actueel
+        description: "Aantal Levensloop-vragenlijsten met status 'Actueel' (0 als er geen zijn)"
+      - name: aantal_levensloop_concept
+        description: "Aantal Levensloop-vragenlijsten met status 'Concept' (0 als er geen zijn)"
+      - name: aantal_levensloop_gearchiveerd
+        description: "Aantal Levensloop-vragenlijsten met status 'Gearchiveerd' (0 als er geen zijn)"
+      - name: laatst_bijgewerkt_actueel
+        description: "Tijdstip van de laatste wijziging (gewijzigd_op) op een Actuele Levensloop (null als er geen Actuele is). Sleutel voor de 'Verlopen'-categorie (> 1 jaar geleden)."
+      - name: nieuwe_vragen_gevuld
+        description: >
+          'Ja' als de cliënt op een Actuele Levensloop een gevuld tekst_antwoord
+          heeft op alle drie de 'nieuwe' vragen (praktische informatie,
+          gebeurtenis met invloed op dagelijks leven, palliatieve wensen).
+          'Nee' als de cliënt wel een Actuele Levensloop heeft maar niet alle
+          drie gevuld zijn. 'N.v.t.' als de cliënt geen Actuele Levensloop heeft.
+      - name: nieuwe_vragen_gevuld_volgorde
+        description: "Sorteerkolom voor nieuwe_vragen_gevuld (1=Ja, 2=Nee, 3=N.v.t.). Gebruik in Power BI als 'Sort by column'."
+      - name: levensloop_status
+        description: >
+          Samenvattende categorie:
+          'Actueel' (minstens één Actueel, binnen 1 jaar bijgewerkt),
+          'Verlopen' (Actueel maar laatst bijgewerkt > 1 jaar geleden),
+          'Concept' (geen Actueel, wel Concept),
+          'Gearchiveerd' (alleen Gearchiveerd),
+          'Geen' (geen enkele Levensloop-vragenlijst voltooid).
+      - name: levensloop_status_volgorde
+        description: "Sorteerkolom voor levensloop_status (1=Actueel, 2=Concept, 3=Verlopen, 4=Gearchiveerd, 5=Geen). Gebruik in Power BI als 'Sort by column'."
+
+  - name: mart_zorgplan_voortgang_per_client
+    description: >
+      Zorgplan-voortgang per cliënt in zorg (snapshot vandaag). Eén rij per
+      cliënt uit mart_clienten_actueel. Per cliënt de zorgplan_versie
+      (Nieuw/Oud/Mix/Leeg/Geen) en zorgplan_status (Actueel/Concept/Verlopen/Geen)
+      op basis van status_omschrijving + geldigheid van het Actuele en Concept
+      zorgplan. Invariant: maximaal 1 Actief en 1 Concept zorgplan per cliënt.
+    columns:
+      - name: client_id
+        description: "Unieke identifier van de cliënt"
+        tests: [unique, not_null]
+      - name: clientnummer
+        description: "Extern cliëntnummer (identificationNo) uit ONS"
+      - name: clientnaam
+        description: "Volledige naam van de cliënt"
+      - name: hoofdlocatie_id
+        description: "Locatie-ID van de huidige hoofdlocatie (type MAIN)"
+      - name: hoofdlocatienaam
+        description: "Naam van de huidige hoofdlocatie"
+      - name: hoofdlocatienaam_niveau4
+        description: "Niveau4-naam van de hoofdlocatie (ancestor in int_locatie_hierarchie; null als de hoofdlocatie boven niveau 4 hangt)"
+      - name: zorgplan_versie
+        description: >
+          Versie van het Actuele zorgplan op basis van de domeinen van de
+          zorgplanregels: 'Nieuw', 'Oud', 'Mix' of 'Leeg' (geen geldige regels).
+          Fallback naar het Concept zorgplan als er geen Actueel is.
+          'Geen' als de cliënt geen Actueel én geen Concept zorgplan heeft.
+      - name: zorgplan_versie_volgorde
+        description: "Sorteerkolom voor zorgplan_versie (1=Nieuw, 2=Oud, 3=Mix, 4=Leeg/Geen). Gebruik in Power BI als 'Sort by column'."
+      - name: zorgplan_status
+        description: >
+          Samenvattende status:
+          'Actueel' (Actief plan met geldigheid 'Geldig' of 'Nog niet gestart'),
+          'Verlopen' (Actief plan met geldigheid 'Verlopen'),
+          'Concept' (geen Actief plan, wel een Concept),
+          'Geen' (geen Actief en geen Concept zorgplan).
+      - name: startdatum_actief_zorgplan
+        description: "Startdatum van het Actieve zorgplan (null als de cliënt geen Actief zorgplan heeft)"
+      - name: einddatum_actief_zorgplan
+        description: "Einddatum van het Actieve zorgplan; null bij open einde of als de cliënt geen Actief zorgplan heeft"
+      - name: zorgplan_status_volgorde
+        description: "Sorteerkolom voor zorgplan_status (1=Actueel, 2=Concept, 3=Verlopen, 4=Geen). Gebruik in Power BI als 'Sort by column'."
+      - name: zorgplan_voortgang
+        description: >
+          Samenvattende voortgang-categorie op basis van zorgplan_versie x
+          zorgplan_status:
+          'Nieuw & actueel' (Actueel + Nieuw),
+          'Oud' (versie 'Oud', ongeacht of Actueel of Concept),
+          'In ontwikkeling' (Actueel + Mix, of Concept + Nieuw/Mix),
+          'Verlopen' (Verlopen-status),
+          'Geen' (geen zorgplan of versie 'Leeg').
+      - name: zorgplan_voortgang_volgorde
+        description: "Sorteerkolom voor zorgplan_voortgang (1=Nieuw & actueel, 2=In ontwikkeling, 3=Oud, 4=Verlopen, 5=Geen). Gebruik in Power BI als 'Sort by column'."
+      - name: ondersteuningsvragen_gearchiveerd
+        description: >
+          Check op vragenlijst-administratie. 'Ja' als er geen Actuele of Concept
+          versie van "Ondersteuningsvragen voor volwassenen" meer aanwezig is.
+          'Nee' als er nog wel een Actuele/Concept versie open staat.
+          'N.v.t.' als de check niet relevant is (zorgplan_versie
+          niet 'Nieuw' of zorgplan_status niet 'Actueel').
+      - name: ondersteuningsvragen_gearchiveerd_volgorde
+        description: "Sorteerkolom voor ondersteuningsvragen_gearchiveerd (1=Ja, 2=Nee, 3=N.v.t.). Gebruik in Power BI als 'Sort by column'."
+      - name: persoonsbeeld_gearchiveerd
+        description: >
+          Check op vragenlijst-administratie. 'Ja' als er geen Actuele of Concept
+          versie van "Persoonsbeeld, bejegening, signaleringsplan" meer aanwezig
+          is. 'Nee' als er nog wel een Actuele/Concept versie open staat.
+          'N.v.t.' als de check niet relevant is (zorgplan_versie
+          niet 'Nieuw' of zorgplan_status niet 'Actueel').
+      - name: persoonsbeeld_gearchiveerd_volgorde
+        description: "Sorteerkolom voor persoonsbeeld_gearchiveerd (1=Ja, 2=Nee, 3=N.v.t.). Gebruik in Power BI als 'Sort by column'."
+      - name: rapportages_op_zorgplan
+        description: >
+          'Ja' als de cliënt sinds de startdatum van het Actuele zorgplan
+          minstens één rapportage heeft die linkt aan een regel van dat
+          zorgplan (objectId-match). 'Nee' als er wel een Actief zorgplan is
+          maar geen gekoppelde rapportages sinds startdatum. 'N.v.t.' als de
+          cliënt geen Actief zorgplan heeft.
+      - name: rapportages_op_zorgplan_volgorde
+        description: "Sorteerkolom voor rapportages_op_zorgplan (1=Ja, 2=Nee, 3=N.v.t.). Gebruik in Power BI als 'Sort by column'."
+      - name: aantal_rapportages_op_zorgplan
+        description: >
+          Aantal rapportages van de cliënt sinds de startdatum van het Actuele
+          zorgplan die linken aan een regel van dat zorgplan (objectId-match).
+          NULL als de cliënt geen Actief zorgplan heeft.
+      - name: aantal_overige_rapportages
+        description: >
+          Aantal rapportages van de cliënt sinds de startdatum van het Actuele
+          zorgplan die NIET aan een regel van dat zorgplan gekoppeld zijn
+          (geen zorgplan_id of een ander zorgplan_id). NULL als de cliënt geen
+          Actief zorgplan heeft.
+      - name: doelen_in_norm
+        description: >
+          Check op de doelen-norm: 'Ja' als het Actuele zorgplan 1 of 2 regels
+          heeft met aandachtspunt 'Thuis' of 'Daginvulling' (alleen
+          is_verborgen_aandachtspunt = 0 telt mee). 'Nee' als 0 of meer dan 2
+          doelen. 'N.v.t.' wanneer zorgplan_voortgang niet 'Nieuw & actueel' is.
+      - name: doelen_in_norm_volgorde
+        description: "Sorteerkolom voor doelen_in_norm (1=Ja, 2=Nee, 3=N.v.t.). Gebruik in Power BI als 'Sort by column'."
+      - name: aantal_doelen
+        description: >
+          Aantal regels in het Actuele zorgplan met aandachtspunt 'Thuis' of
+          'Daginvulling' (is_verborgen_aandachtspunt = 0). NULL wanneer
+          zorgplan_voortgang niet 'Nieuw & actueel' is.
+
+  - name: mart_zorgplan_verantwoording_per_client
+    description: >
+      Zorgplan-verantwoording-status per cliënt in zorg (snapshot vandaag).
+      Eén rij per cliënt uit mart_clienten_actueel, met aantallen vragenlijsten
+      "Zorgplan, welke keuzes hebben we gemaakt?" per status (Actueel /
+      Concept / Gearchiveerd) en een samenvattende categorie. Een Actuele
+      vragenlijst die meer dan 1 jaar niet is bijgewerkt (gewijzigd_op > 1 jaar
+      geleden) krijgt categorie 'Verlopen'. Geen doelgroep-filter — alle
+      cliënten in zorg.
+    columns:
+      - name: client_id
+        description: "Unieke identifier van de cliënt"
+        tests: [unique, not_null]
+      - name: clientnummer
+        description: "Extern cliëntnummer (identificationNo) uit ONS"
+      - name: clientnaam
+        description: "Volledige naam van de cliënt"
+      - name: hoofdlocatie_id
+        description: "Locatie-ID van de huidige hoofdlocatie (type MAIN)"
+      - name: hoofdlocatienaam
+        description: "Naam van de huidige hoofdlocatie"
+      - name: hoofdlocatienaam_niveau4
+        description: "Niveau4-naam van de hoofdlocatie (ancestor in int_locatie_hierarchie; null als de hoofdlocatie boven niveau 4 hangt)"
+      - name: aantal_zorgplan_verantwoording_actueel
+        description: "Aantal vragenlijsten met status 'Actueel' (0 als er geen zijn)"
+      - name: aantal_zorgplan_verantwoording_concept
+        description: "Aantal vragenlijsten met status 'Concept' (0 als er geen zijn)"
+      - name: aantal_zorgplan_verantwoording_gearchiveerd
+        description: "Aantal vragenlijsten met status 'Gearchiveerd' (0 als er geen zijn)"
+      - name: laatst_bijgewerkt_actueel
+        description: "Tijdstip van de laatste wijziging (gewijzigd_op) op een Actuele vragenlijst (null als er geen Actuele is). Sleutel voor de 'Verlopen'-categorie (> 1 jaar geleden)."
+      - name: zorgplan_verantwoording_status
+        description: >
+          Samenvattende categorie:
+          'Actueel' (minstens één Actueel, binnen 1 jaar bijgewerkt),
+          'Verlopen' (Actueel maar laatst bijgewerkt > 1 jaar geleden),
+          'Concept' (geen Actueel, wel Concept),
+          'Gearchiveerd' (alleen Gearchiveerd),
+          'Geen' (geen enkele vragenlijst voltooid).
+      - name: zorgplan_verantwoording_status_volgorde
+        description: "Sorteerkolom voor zorgplan_verantwoording_status (1=Actueel, 2=Concept, 3=Verlopen, 4=Gearchiveerd, 5=Geen). Gebruik in Power BI als 'Sort by column'."

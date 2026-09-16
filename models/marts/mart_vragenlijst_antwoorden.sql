@@ -32,12 +32,11 @@ definitief as (
 
         -- Medewerker
         resultaten.medewerker_id,
-        resultaten.ingevuld_door,
+        resultaten.medewerker_naam,
 
         -- Invulling
-        antwoorden.ingevuld_op,
-        resultaten.status_code,
-        resultaten.status_omschrijving,
+        antwoorden.voltooid_op,
+        resultaten.status_omschrijving as status,
 
         -- Vragenlijst structuur (categorie > groep > vraag)
         definitie.vragenlijst_categorie_id,

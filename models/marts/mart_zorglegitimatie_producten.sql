@@ -56,7 +56,8 @@ definitief as (
         clienten.clientnaam                                         as client_naam,
 
         -- Financiering
-        financieringstypen.financieringstype_naam,
+        ft_legitimatie.financieringstype_naam                       as financieringstype_legitimatie,
+        ft_product.financieringstype_naam                           as financieringstype_product,
 
         -- Status
         case
@@ -77,8 +78,10 @@ definitief as (
         on clienten.client_id = zorglegitimaties.client_id
     left join productdefinities
         on productdefinities.product_id = producten.product_id
-    left join financieringstypen
-        on financieringstypen.financieringstype_id = zorglegitimaties.financieringstype_id
+    left join financieringstypen ft_legitimatie
+        on ft_legitimatie.financieringstype_id = zorglegitimaties.financieringstype_id
+    left join financieringstypen ft_product
+        on ft_product.financieringstype_id = productdefinities.financieringstype_id
 
 )
 

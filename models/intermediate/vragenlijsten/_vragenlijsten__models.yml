@@ -55,7 +55,7 @@ models:
   - name: int_vragenlijst_resultaten
     description: >
       Ingevulde vragenlijsten verrijkt met cliëntnaam, vragenlijsttitel, medewerker en leesbare statusomschrijving.
-      Grain: één rij per ingevulde vragenlijst. Geen datumfilter (historisch — Power BI filtert op ingevuld_op).
+      Grain: één rij per ingevulde vragenlijst. Geen datumfilter (historisch — Power BI filtert op voltooid_op).
     columns:
       - name: vragenlijst_resultaat_id
         description: "Unieke identifier van de ingevulde vragenlijst"
@@ -74,9 +74,9 @@ models:
         description: "Volledige naam van de cliënt (voornaam + achternaam)"
       - name: medewerker_id
         description: "Verwijzing naar de medewerker die de vragenlijst heeft ingevuld"
-      - name: ingevuld_door
+      - name: medewerker_naam
         description: "Naam van de medewerker die de vragenlijst heeft ingevuld"
-      - name: ingevuld_op
+      - name: voltooid_op
         description: "Datum/tijd waarop de vragenlijst is ingevuld"
       - name: status_code
         description: "Ruwe statuscode — resolv naar omschrijving via status_omschrijving"
@@ -106,7 +106,7 @@ models:
       - name: client_id
         description: "Verwijzing naar de cliënt"
         tests: [not_null]
-      - name: ingevuld_op
+      - name: voltooid_op
         description: "Datum/tijd waarop de vragenlijst is ingevuld"
       - name: vragenlijst_vraag_id
         description: "Verwijzing naar de vraag"

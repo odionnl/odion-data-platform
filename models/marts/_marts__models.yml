@@ -65,6 +65,8 @@ models:
         description: "Deep-link naar het medicatieoverzicht van deze client in ONS dossier"
       - name: url_ons_agenda
         description: "Deep-link naar de agenda van deze client in ONS dossier"
+      - name: url_ons_vragenlijsten
+        description: "Deep-link naar de vragenlijst-resultaten van deze client in ONS dossier"
 
   - name: mart_medewerkers
     description: >
@@ -112,9 +114,9 @@ models:
       - name: client_naam
         description: "Volledige naam van de client (roepnaam + voorvoegsel + achternaam)"
       - name: financieringstype_id
-        description: "Verwijzing naar het financieringstype"
-      - name: financieringstype_naam
-        description: "Naam van het financieringstype (bijv. ZZP, WMO, Jeugdwet)"
+        description: "Verwijzing naar het financieringstype van de zorglegitimatie"
+      - name: financieringstype_legitimatie
+        description: "Naam van het financieringstype van de zorglegitimatie (bijv. ZZP, WMO, Jeugdwet)"
       - name: debiteur_id
         description: "Verwijzing naar de debiteur"
       - name: uitsluiten_van_facturatie
@@ -163,8 +165,10 @@ models:
         description: "Extern clientnummer (identificationNo)"
       - name: client_naam
         description: "Volledige naam van de client (roepnaam + voorvoegsel + achternaam)"
-      - name: financieringstype_naam
-        description: "Naam van het financieringstype (bijv. ZZP, WMO, Jeugdwet)"
+      - name: financieringstype_legitimatie
+        description: "Naam van het financieringstype op zorglegitimatie-niveau (uit care_orders.financeTypeObjectId)"
+      - name: financieringstype_product
+        description: "Naam van het financieringstype op product-niveau (uit products.financeTypeObjectId) — kan afwijken van financieringstype_legitimatie"
       - name: is_actief
         description: "Of het product vandaag actief is (0/1)"
 
@@ -421,8 +425,12 @@ models:
         description: "Naam van het rapportage-type"
       - name: rapportagedatum
         description: "Datum van de rapportage"
-      - name: status_code
+      - name: status
         description: "Status van de rapportage (open/closed)"
+      - name: zorgplanregel_id
+        description: "Verwijzing naar de gekoppelde zorgplanregel (null als de rapportage niet aan een zorgplanregel hangt)"
+      - name: zorgplan_id
+        description: "Verwijzing naar het zorgplan waar de zorgplanregel onder valt (afgeleid via careplan_entries; null als de rapportage niet aan een zorgplanregel hangt)"
       - name: is_gemarkeerd
         description: "1 als de medewerker de rapportage als belangrijk heeft gemarkeerd"
       - name: is_verborgen
@@ -479,6 +487,66 @@ models:
         description: "Tijdstip waarop het zorgplan het laatst is bijgewerkt"
       - name: url_ons_zorgplan
         description: "Deep-link naar het zorgplan van deze client in ONS dossier"
+
+  - name: mart_zorgplanregels
+    description: >
+      Brede zorgplanregels-mart met per regel de context van zorgplan
+      (status, versie, geldigheid, looptijd), cliënt, domein, aandachtspunt
+      (Thuis/Daginvulling/Mijn verhaal — alleen actuele categorieën) en doel.
+      Grain: één rij per zorgplanregel. Geen datumfilter (historisch + actueel).
+    columns:
+      - name: zorgplanregel_id
+        description: "Unieke identifier van de zorgplanregel"
+        tests: [unique, not_null]
+      - name: zorgplanregel_link_id
+        description: "Stabiele link-ID van de regel; gelijk bij gekopieerde regels in een nieuw zorgplan"
+      - name: zorgplan_id
+        description: "Verwijzing naar het zorgplan"
+        tests: [not_null]
+      - name: zorgplan_status
+        description: "Status van het zorgplan (bv. Actief, Concept)"
+      - name: zorgplan_versie_plan
+        description: "Versie van het zorgplan o.b.v. alle regels: Leeg, Oud, Nieuw of Mix"
+      - name: zorgplan_geldigheid
+        description: "Geldig, Verlopen of Nog niet gestart — op basis van zorgplan-start/einddatum vs vandaag"
+      - name: startdatum_zorgplan
+        description: "Startdatum van het zorgplan"
+      - name: einddatum_zorgplan
+        description: "Einddatum van het zorgplan (null = open einde)"
+      - name: client_id
+        description: "Verwijzing naar de cliënt"
+      - name: clientnummer
+        description: "Extern cliëntnummer (identificationNo) uit ONS"
+      - name: client_naam
+        description: "Volledige naam van de cliënt"
+      - name: domein_definitie_id
+        description: "Verwijzing naar de domeindefinitie"
+      - name: domein_naam
+        description: "Naam van het domein"
+      - name: domein_versie
+        description: "Oud, Nieuw of Onbekend — afgeleid van is_oud_domein op de domeindefinitie"
+      - name: aandachtspuntdefinitie_id
+        description: "Verwijzing naar de aandachtspuntdefinitie (null als de regel niet aan een aandachtspunt hangt)"
+      - name: aandachtspunt_naam
+        description: "Naam van het aandachtspunt (bv. 'Thuis', 'Daginvulling', 'Mijn verhaal'). Alle records meegenomen; filter op is_verborgen_aandachtspunt=0 voor alleen actuele Odion-categorieën."
+      - name: is_verborgen_aandachtspunt
+        description: "Hidden-flag van de aandachtspuntdefinitie. 0 = actuele/relevante categorie voor Odion, 1 = oud."
+      - name: doeldefinitie_id
+        description: "Verwijzing naar de doeldefinitie"
+      - name: doel_naam
+        description: "Naam van het doel (template-tekst uit de doeldefinitie)"
+      - name: doel_titel
+        description: "Overschreven titel van het doel op deze specifieke regel"
+      - name: doel_opmerking
+        description: "Vrij tekstveld bij het doel"
+      - name: streefdatum
+        description: "Streefdatum van het doel"
+      - name: percentage_gerealiseerd
+        description: "Percentage waarmee het doel gerealiseerd is (0-100)"
+      - name: aangemaakt_op
+        description: "Tijdstip waarop de regel is aangemaakt"
+      - name: gewijzigd_op
+        description: "Tijdstip van de laatste wijziging op de regel"
 
   - name: mart_zorgplan_per_client
     description: >
@@ -539,7 +607,7 @@ models:
     description: >
       Historisch overzicht van alle ingevulde vragenlijsten per cliënt.
       Bevat vragenlijsttitel, cliëntnaam, invullende medewerker, invuldatum en leesbare statusomschrijving.
-      Geen datumfilter — Power BI filtert op ingevuld_op. Eén rij per ingevulde vragenlijst.
+      Geen datumfilter — Power BI filtert op voltooid_op. Eén rij per ingevulde vragenlijst.
     columns:
       - name: vragenlijst_resultaat_id
         description: "Unieke identifier van de ingevulde vragenlijst"
@@ -556,16 +624,12 @@ models:
         description: "Volledige naam van de cliënt (voornaam + achternaam)"
       - name: medewerker_id
         description: "Verwijzing naar de medewerker die de vragenlijst heeft ingevuld"
-      - name: ingevuld_door
+      - name: medewerker_naam
         description: "Naam van de medewerker die de vragenlijst heeft ingevuld"
-      - name: ingevuld_op
+      - name: voltooid_op
         description: "Datum/tijd waarop de vragenlijst is ingevuld"
-      - name: status_code
-        description: "Ruwe statuscode van de ingevulde vragenlijst"
-      - name: status_omschrijving
-        description: "Leesbare statusomschrijving (via lst_vragenlijst_resultaat_statussen)"
-      - name: is_readonly
-        description: "1 als de vragenlijst afgesloten is voor verdere wijzigingen"
+      - name: status
+        description: "Leesbare status van de ingevulde vragenlijst (via lst_vragenlijst_resultaat_statussen)"
       - name: aangemaakt_op
         description: "Tijdstip van aanmaken"
       - name: gewijzigd_op
@@ -575,7 +639,7 @@ models:
     description: >
       Alle antwoorden op ingevulde vragenlijsten, verrijkt met vragenlijststructuur
       (categorie/groep), cliëntnaam, medewerker en statusomschrijving. Eén rij per antwoord.
-      Geen datumfilter — Power BI filtert op ingevuld_op.
+      Geen datumfilter — Power BI filtert op voltooid_op.
     columns:
       - name: vragenlijst_antwoord_id
         description: "Unieke identifier van het antwoord"
@@ -595,14 +659,12 @@ models:
         description: "Volledige naam van de cliënt (voornaam + achternaam)"
       - name: medewerker_id
         description: "Verwijzing naar de medewerker die de vragenlijst heeft ingevuld"
-      - name: ingevuld_door
+      - name: medewerker_naam
         description: "Naam van de medewerker die de vragenlijst heeft ingevuld"
-      - name: ingevuld_op
+      - name: voltooid_op
         description: "Datum/tijd waarop de vragenlijst is ingevuld"
-      - name: status_code
-        description: "Ruwe statuscode van de ingevulde vragenlijst"
-      - name: status_omschrijving
-        description: "Leesbare statusomschrijving (via lst_vragenlijst_resultaat_statussen)"
+      - name: status
+        description: "Leesbare status van de ingevulde vragenlijst (via lst_vragenlijst_resultaat_statussen)"
       - name: vragenlijst_categorie_id
         description: "Verwijzing naar de categorie binnen de vragenlijst"
       - name: categorie_titel
@@ -647,42 +709,6 @@ models:
       - name: gewijzigd_op
         description: "Tijdstip van laatste wijziging"
 
-  - name: mart_vragenlijst_antwoorden_intake_en_wachtlijst_3_0
-    description: >
-      Antwoorden op de vragenlijst "Intake en wachtlijst 3.0".
-      Gefilterde subset van mart_vragenlijst_antwoorden. Eén rij per antwoord.
-    columns:
-      - name: vragenlijst_antwoord_id
-        description: "Unieke identifier van het antwoord"
-        tests: [unique, not_null]
-
-  - name: mart_feitelijk_geleverde_zorg
-    description: >
-      Verantwoording feitelijk geleverde zorg per client in zorg (snapshot vandaag).
-      Bevat checks op geldig zorgplan, recente rapportages, medicatietoediening en
-      zorgplaninzage, plus een totaalscore. Eén rij per client in zorg.
-    columns:
-      - name: client_id
-        description: "Unieke identifier van de client"
-        tests: [unique, not_null]
-      - name: client_naam
-        description: "Naam van de client (roepnaam + achternaam)"
-      - name: geldig_zorgplan
-        description: "1 als client een actief zorgplan heeft op peildatum, anders 0"
-      - name: recente_rapportages
-        description: "1 als client minstens 1 rapportage heeft in evaluatieperiode, anders 0"
-      - name: medicatie_toegediend
-        description: "1 als medicatie correct toegediend, 0 als niet, NULL als geen medicatie"
-      - name: zorgplan_ingezien
-        description: "1 als zorgplan ingezien door relevant zorgpersoneel op dezelfde locatie, anders 0"
-      - name: client_score
-        description: "Percentage score (0-100) over alle datapunten"
-      - name: peildatum
-        description: "Gebruikte peildatum voor de berekening"
-      - name: startdatum
-        description: "Begin van de evaluatieperiode (peildatum - 28 dagen)"
-
-
   - name: mart_groepszorg_registraties
     description: >
       Alle groepszorg-registraties (niet-verwijderd) verrijkt met cliëntgegevens en groepsgegevens.
@@ -698,9 +724,7 @@ models:
       - name: eindtijd
         description: "Eindtijd van de registratie"
       - name: status
-        description: "Statuscode: 0=Aanwezig, 1=Afwezig, 2=Aangemaakt, 3=No-show"
-      - name: status_omschrijving
-        description: "Leesbare omschrijving van de status"
+        description: "Leesbare status: Aanwezig, Afwezig, Aangemaakt of No-show"
       - name: is_gefiatteerd
         description: "1 als de registratie gefiatteerd (goedgekeurd) is"
       - name: client_id
@@ -749,9 +773,7 @@ models:
       - name: eindtijd
         description: "Eindtijd van de registratie"
       - name: status
-        description: "Statuscode: 0=Aanwezig, 1=Afwezig, 2=Aangemaakt, 3=No-show"
-      - name: status_omschrijving
-        description: "Leesbare omschrijving van de status"
+        description: "Leesbare status: Aanwezig, Afwezig, Aangemaakt of No-show"
       - name: is_gefiatteerd
         description: "1 als de registratie gefiatteerd (goedgekeurd) is"
       - name: activiteit_id
