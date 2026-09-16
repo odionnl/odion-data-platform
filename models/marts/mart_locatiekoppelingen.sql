@@ -1,6 +1,16 @@
-with koppelingen as (
+-- Bridge-mart cliënt ↔ locatie (historisch + actueel).
+-- Testcliënten (int_testclienten) zijn uitgesloten, net als in mart_clienten.
+
+with testclienten as (
+
+    select * from {{ ref('int_testclienten') }}
+
+),
+
+koppelingen as (
 
     select * from {{ ref('int_clienten_met_locaties') }}
+    where client_id not in (select client_id from testclienten)
 
 ),
 

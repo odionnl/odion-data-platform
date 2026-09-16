@@ -257,7 +257,8 @@ models:
     description: >
       Bridge-mart voor de many-to-many relatie tussen cliënten en locaties.
       Eén rij per cliënt-locatiekoppeling (historisch + actueel), inclusief
-      type_toekenning, hoofdlocatie-vlag en is_actief. Gebruik
+      type_toekenning, hoofdlocatie-vlag en is_actief. Testcliënten
+      (int_testclienten) zijn uitgesloten. Gebruik
       mart_locatiekoppelingen_actueel voor alleen vandaag actieve koppelingen.
     columns:
       - name: locatiekoppeling_id
