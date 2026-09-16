@@ -65,6 +65,8 @@ models:
         description: "Deep-link naar het medicatieoverzicht van deze client in ONS dossier"
       - name: url_ons_agenda
         description: "Deep-link naar de agenda van deze client in ONS dossier"
+      - name: url_ons_vragenlijsten
+        description: "Deep-link naar de vragenlijst-resultaten van deze client in ONS dossier"
 
   - name: mart_medewerkers
     description: >
