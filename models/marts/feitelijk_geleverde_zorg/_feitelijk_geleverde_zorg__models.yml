@@ -21,7 +21,7 @@ models:
       - name: zorgplan_ingezien
         description: "1 als zorgplan ingezien door relevant zorgpersoneel op dezelfde locatie, anders 0"
       - name: client_score
-        description: "Percentage score (0-100) over alle datapunten"
+        description: "Score als fractie tussen 0 en 1 (bv. 0.67) over alle van toepassing zijnde checks"
       - name: peildatum
         description: "Gebruikte peildatum voor de berekening"
       - name: startdatum
