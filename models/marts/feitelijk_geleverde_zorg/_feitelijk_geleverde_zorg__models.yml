@@ -26,3 +26,43 @@ models:
         description: "Gebruikte peildatum voor de berekening"
       - name: startdatum
         description: "Begin van de evaluatieperiode (peildatum - 28 dagen)"
+
+  - name: mart_feitelijk_geleverde_zorg_datapunten
+    description: >
+      Long-format variant van mart_feitelijk_geleverde_zorg: één rij per client per
+      datapunt. Bedoeld voor Power BI, zodat datapunten als dimensie gebruikt kunnen
+      worden (as, slicer, matrix) in plaats van één measure per datapunt.
+      Grain: client_id + datapunt (4 rijen per client in zorg).
+      Locatie komt via de relatie op client_id, niet uit deze mart.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - client_id
+              - datapunt
+    columns:
+      - name: client_id
+        description: "Unieke identifier van de client"
+        tests: [not_null]
+      - name: datapunt
+        description: "Technische naam van het datapunt, gelijk aan de kolomnaam in mart_feitelijk_geleverde_zorg"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - geldig_zorgplan
+                  - recente_rapportages
+                  - medicatie_toegediend
+                  - zorgplan_ingezien
+      - name: datapunt_label
+        description: "Leesbare naam van het datapunt, voor weergave in Power BI"
+      - name: datapunt_volgorde
+        description: "Sorteervolgorde van het datapunt (gebruik als 'sort by column' voor datapunt_label)"
+      - name: waarde
+        description: >
+          1 als het datapunt behaald is, 0 als niet, NULL als niet van toepassing
+          (alleen mogelijk bij medicatie_toegediend). NULL telt niet mee in een
+          AVERAGE, waardoor het gemiddelde direct het slagingspercentage geeft.
+      - name: peildatum
+        description: "Gebruikte peildatum voor de berekening"
