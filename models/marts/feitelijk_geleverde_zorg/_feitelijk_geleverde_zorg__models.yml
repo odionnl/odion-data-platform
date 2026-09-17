@@ -55,6 +55,10 @@ models:
                   - recente_rapportages
                   - medicatie_toegediend
                   - zorgplan_ingezien
+          - relationships:
+              arguments:
+                to: ref('mart_feitelijk_geleverde_zorg_normen')
+                field: datapunt
       - name: datapunt_label
         description: "Leesbare naam van het datapunt, voor weergave in Power BI"
       - name: datapunt_volgorde
@@ -66,3 +70,24 @@ models:
           AVERAGE, waardoor het gemiddelde direct het slagingspercentage geeft.
       - name: peildatum
         description: "Gebruikte peildatum voor de berekening"
+
+  - name: mart_feitelijk_geleverde_zorg_normen
+    description: >
+      Normen (streefwaarden) per datapunt voor de verantwoording feitelijk geleverde zorg.
+      Kleine statische dimensietabel, tevens de plek waar de leesbare naam en sorteervolgorde
+      van elk datapunt vastliggen. Koppelt op `datapunt` aan
+      mart_feitelijk_geleverde_zorg_datapunten. Grain: één rij per datapunt.
+      De normwaarden zijn organisatiebeleid en worden in het model zelf onderhouden.
+    columns:
+      - name: datapunt
+        description: "Technische naam van het datapunt, gelijk aan de kolomnaam in mart_feitelijk_geleverde_zorg"
+        tests: [unique, not_null]
+      - name: datapunt_label
+        description: "Leesbare naam van het datapunt, voor weergave in Power BI"
+      - name: datapunt_volgorde
+        description: "Sorteervolgorde van het datapunt (gebruik als 'sort by column' voor datapunt_label)"
+      - name: norm
+        description: >
+          Streefwaarde als fractie tussen 0 en 1 (bv. 0.90), net als client_score in
+          mart_feitelijk_geleverde_zorg. Power BI formatteert dit als percentage.
+        tests: [not_null]
