@@ -16,7 +16,7 @@ with normen as (
             ('geldig_zorgplan',      'Geldig zorgplan',      1,        0.75),
             ('recente_rapportages',  'Recente rapportages',  2,        0.90),
             ('medicatie_toegediend', 'Medicatie toegediend', 3,        0.90),
-            ('zorgplan_ingezien',    'Zorgplan ingezien',    4,        0.90)
+            ('zorgdossier_bekeken',  'Zorgdossier bekeken',  4,        0.90)
     ) as v (datapunt, datapunt_label, datapunt_volgorde, norm)
 
 )

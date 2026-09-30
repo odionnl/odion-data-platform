@@ -113,7 +113,7 @@ definitief as (
         case
             when audits_met_locatie_overlap.client_id is not null then 1
             else 0
-        end as zorgplan_ingezien
+        end as zorgdossier_bekeken
 
     from clienten
     left join audits_met_locatie_overlap

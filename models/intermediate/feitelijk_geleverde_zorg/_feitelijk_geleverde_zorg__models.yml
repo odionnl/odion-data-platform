@@ -58,14 +58,14 @@ models:
       - name: medicatie_toegediend
         description: "1 als minstens 1 geldige toediening, 0 als alleen ongeldige, NULL als geen medicatie"
 
-  - name: int_check_zorgplan_ingezien
+  - name: int_check_zorgdossier_bekeken
     description: >
-      Check of het zorgplan van de client is ingezien door zorgpersoneel
+      Check of het zorgdossier van de client is bekeken door zorgpersoneel
       dat op diezelfde locatie dienst had. Filtert op expertise-groep
       'Zorgpersoneel (tbv planning & control)' en locatie-overlap.
     columns:
       - name: client_id
         description: "Unieke identifier van de client"
         tests: [unique, not_null]
-      - name: zorgplan_ingezien
-        description: "1 als zorgplan is ingezien door relevant zorgpersoneel, anders 0"
+      - name: zorgdossier_bekeken
+        description: "1 als zorgdossier is bekeken door relevant zorgpersoneel, anders 0"

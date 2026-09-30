@@ -54,10 +54,10 @@ datapunten as (
 
     select
         client_id,
-        'zorgplan_ingezien'     as datapunt,
-        'Zorgplan ingezien'     as datapunt_label,
+        'zorgdossier_bekeken'   as datapunt,
+        'Zorgdossier bekeken'   as datapunt_label,
         4                       as datapunt_volgorde,
-        zorgplan_ingezien       as waarde,
+        zorgdossier_bekeken     as waarde,
         peildatum
     from feitelijk_geleverde_zorg
 
