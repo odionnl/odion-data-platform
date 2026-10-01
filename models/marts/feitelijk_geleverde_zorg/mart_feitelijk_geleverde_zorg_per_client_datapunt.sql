@@ -1,11 +1,11 @@
--- Long-format variant van mart_feitelijk_geleverde_zorg: één rij per client per
+-- Long-format variant van mart_feitelijk_geleverde_zorg_per_client: één rij per client per
 -- datapunt, in plaats van één kolom per datapunt. Bedoeld voor Power BI, zodat
 -- datapunten als dimensie op een as/slicer gebruikt kunnen worden en er niet per
 -- datapunt een aparte measure nodig is.
 --
 -- Grain: één rij per client per datapunt (4 rijen per client in zorg).
 -- waarde = NULL betekent "niet van toepassing" (alleen mogelijk bij
--- medicatie_toegediend, als de client geen medicatie heeft). Power BI negeert
+-- medicatie_afgetekend, als de client geen medicatie heeft). Power BI negeert
 -- NULL bij AVERAGE, dus een gemiddelde over waarde geeft direct het slagingspercentage.
 --
 -- Locatie-informatie zit bewust niet in deze mart: die komt in Power BI via de
@@ -13,7 +13,7 @@
 
 with feitelijk_geleverde_zorg as (
 
-    select * from {{ ref('mart_feitelijk_geleverde_zorg') }}
+    select * from {{ ref('mart_feitelijk_geleverde_zorg_per_client') }}
 
 ),
 
@@ -21,10 +21,10 @@ datapunten as (
 
     select
         client_id,
-        'geldig_zorgplan'       as datapunt,
-        'Geldig zorgplan'       as datapunt_label,
+        'actueel_zorgplan'      as datapunt,
+        'Actueel zorgplan'      as datapunt_label,
         1                       as datapunt_volgorde,
-        geldig_zorgplan         as waarde,
+        actueel_zorgplan        as waarde,
         peildatum
     from feitelijk_geleverde_zorg
 
@@ -43,10 +43,10 @@ datapunten as (
 
     select
         client_id,
-        'medicatie_toegediend'  as datapunt,
-        'Medicatie toegediend'  as datapunt_label,
+        'medicatie_afgetekend'  as datapunt,
+        'Medicatie afgetekend'  as datapunt_label,
         3                       as datapunt_volgorde,
-        medicatie_toegediend    as waarde,
+        medicatie_afgetekend    as waarde,
         peildatum
     from feitelijk_geleverde_zorg
 

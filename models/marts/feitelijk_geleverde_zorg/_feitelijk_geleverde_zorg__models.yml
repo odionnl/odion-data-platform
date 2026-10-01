@@ -1,10 +1,10 @@
 version: 2
 
 models:
-  - name: mart_feitelijk_geleverde_zorg
+  - name: mart_feitelijk_geleverde_zorg_per_client
     description: >
       Verantwoording feitelijk geleverde zorg per client in zorg (snapshot vandaag).
-      Bevat checks op geldig zorgplan, recente rapportages, medicatietoediening en
+      Bevat checks op actueel zorgplan, recente rapportages, medicatie-aftekening en
       inzage in het zorgdossier, plus een totaalscore. Eén rij per client in zorg.
     columns:
       - name: client_id
@@ -12,12 +12,12 @@ models:
         tests: [unique, not_null]
       - name: client_naam
         description: "Naam van de client (roepnaam + achternaam)"
-      - name: geldig_zorgplan
+      - name: actueel_zorgplan
         description: "1 als client een actief zorgplan heeft op peildatum, anders 0"
       - name: recente_rapportages
         description: "1 als client minstens 1 rapportage heeft in evaluatieperiode, anders 0"
-      - name: medicatie_toegediend
-        description: "1 als medicatie correct toegediend, 0 als niet, NULL als geen medicatie"
+      - name: medicatie_afgetekend
+        description: "1 als medicatie correct afgetekend, 0 als niet, NULL als geen medicatie"
       - name: zorgdossier_bekeken
         description: "1 als zorgdossier bekeken door relevant zorgpersoneel op dezelfde locatie, anders 0"
       - name: client_score
@@ -27,9 +27,9 @@ models:
       - name: startdatum
         description: "Begin van de evaluatieperiode (peildatum - 28 dagen)"
 
-  - name: mart_feitelijk_geleverde_zorg_datapunten
+  - name: mart_feitelijk_geleverde_zorg_per_client_datapunt
     description: >
-      Long-format variant van mart_feitelijk_geleverde_zorg: één rij per client per
+      Long-format variant van mart_feitelijk_geleverde_zorg_per_client: één rij per client per
       datapunt. Bedoeld voor Power BI, zodat datapunten als dimensie gebruikt kunnen
       worden (as, slicer, matrix) in plaats van één measure per datapunt.
       Grain: client_id + datapunt (4 rijen per client in zorg).
@@ -45,19 +45,19 @@ models:
         description: "Unieke identifier van de client"
         tests: [not_null]
       - name: datapunt
-        description: "Technische naam van het datapunt, gelijk aan de kolomnaam in mart_feitelijk_geleverde_zorg"
+        description: "Technische naam van het datapunt, gelijk aan de kolomnaam in mart_feitelijk_geleverde_zorg_per_client"
         tests:
           - not_null
           - accepted_values:
               arguments:
                 values:
-                  - geldig_zorgplan
+                  - actueel_zorgplan
                   - recente_rapportages
-                  - medicatie_toegediend
+                  - medicatie_afgetekend
                   - zorgdossier_bekeken
           - relationships:
               arguments:
-                to: ref('mart_feitelijk_geleverde_zorg_normen')
+                to: ref('mart_feitelijk_geleverde_zorg_definities')
                 field: datapunt
       - name: datapunt_label
         description: "Leesbare naam van het datapunt, voor weergave in Power BI"
@@ -66,21 +66,21 @@ models:
       - name: waarde
         description: >
           1 als het datapunt behaald is, 0 als niet, NULL als niet van toepassing
-          (alleen mogelijk bij medicatie_toegediend). NULL telt niet mee in een
+          (alleen mogelijk bij medicatie_afgetekend). NULL telt niet mee in een
           AVERAGE, waardoor het gemiddelde direct het slagingspercentage geeft.
       - name: peildatum
         description: "Gebruikte peildatum voor de berekening"
 
-  - name: mart_feitelijk_geleverde_zorg_normen
+  - name: mart_feitelijk_geleverde_zorg_definities
     description: >
-      Normen (streefwaarden) per datapunt voor de verantwoording feitelijk geleverde zorg.
-      Kleine statische dimensietabel, tevens de plek waar de leesbare naam en sorteervolgorde
-      van elk datapunt vastliggen. Koppelt op `datapunt` aan
-      mart_feitelijk_geleverde_zorg_datapunten. Grain: één rij per datapunt.
-      De normwaarden zijn organisatiebeleid en worden in het model zelf onderhouden.
+      Definities en normen (streefwaarden) per datapunt voor de verantwoording feitelijk
+      geleverde zorg. Kleine statische dimensietabel, tevens de plek waar de leesbare naam,
+      sorteervolgorde en definitie van elk datapunt vastliggen. Koppelt op `datapunt` aan
+      mart_feitelijk_geleverde_zorg_per_client_datapunt. Grain: één rij per datapunt.
+      De normwaarden en definities zijn organisatiebeleid en worden in het model zelf onderhouden.
     columns:
       - name: datapunt
-        description: "Technische naam van het datapunt, gelijk aan de kolomnaam in mart_feitelijk_geleverde_zorg"
+        description: "Technische naam van het datapunt, gelijk aan de kolomnaam in mart_feitelijk_geleverde_zorg_per_client"
         tests: [unique, not_null]
       - name: datapunt_label
         description: "Leesbare naam van het datapunt, voor weergave in Power BI"
@@ -89,5 +89,8 @@ models:
       - name: norm
         description: >
           Streefwaarde als fractie tussen 0 en 1 (bv. 0.90), net als client_score in
-          mart_feitelijk_geleverde_zorg. Power BI formatteert dit als percentage.
+          mart_feitelijk_geleverde_zorg_per_client. Power BI formatteert dit als percentage.
+        tests: [not_null]
+      - name: definitie
+        description: "Leesbare definitie van wanneer het datapunt behaald is, voor weergave in Power BI (bv. tooltip)"
         tests: [not_null]

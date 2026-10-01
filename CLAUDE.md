@@ -80,7 +80,7 @@ Ingestion gebruikt **dlt** (`dlt[mssql]`). Credentials staan in `.dlt/secrets.to
 - **`int_check_*`**: `CAST(GETDATE() AS DATE)` en/of `DATEADD(day, -28, CAST(GETDATE() AS DATE))`
 - **Marts (base)**: all-time, met `is_actief` / `is_in_zorg` kolom berekend op `GETDATE()`
 - **Marts actueel (`mart_*_actueel`)**: view op base mart met `WHERE is_actief = 1` — snapshot vandaag
-- **Uitzondering**: `mart_feitelijk_geleverde_zorg` is inherent actueel (alleen cliënten in zorg)
+- **Uitzondering**: `mart_feitelijk_geleverde_zorg_per_client` is inherent actueel (alleen cliënten in zorg)
 
 Regel: gebruik altijd `GETDATE()` direct — **geen** dbt-variabelen of macros voor datumfilters.
 
