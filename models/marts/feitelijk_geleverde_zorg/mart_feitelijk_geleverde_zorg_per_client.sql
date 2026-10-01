@@ -62,6 +62,15 @@ definitief as (
             ),
         2) as decimal(5,2))                                     as client_score,
 
+        -- Deep-links naar ONS per check. Medicatie-url alleen als de check van toepassing is,
+        -- zodat Power BI geen link toont bij clienten zonder medicatie.
+        {{ ons_dossier_url('care_plan', 'clienten.client_id') }} as url_ons_zorgplan,
+        {{ ons_dossier_url('reports', 'clienten.client_id') }}   as url_ons_rapportages,
+        case
+            when medicatie_afgetekend.medicatie_afgetekend is not null
+            then {{ ons_medicatie_url('clienten.client_id') }}
+        end                                                     as url_ons_medicatie,
+
         -- Metadata
         cast(getdate() as date)                                 as peildatum,
         dateadd(day, -{{ var('evaluatieperiode_dagen') }}, cast(getdate() as date)) as startdatum
