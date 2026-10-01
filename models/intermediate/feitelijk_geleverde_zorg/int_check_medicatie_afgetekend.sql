@@ -50,7 +50,7 @@ per_client as (
 
     select
         client_id,
-        max(geldig_status) as medicatie_toegediend
+        max(geldig_status) as medicatie_afgetekend
 
     from relevante_toedieningen
     group by client_id
@@ -61,7 +61,7 @@ definitief as (
 
     select
         clienten.client_id,
-        per_client.medicatie_toegediend
+        per_client.medicatie_afgetekend
 
     from clienten
     left join per_client

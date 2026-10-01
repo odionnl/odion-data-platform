@@ -8,7 +8,7 @@ with vaste_testclienten as (
 
     select client_id
     from {{ ref('stg_onsdb__clients') }}
-    where clientnummer in ('10510', '11428')
+    where clientnummer in ('10510', '11428', '99999')
 
 ),
 
