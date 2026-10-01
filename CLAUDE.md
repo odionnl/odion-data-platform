@@ -92,6 +92,7 @@ Regel: gebruik altijd `GETDATE()` direct — **geen** dbt-variabelen of macros v
 | `get_leeftijdsgroep(leeftijd_col)` | `leeftijdsgroep.sql` | `<18`, `18-49`, `50-64`, `65+`, `Onbekend` |
 | `ons_dossier_url(path, client_id)` | `ons_urls.sql` | Deep-link naar ONS-dossier pagina |
 | `ons_administratie_url(client_id)` | `ons_urls.sql` | Deep-link naar ONS-administratie |
+| `ons_medicatie_url(client_id)` | `ons_urls.sql` | Deep-link naar ONS-medicatie |
 
 ## Naamgevingsconventies
 
