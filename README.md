@@ -92,9 +92,6 @@ poetry run dbt run --select <modelnaam>
 # Tests draaien
 poetry run dbt test
 
-# Preview van modelresultaat
-poetry run dbt show --select <modelnaam>
-
 # Documentatie
 poetry run dbt docs generate && poetry run dbt docs serve
 ```
