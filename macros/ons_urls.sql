@@ -16,3 +16,12 @@ case
 ('https://odion.ioservice.net/client/', {{ client_id }}, '/view')
 end
 {%- endmacro %}
+
+{% macro ons_medicatie_url
+(client_id) -%}
+case
+    when {{ client_id }} is not null
+    then concat
+('https://odion.ons-medicatie.nl/clients/', {{ client_id }})
+end
+{%- endmacro %}

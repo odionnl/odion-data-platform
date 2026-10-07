@@ -35,7 +35,7 @@ definitief as (
         case
             when actieve_zorgplannen.client_id is not null then 1
             else 0
-        end as geldig_zorgplan
+        end as actueel_zorgplan
 
     from clienten
     left join actieve_zorgplannen

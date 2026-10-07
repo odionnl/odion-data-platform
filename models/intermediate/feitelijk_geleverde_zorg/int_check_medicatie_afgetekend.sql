@@ -25,7 +25,8 @@ huidige_overzichten as (
 
 ),
 
--- Filter: in evaluatieperiode, huidig overzicht, geen 'none_scheduled'
+-- Filter: in evaluatieperiode, huidig overzicht, geen 'none_scheduled'.
+-- Status NULL = ingepland maar nooit afgetekend → telt als ongeldig.
 relevante_toedieningen as (
 
     select
@@ -41,7 +42,7 @@ relevante_toedieningen as (
         and ho.rn = 1
     where t.ingepland_op >= dateadd(day, -{{ var('evaluatieperiode_dagen') }}, cast(getdate() as date))
       and t.ingepland_op <= cast(getdate() as date)
-      and t.status != 'none_scheduled'
+      and (t.status is null or t.status != 'none_scheduled')
 
 ),
 
@@ -50,7 +51,7 @@ per_client as (
 
     select
         client_id,
-        max(geldig_status) as medicatie_toegediend
+        max(geldig_status) as medicatie_afgetekend
 
     from relevante_toedieningen
     group by client_id
@@ -61,7 +62,7 @@ definitief as (
 
     select
         clienten.client_id,
-        per_client.medicatie_toegediend
+        per_client.medicatie_afgetekend
 
     from clienten
     left join per_client
