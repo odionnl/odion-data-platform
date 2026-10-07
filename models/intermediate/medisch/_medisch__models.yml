@@ -15,13 +15,16 @@ models:
   - name: int_medicatie_toedieningen
     description: >
       Samenvoegen van medicatieoverzichten, toedienafspraken, toedieningen
-      en statusupdates. Alleen niet-vrijgestelde toedieningen.
+      en de laatste statusupdate per toediening. Alleen niet-vrijgestelde toedieningen.
+      Grain: één rij per toediening, ook als er (nog) geen statusupdate is.
     columns:
       - name: toediening_id
         description: "Unieke identifier van de toediening"
-        tests: [not_null]
+        tests: [unique, not_null]
       - name: client_id
         description: "Verwijzing naar de client"
         tests: [not_null]
       - name: status
-        description: "Status van de toediening (bijv. handed, administered, prepared)"
+        description: "Laatste status van de toediening (bijv. handed, administered, prepared). NULL als nooit afgetekend."
+      - name: status_gewijzigd_op
+        description: "Tijdstip van de laatste statusupdate. NULL als nooit afgetekend."
