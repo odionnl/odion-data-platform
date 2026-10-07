@@ -41,7 +41,6 @@ poetry run dbt test --select mart_clienten  # tests voor één model
 
 # dbt — overig
 poetry run dbt compile                      # compileer SQL zonder te draaien
-poetry run dbt show --select mart_clienten  # preview resultaat (eerste 5 rijen)
 poetry run dbt docs generate && poetry run dbt docs serve
 
 # Python ingestion pipelines
