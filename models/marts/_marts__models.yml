@@ -904,3 +904,102 @@ models:
         description: "Moment van aanmaken"
       - name: gewijzigd_op
         description: "Moment van laatste wijziging"
+
+  - name: mart_medicatie_toedieningen
+    description: >
+      Alle medicatietoedieningen tot en met vandaag, voor rapportage van aantallen per dag/maand,
+      per locatie en per status (type toediening). Bron: int_medicatie_toedieningen (niet-vrijgesteld,
+      geen fake toedienlijsten, laatste statusupdate). Per client+datum telt alleen de laatst
+      gegenereerde toedienlijst (voorkomt dubbeltelling). Locatie = hoofdlocatie (MAIN) van de cliënt
+      op de geplande datum. Testcliënten uitgesloten. Grain: één rij per toediening.
+      Privacy: bevat client_id (geen namen); toon in rapportages bij voorkeur alleen aggregaties.
+    columns:
+      - name: toediening_id
+        description: "Unieke identifier van de toediening"
+        tests: [unique, not_null]
+      - name: client_id
+        description: "Verwijzing naar de client"
+        tests: [not_null]
+      - name: ingepland_op
+        description: "Datum en tijd waarop de toediening gepland is"
+      - name: ingepland_datum
+        description: "Datum waarop de toediening gepland stond (actieve relatie met mart_datums)"
+        tests: [not_null]
+      - name: status
+        description: "Laatste status uit ONS (administered, handed, prepared, self_managed, failed, none_scheduled, unknown). NULL als nooit afgetekend."
+      - name: status_omschrijving
+        description: "Nederlandse omschrijving van de status; 'Niet afgetekend' als er geen status is"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - Toegediend
+                  - Aangereikt
+                  - Klaargezet
+                  - In eigen beheer
+                  - Niet toegediend
+                  - Geen toediening gepland
+                  - Onbekend
+                  - Niet afgetekend
+      - name: is_afgetekend
+        description: "1 als er een statusupdate is, anders 0"
+        tests:
+          - accepted_values:
+              arguments:
+                values: [0, 1]
+      - name: is_verstrekt
+        description: "1 als de medicatie verstrekt is of in eigen beheer: status administered/handed/prepared/self_managed (zelfde definitie als int_check_medicatie_afgetekend)"
+        tests:
+          - accepted_values:
+              arguments:
+                values: [0, 1]
+      - name: status_gewijzigd_op
+        description: "Tijdstip van de laatste statusupdate (moment van aftekenen). NULL als nooit afgetekend."
+      - name: afgetekend_datum
+        description: "Datum van de laatste statusupdate (inactieve relatie met mart_datums, gebruik USERELATIONSHIP). NULL als nooit afgetekend."
+      - name: locatie_id
+        description: "Hoofdlocatie van de cliënt op de geplande datum (koppel aan mart_locaties). NULL als er geen hoofdlocatie was."
+
+  - name: mart_datums
+    description: >
+      Datumtabel (kalender) voor Power BI. Eén rij per dag van 2015-01-01 tot en met
+      31 december van volgend jaar. Nederlandse maand- en dagnamen; week start op maandag.
+      Markeer in Power BI als datumtabel op kolom `datum` en koppel aan datumkolommen in
+      andere marts (bv. mart_medicatie_toedieningen.ingepland_datum).
+    columns:
+      - name: datum
+        description: "Kalenderdatum (sleutel)"
+        tests: [unique, not_null]
+      - name: jaar
+        description: "Jaar"
+      - name: kwartaal
+        description: "Kwartaalnummer (1-4)"
+      - name: kwartaal_label
+        description: "Kwartaal als label (Q1-Q4)"
+      - name: maandnummer
+        description: "Maandnummer (1-12); gebruik als 'sorteren op kolom' voor maandnaam"
+      - name: maandnaam
+        description: "Volledige Nederlandse maandnaam (januari ... december)"
+      - name: maandnaam_kort
+        description: "Korte Nederlandse maandnaam (jan ... dec)"
+      - name: jaar_maand_sortering
+        description: "Jaar * 100 + maand (bv. 202610); sorteerkolom voor jaar_maand"
+      - name: jaar_maand
+        description: "Jaar en maand als tekst (bv. 2026-10)"
+      - name: maand_start
+        description: "Eerste dag van de maand"
+      - name: dag_van_maand
+        description: "Dag binnen de maand (1-31)"
+      - name: iso_week
+        description: "ISO-weeknummer (let op: rond de jaarwisseling kan dit bij het vorige/volgende jaar horen)"
+      - name: weekdagnummer
+        description: "Dag van de week, maandag = 1 t/m zondag = 7"
+      - name: weekdagnaam
+        description: "Nederlandse dagnaam (maandag ... zondag); sorteer op weekdagnummer"
+      - name: is_weekend
+        description: "1 voor zaterdag en zondag"
+      - name: is_vandaag
+        description: "1 als datum = vandaag (op moment van dbt run)"
+      - name: is_tot_en_met_vandaag
+        description: "1 als datum <= vandaag (op moment van dbt run); handig om toekomstige datums te verbergen"
