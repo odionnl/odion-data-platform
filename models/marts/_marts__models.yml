@@ -912,7 +912,7 @@ models:
       geen fake toedienlijsten, laatste statusupdate). Per client+datum telt alleen de laatst
       gegenereerde toedienlijst (voorkomt dubbeltelling). Locatie = hoofdlocatie (MAIN) van de cliënt
       op de geplande datum. Testcliënten uitgesloten. Grain: één rij per toediening.
-      Privacy: bevat client_id (geen namen); toon in rapportages bij voorkeur alleen aggregaties.
+      Privacy: bevat client_id en clientnummer (geen namen); toon in rapportages bij voorkeur alleen aggregaties.
     columns:
       - name: toediening_id
         description: "Unieke identifier van de toediening"
@@ -920,6 +920,8 @@ models:
       - name: client_id
         description: "Verwijzing naar de client"
         tests: [not_null]
+      - name: clientnummer
+        description: "Clientnummer uit ONS (stg_onsdb__clients)"
       - name: ingepland_op
         description: "Datum en tijd waarop de toediening gepland is"
       - name: ingepland_datum
@@ -960,6 +962,8 @@ models:
         description: "Datum van de laatste statusupdate (inactieve relatie met mart_datums, gebruik USERELATIONSHIP). NULL als nooit afgetekend."
       - name: locatie_id
         description: "Hoofdlocatie van de cliënt op de geplande datum (koppel aan mart_locaties). NULL als er geen hoofdlocatie was."
+      - name: url_ons_medicatie
+        description: "Deep-link naar de toedienlijst van de client in ONS-medicatie op de geplande datum (…/clients/<id>/days/<yyyy-mm-dd>)"
 
   - name: mart_datums
     description: >

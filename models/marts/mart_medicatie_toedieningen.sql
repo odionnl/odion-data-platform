@@ -16,6 +16,12 @@ toedieningen as (
 
 ),
 
+clienten as (
+
+    select * from {{ ref('stg_onsdb__clients') }}
+
+),
+
 locatiekoppelingen as (
 
     select * from {{ ref('stg_onsdb__location_assignments') }}
@@ -82,6 +88,7 @@ definitief as (
         -- Toediening
         rt.toediening_id,
         rt.client_id,
+        c.clientnummer,
         rt.ingepland_op,
         rt.ingepland_datum,
 
@@ -107,9 +114,14 @@ definitief as (
         cast(rt.status_gewijzigd_op as date) as afgetekend_datum,
 
         -- Hoofdlocatie op geplande datum (details via mart_locaties)
-        tl.locatie_id
+        tl.locatie_id,
+
+        -- ONS-link
+        {{ ons_medicatie_dag_url('rt.client_id', 'rt.ingepland_datum') }} as url_ons_medicatie
 
     from relevante_toedieningen rt
+    left join clienten c
+        on c.client_id = rt.client_id
     left join toediening_locatie tl
         on tl.toediening_id = rt.toediening_id
         and tl.rn = 1
