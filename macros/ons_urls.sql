@@ -25,3 +25,12 @@ case
 ('https://odion.ons-medicatie.nl/clients/', {{ client_id }})
 end
 {%- endmacro %}
+
+{% macro ons_medicatie_dag_url
+(client_id, datum) -%}
+case
+    when {{ client_id }} is not null and {{ datum }} is not null
+    then concat
+('https://odion.ons-medicatie.nl/clients/', {{ client_id }}, '/days/', convert(char(10), {{ datum }}, 23))
+end
+{%- endmacro %}
