@@ -350,6 +350,15 @@ models:
         description: "Verwijzing naar de financiële boeking (finance_logs.objectId)"
         tests: [not_null]
 
+  - name: stg_onsdb__lst_export_units
+    description: "Lookup: eenheden voor declaratie/export (eenheid en tariefeenheid van factuurregels)."
+    columns:
+      - name: eenheid_code
+        description: "Code van de eenheid"
+        tests: [unique, not_null]
+      - name: eenheid
+        description: "Omschrijving van de eenheid"
+
   - name: stg_onsdb__care_order_products
     description: "Producten gekoppeld aan zorglegitimaties."
     columns:

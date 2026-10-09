@@ -303,6 +303,9 @@ sources:
       - name: invoice_row_finance_logs
         description: "Koppeltabel tussen factuurregels en financiële boekingen (finance_logs)."
 
+      - name: lst_export_units
+        description: "Lookup: eenheden voor declaratie/export (o.a. eenheid en tariefeenheid van factuurregels)."
+
       # -- Vragenlijsten --
       - name: surveys
         description: "Definitie van vragenlijsten (templates met titel en configuratie)."

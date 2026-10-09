@@ -35,11 +35,15 @@ models:
       - name: aantal
         description: "Gefactureerde hoeveelheid eenheden"
       - name: eenheid_code
-        description: "Eenheid van de factuurregel (enum)"
+        description: "Code van de eenheid van de factuurregel"
+      - name: eenheid
+        description: "Eenheid van de factuurregel, via stg_onsdb__lst_export_units"
       - name: tarief
         description: "Tarief per eenheid in euro's"
       - name: tarief_eenheid_code
-        description: "Eenheid van het tarief (enum)"
+        description: "Code van de eenheid van het tarief"
+      - name: tarief_eenheid
+        description: "Eenheid van het tarief, via stg_onsdb__lst_export_units"
       - name: totaalbedrag
         description: "Totaal berekend bedrag inclusief btw, in euro's"
       - name: berekend_bedrag

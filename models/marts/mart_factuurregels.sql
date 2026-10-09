@@ -39,6 +39,12 @@ financieringstypen as (
 
 ),
 
+eenheden as (
+
+    select * from {{ ref('stg_onsdb__lst_export_units') }}
+
+),
+
 definitief as (
 
     select
@@ -65,8 +71,10 @@ definitief as (
         -- Aantal en tarief
         regels.aantal,
         regels.eenheid_code,
+        eenheid.eenheid,
         cast(regels.tarief_in_centen as decimal(18, 2)) / 100           as tarief,
         regels.tarief_eenheid_code,
+        tarief_eenheid.eenheid                                          as tarief_eenheid,
         cast(regels.totaalbedrag_in_centen as decimal(18, 2)) / 100     as totaalbedrag,
         cast(regels.berekend_bedrag_in_centen as decimal(18, 2)) / 100  as berekend_bedrag,
         cast(regels.toegekend_bedrag_in_centen as decimal(18, 2)) / 100 as toegekend_bedrag,
@@ -97,6 +105,10 @@ definitief as (
         on productdefinities.product_id = regels.product_id
     left join financieringstypen
         on financieringstypen.financieringstype_id = productdefinities.financieringstype_id
+    left join eenheden eenheid
+        on eenheid.eenheid_code = regels.eenheid_code
+    left join eenheden tarief_eenheid
+        on tarief_eenheid.eenheid_code = regels.tarief_eenheid_code
 
 )
 
