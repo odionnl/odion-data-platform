@@ -1,6 +1,100 @@
 version: 2
 
 models:
+  - name: mart_factuurregels
+    description: >
+      Factuurregels (historisch + actueel) t.b.v. tariefcontrole: periode, cliënt,
+      product, aantal, tarief en goed-/afkeurstatus. Eén rij per factuurregel.
+      Bedragen in euro's. Testcliënten (int_testclienten) zijn uitgesloten.
+    columns:
+      - name: factuurregel_id
+        description: "Unieke identifier van de factuurregel"
+        tests: [unique, not_null]
+      - name: factuur_id
+        description: "Verwijzing naar de factuur"
+      - name: vorige_factuurregel_id
+        description: "Verwijzing naar de voorgaande factuurregel (bij correctie/herdeclaratie)"
+      - name: factuurnummer
+        description: "Factuurnummer van de bijbehorende factuur"
+      - name: startdatum
+        description: "Begindatum van de factuurregel"
+      - name: einddatum
+        description: "Einddatum van de factuurregel"
+      - name: client_id
+        description: "Verwijzing naar de client"
+      - name: clientnummer
+        description: "Extern clientnummer (identificationNo)"
+      - name: product_id
+        description: "Verwijzing naar het gefactureerde product"
+      - name: product_code
+        description: "Korte code van het product"
+      - name: product_omschrijving
+        description: "Omschrijving van het product"
+      - name: financieringstype_naam
+        description: "Financieringstype van het product"
+      - name: aantal
+        description: "Gefactureerde hoeveelheid eenheden"
+      - name: eenheid_code
+        description: "Eenheid van de factuurregel (enum)"
+      - name: tarief
+        description: "Tarief per eenheid in euro's"
+      - name: tarief_eenheid_code
+        description: "Eenheid van het tarief (enum)"
+      - name: totaalbedrag
+        description: "Totaal berekend bedrag inclusief btw, in euro's"
+      - name: berekend_bedrag
+        description: "Berekend bedrag vanuit debiteur, in euro's"
+      - name: toegekend_bedrag
+        description: "Toegekend bedrag vanuit debiteur, in euro's"
+      - name: status
+        description: "Goedgekeurd / Afgekeurd / Nog niet beoordeeld. Afkeur van de hele factuur telt als afkeur van de regel."
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Goedgekeurd', 'Afgekeurd', 'Nog niet beoordeeld']
+      - name: retourmelding
+        description: "Retourinformatie / afkeurreden van de debiteur ('manual' = handmatige goed-/afkeur)"
+      - name: retour_verwerkt_op
+        description: "Moment waarop het retourbericht van de factuur is verwerkt"
+
+  - name: mart_facturen
+    description: >
+      Facturen (historisch + actueel) met aantallen regels per status en totaalbedragen.
+      Eén rij per factuur. Regels van testcliënten tellen niet mee. Bedragen in euro's.
+    columns:
+      - name: factuur_id
+        description: "Unieke identifier van de factuur"
+        tests: [unique, not_null]
+      - name: factuurnummer
+        description: "Factuurnummer"
+      - name: factuur_type_code
+        description: "Type factuur (invoiceType, zie lst_invoice_types)"
+      - name: debiteur_id
+        description: "Verwijzing naar de debiteur"
+      - name: factuurdatum
+        description: "Aanmaakmoment van de factuur"
+      - name: startdatum
+        description: "Begindatum van de factuurperiode"
+      - name: einddatum
+        description: "Einddatum van de factuurperiode"
+      - name: is_geexporteerd
+        description: "Of de factuur succesvol is geëxporteerd (0/1)"
+      - name: is_afgekeurd
+        description: "Of de hele factuur is afgekeurd (0/1)"
+      - name: aantal_regels
+        description: "Aantal factuurregels (excl. testcliënten)"
+      - name: aantal_regels_goedgekeurd
+        description: "Aantal goedgekeurde factuurregels"
+      - name: aantal_regels_afgekeurd
+        description: "Aantal afgekeurde factuurregels"
+      - name: aantal_regels_niet_beoordeeld
+        description: "Aantal nog niet beoordeelde factuurregels"
+      - name: totaalbedrag
+        description: "Som van de totaalbedragen van de regels, in euro's"
+      - name: toegekend_bedrag
+        description: "Som van de toegekende bedragen van de regels, in euro's"
+
   - name: mart_clienten
     description: >
       Alle cliënten (historisch + actueel) met leeftijd en in-zorg vlag.

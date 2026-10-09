@@ -287,6 +287,22 @@ sources:
           - name: objectId
             tests: [unique, not_null]
 
+      # -- Facturatie --
+      - name: invoices
+        description: "Aangemaakte facturen met factuurperiode, debiteur en retourstatus."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: invoice_rows
+        description: "Factuurregels: daadwerkelijk gefactureerde regels, afgeleid van finance_logs. Tarieven en bedragen in centen."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: invoice_row_finance_logs
+        description: "Koppeltabel tussen factuurregels en financiële boekingen (finance_logs)."
+
       # -- Vragenlijsten --
       - name: surveys
         description: "Definitie van vragenlijsten (templates met titel en configuratie)."

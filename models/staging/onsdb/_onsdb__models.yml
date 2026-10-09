@@ -263,6 +263,93 @@ models:
       - name: financieringstype_id
         description: "Verwijzing naar het financieringstype van het product (financeTypeObjectId)"
 
+  - name: stg_onsdb__invoices
+    description: "Aangemaakte facturen met factuurperiode, debiteur en retourstatus."
+    columns:
+      - name: factuur_id
+        description: "Unieke identifier van de factuur"
+        tests: [unique, not_null]
+      - name: factuurnummer
+        description: "Factuurnummer"
+      - name: factuur_type_code
+        description: "Type factuur (invoiceType, zie lst_invoice_types: 0 = Handmatig, 6 = AW319 Wlz, 9 = WMO303, 10 = JW303, ...)"
+      - name: debiteur_id
+        description: "Verwijzing naar de debiteur van de factuur"
+      - name: zorgaanbieder_code
+        description: "AGB- of WZA-code van de zorgaanbieder"
+      - name: factuurdatum
+        description: "Aanmaakmoment van de factuur"
+      - name: startdatum
+        description: "Begindatum van de factuurperiode"
+      - name: einddatum
+        description: "Einddatum van de factuurperiode"
+      - name: boekdatum
+        description: "Datum gebruikt bij journalisering van de factuur"
+      - name: is_geexporteerd
+        description: "Of de factuur succesvol is geëxporteerd (0/1)"
+      - name: is_afgekeurd
+        description: "Of de hele factuur is afgekeurd (0/1)"
+      - name: retour_verwerkt_op
+        description: "Moment waarop het retourbericht van zorgkantoor/verzekeraar/gemeente is verwerkt"
+      - name: retourmelding
+        description: "Semi-gestructureerde retourinformatie op factuurniveau ('manual' = handmatige goed-/afkeur)"
+
+  - name: stg_onsdb__invoice_rows
+    description: "Factuurregels. Tarieven en bedragen in centen, zoals in de bron."
+    columns:
+      - name: factuurregel_id
+        description: "Unieke identifier van de factuurregel"
+        tests: [unique, not_null]
+      - name: factuur_id
+        description: "Verwijzing naar de factuur"
+        tests:
+          - relationships:
+              arguments:
+                to: ref('stg_onsdb__invoices')
+                field: factuur_id
+      - name: vorige_factuurregel_id
+        description: "Verwijzing naar de voorgaande factuurregel (bij correctie/herdeclaratie)"
+      - name: client_id
+        description: "Verwijzing naar de client"
+      - name: product_id
+        description: "Verwijzing naar het gefactureerde product"
+      - name: zorglegitimatie_product_id
+        description: "Verwijzing naar het zorglegitimatie-product. Type 0/1 → care_order_products, type 2 → dbc_care_order_products. Kan leeg zijn bij ongelegitimeerde zorg."
+      - name: zorglegitimatie_product_type
+        description: "Type zorglegitimatie-product (careOrderProductType)"
+      - name: startdatum
+        description: "Begindatum van de factuurregel"
+      - name: einddatum
+        description: "Einddatum van de factuurregel"
+      - name: aantal
+        description: "Hoeveelheid eenheden"
+      - name: eenheid_code
+        description: "Eenheid van de factuurregel (enum)"
+      - name: tarief_in_centen
+        description: "Tarief per eenheid in centen"
+      - name: tarief_eenheid_code
+        description: "Eenheid van het tarief (enum)"
+      - name: totaalbedrag_in_centen
+        description: "Totaal berekend bedrag inclusief btw, in centen"
+      - name: berekend_bedrag_in_centen
+        description: "Berekend bedrag vanuit debiteur (calculatedAmount)"
+      - name: toegekend_bedrag_in_centen
+        description: "Toegekend bedrag vanuit debiteur (acceptedAmount)"
+      - name: is_goedgekeurd
+        description: "Of de regel is goedgekeurd door de debiteur (0/1)"
+      - name: retourmelding
+        description: "Semi-gestructureerde retourinformatie / afkeurreden ('manual' = handmatige goed-/afkeur)"
+
+  - name: stg_onsdb__invoice_row_finance_logs
+    description: "Koppeltabel tussen factuurregels en financiële boekingen (finance_logs)."
+    columns:
+      - name: factuurregel_id
+        description: "Verwijzing naar de factuurregel"
+        tests: [not_null]
+      - name: financiele_boeking_id
+        description: "Verwijzing naar de financiële boeking (finance_logs.objectId)"
+        tests: [not_null]
+
   - name: stg_onsdb__care_order_products
     description: "Producten gekoppeld aan zorglegitimaties."
     columns:
