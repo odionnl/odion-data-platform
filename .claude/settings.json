@@ -1,0 +1,63 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(poetry run dbt compile *)",
+      "Bash(poetry run dbt parse *)",
+      "Bash(poetry run dbt run *)",
+      "Bash(poetry run dbt test *)",
+      "Bash(poetry run dbt docs *)",
+      "Bash(poetry run dbt deps *)",
+      "Bash(poetry run dbt debug *)",
+      "PowerShell(poetry run dbt compile *)",
+      "PowerShell(poetry run dbt parse *)",
+      "PowerShell(poetry run dbt run *)",
+      "PowerShell(poetry run dbt test *)",
+      "PowerShell(poetry run dbt docs *)",
+      "PowerShell(poetry run dbt deps *)",
+      "PowerShell(poetry run dbt debug *)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git ls-files *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git checkout *)",
+      "Bash(git switch *)",
+      "Bash(git branch *)",
+      "Bash(git fetch *)",
+      "Bash(git pull *)",
+      "PowerShell(git status *)",
+      "PowerShell(git diff *)",
+      "PowerShell(git log *)",
+      "PowerShell(git ls-files *)",
+      "PowerShell(git add *)",
+      "PowerShell(git commit *)",
+      "PowerShell(git checkout *)",
+      "PowerShell(git switch *)",
+      "PowerShell(git branch *)",
+      "PowerShell(git fetch *)",
+      "PowerShell(git pull *)",
+      "WebFetch(domain:docs.getdbt.com)"
+    ],
+    "ask": [
+      "Bash(git push *)",
+      "PowerShell(git push *)",
+      "Bash(gh pr *)",
+      "PowerShell(gh pr *)"
+    ],
+    "deny": [
+      "Bash(poetry run dbt show *)",
+      "PowerShell(poetry run dbt show *)",
+      "Bash(dbt show *)",
+      "PowerShell(dbt show *)",
+      "Bash(sqlcmd *)",
+      "PowerShell(sqlcmd *)",
+      "PowerShell(Invoke-Sqlcmd *)",
+      "Read(./.dlt/secrets.toml)",
+      "Read(./.env)"
+    ]
+  },
+  "enabledPlugins": {
+    "dbt@dbt-agent-marketplace": true
+  }
+}
