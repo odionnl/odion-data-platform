@@ -34,14 +34,10 @@ models:
         description: "Financieringstype van het product"
       - name: aantal
         description: "Gefactureerde hoeveelheid eenheden"
-      - name: eenheid_code
-        description: "Code van de eenheid van de factuurregel"
       - name: eenheid
         description: "Eenheid van de factuurregel, via stg_onsdb__lst_export_units"
       - name: tarief
         description: "Tarief per eenheid in euro's"
-      - name: tarief_eenheid_code
-        description: "Code van de eenheid van het tarief"
       - name: tarief_eenheid
         description: "Eenheid van het tarief, via stg_onsdb__lst_export_units"
       - name: totaalbedrag
@@ -72,10 +68,22 @@ models:
         tests: [unique, not_null]
       - name: factuurnummer
         description: "Factuurnummer"
-      - name: factuur_type_code
-        description: "Type factuur (invoiceType, zie lst_invoice_types)"
+      - name: factuur_type
+        description: "Omschrijving van het factuurtype (bijv. AW319 Wet Langdurige Zorg, WMO303, JW303)"
+      - name: zorgaanbieder_code
+        description: "AGB- of WZA-code van de zorgaanbieder (invoices.provider)"
+      - name: zorgaanbieder
+        description: "Naam bij de AGB-code, via stg_onsdb__agbcodes. Leeg bij een WZA-code."
       - name: debiteur_id
         description: "Verwijzing naar de debiteur"
+      - name: debiteurnummer
+        description: "Debiteurnummer"
+      - name: debiteur_naam
+        description: "Organisatienaam van de debiteur (leeg bij cliënt-debiteuren)"
+      - name: debiteur_type
+        description: "Type debiteur (bijv. Zorgkantoor, Gemeente, Zorgverzekeraar, Cliënt)"
+      - name: gemeentecode
+        description: "Gemeentecode van de debiteur (bij gemeenten)"
       - name: factuurdatum
         description: "Aanmaakmoment van de factuur"
       - name: startdatum

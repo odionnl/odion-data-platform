@@ -14,6 +14,30 @@ factuurregels as (
 
 ),
 
+factuurtypen as (
+
+    select * from {{ ref('stg_onsdb__lst_invoice_types') }}
+
+),
+
+debiteuren as (
+
+    select * from {{ ref('stg_onsdb__debtors') }}
+
+),
+
+debiteurtypen as (
+
+    select * from {{ ref('stg_onsdb__lst_debtor_types') }}
+
+),
+
+agbcodes as (
+
+    select * from {{ ref('stg_onsdb__agbcodes') }}
+
+),
+
 regels_per_factuur as (
 
     select
@@ -36,9 +60,16 @@ definitief as (
         facturen.factuur_id,
         facturen.factuurnummer,
         facturen.factuur_omschrijving,
-        facturen.factuur_type_code,
-        facturen.debiteur_id,
+        factuurtypen.factuur_type,
         facturen.zorgaanbieder_code,
+        agbcodes.agbcode_naam                               as zorgaanbieder,
+
+        -- Debiteur
+        facturen.debiteur_id,
+        debiteuren.debiteurnummer,
+        debiteuren.debiteur_naam,
+        debiteurtypen.debiteur_type,
+        debiteuren.gemeentecode,
 
         -- Datums
         facturen.factuurdatum,
@@ -67,6 +98,15 @@ definitief as (
     from facturen
     left join regels_per_factuur regels
         on regels.factuur_id = facturen.factuur_id
+    left join factuurtypen
+        on factuurtypen.factuur_type_code = facturen.factuur_type_code
+    left join debiteuren
+        on debiteuren.debiteur_id = facturen.debiteur_id
+    left join debiteurtypen
+        on debiteurtypen.debiteur_type_code = debiteuren.debiteur_type_code
+    -- provider kan ook een WZA-code zijn (Wlz); die staat niet in agbcodes → zorgaanbieder leeg
+    left join agbcodes
+        on agbcodes.agbcode = facturen.zorgaanbieder_code
 
 )
 

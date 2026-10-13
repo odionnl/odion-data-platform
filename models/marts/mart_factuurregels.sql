@@ -70,10 +70,8 @@ definitief as (
 
         -- Aantal en tarief
         regels.aantal,
-        regels.eenheid_code,
         eenheid.eenheid,
         cast(regels.tarief_in_centen as decimal(18, 2)) / 100           as tarief,
-        regels.tarief_eenheid_code,
         tarief_eenheid.eenheid                                          as tarief_eenheid,
         cast(regels.totaalbedrag_in_centen as decimal(18, 2)) / 100     as totaalbedrag,
         cast(regels.berekend_bedrag_in_centen as decimal(18, 2)) / 100  as berekend_bedrag,

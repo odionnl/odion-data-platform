@@ -359,6 +359,63 @@ models:
       - name: eenheid
         description: "Omschrijving van de eenheid"
 
+  - name: stg_onsdb__lst_invoice_types
+    description: "Lookup: factuurtypen (0 = Handmatig, 6 = AW319 Wlz, 9 = WMO303, 10 = JW303, ...)."
+    columns:
+      - name: factuur_type_code
+        description: "Code van het factuurtype"
+        tests: [unique, not_null]
+      - name: factuur_type
+        description: "Omschrijving van het factuurtype"
+
+  - name: stg_onsdb__debtors
+    description: >
+      Debiteuren. Persoonsgegevens (naam, adres, contact- en bankgegevens) zijn bewust
+      niet opgenomen, omdat een debiteur ook de cliënt zelf kan zijn.
+    columns:
+      - name: debiteur_id
+        description: "Unieke identifier van de debiteur"
+        tests: [unique, not_null]
+      - name: debiteurnummer
+        description: "Debiteurnummer"
+      - name: debiteur_naam
+        description: "Organisatienaam van de debiteur (leeg bij cliënt-debiteuren)"
+      - name: debiteur_type_code
+        description: "Type debiteur (zie stg_onsdb__lst_debtor_types)"
+      - name: gemeentecode
+        description: "Gemeentecode van de debiteur (bij gemeenten)"
+      - name: client_id
+        description: "Verwijzing naar de cliënt, als de debiteur de cliënt zelf is"
+      - name: is_verborgen
+        description: "Of de debiteur verborgen is (0/1)"
+      - name: startdatum
+        description: "Datum vanaf wanneer naar deze debiteur gefactureerd mag worden"
+      - name: einddatum
+        description: "Datum t/m wanneer naar deze debiteur gefactureerd mag worden"
+
+  - name: stg_onsdb__lst_debtor_types
+    description: "Lookup: debiteurtypen (0 = Organisatie, 2 = Zorgkantoor, 3 = Zorgverzekeraar, 4 = Gemeente, 6 = Cliënt, ...)."
+    columns:
+      - name: debiteur_type_code
+        description: "Code van het debiteurtype"
+        tests: [unique, not_null]
+      - name: debiteur_type
+        description: "Omschrijving van het debiteurtype"
+
+  - name: stg_onsdb__agbcodes
+    description: "AGB-codes van de organisatie zelf, met naam en btw-nummer."
+    columns:
+      - name: agbcode_id
+        description: "Unieke identifier van de AGB-code"
+        tests: [unique, not_null]
+      - name: agbcode
+        description: "AGB-code. Uniek, zodat koppelen op code (bijv. invoices.provider) geen dubbele rijen geeft."
+        tests: [unique, not_null]
+      - name: agbcode_naam
+        description: "Naam behorend bij de AGB-code"
+      - name: btw_nummer
+        description: "Btw-nummer behorend bij de AGB-code"
+
   - name: stg_onsdb__care_order_products
     description: "Producten gekoppeld aan zorglegitimaties."
     columns:
