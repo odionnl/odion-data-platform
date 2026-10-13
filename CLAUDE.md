@@ -9,6 +9,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Geen** `dbt show`, `dbt run` of `dbt test` met het doel om data te inspecteren
 - **Geen** `SELECT`-queries uitvoeren op staging-, intermediate- of marts-tabellen
 - **Geen** preview of sample van tabelinhoud opvragen, ook niet voor debugging
+- **Geen** `run_query()`, `dbt_utils.get_column_values()` of vergelijkbare macros toevoegen waarvan het resultaat (rijen of kolomwaarden) via `log()`, `print()` of compiled SQL zichtbaar wordt. Ook `dbt compile` voert zulke queries uit.
+- **Geen** `dbt run-operation` met macros die data teruggeven (vraagt altijd om bevestiging)
 
 Wél toegestaan: SQL-modelbestanden (`.sql`), YAML-documentatie, macros en schema-definities lezen. Dat is code, geen data.
 
