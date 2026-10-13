@@ -287,6 +287,43 @@ sources:
           - name: objectId
             tests: [unique, not_null]
 
+      # -- Facturatie --
+      - name: invoices
+        description: "Aangemaakte facturen met factuurperiode, debiteur en retourstatus."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: invoice_rows
+        description: "Factuurregels: daadwerkelijk gefactureerde regels, afgeleid van finance_logs. Tarieven en bedragen in centen."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: invoice_row_finance_logs
+        description: "Koppeltabel tussen factuurregels en financiële boekingen (finance_logs)."
+
+      - name: lst_export_units
+        description: "Lookup: eenheden voor declaratie/export (o.a. eenheid en tariefeenheid van factuurregels)."
+
+      - name: lst_invoice_types
+        description: "Lookup: factuurtypen (Handmatig, AW319 Wlz, WMO303, JW303, ...)."
+
+      - name: debtors
+        description: "Debiteuren: zorgkantoren, gemeenten, zorgverzekeraars, organisaties en cliënten. Bevat persoonsgegevens bij cliënt-debiteuren."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: lst_debtor_types
+        description: "Lookup: debiteurtypen (Organisatie, Zorgkantoor, Zorgverzekeraar, Gemeente, Cliënt, ...)."
+
+      - name: agbcodes
+        description: "AGB-codes van de organisatie zelf, met naam en btw-nummer."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
       # -- Vragenlijsten --
       - name: surveys
         description: "Definitie van vragenlijsten (templates met titel en configuratie)."
