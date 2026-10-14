@@ -1,0 +1,38 @@
+version: 2
+
+models:
+  - name: int_tarieven
+    description: >
+      Alle tarievenlijsten uit seeds/tarieven/ samengevoegd, t.b.v. mart_tariefcontrole. Debiteurnummer is alleen gevuld bij tarieven per gemeente (Wmo);
+      leeg = geldt voor alle debiteuren.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - financieringstype_naam
+              - debiteurnummer
+              - prestatiecode
+              - geldig_vanaf
+    columns:
+      - name: financieringstype_naam
+        description: "Financieringstype, exact zoals in mart_factuurregels / mart_tariefcontrole (bv. 'Zorgzwaartepakket' voor Wlz)"
+        tests: [not_null]
+      - name: debiteurnummer
+        description: "Debiteur (gemeente) waarvoor het tarief geldt; leeg = alle debiteuren"
+      - name: geldig_vanaf
+        description: "Begindatum geldigheid tarief"
+        tests: [not_null]
+      - name: geldig_tot
+        description: "Einddatum geldigheid tarief (inclusief)"
+        tests: [not_null]
+      - name: prestatiecode
+        description: "Prestatiecode; koppelt op product_code"
+        tests: [not_null]
+      - name: prestatienaam
+        description: "Omschrijving van de prestatie volgens de tarievenlijst"
+      - name: tijdseenheid
+        description: "Tijdseenheid van het tarief (bv. Etmaal, Dagdeel (4 uur), Minuut)"
+      - name: tarief
+        description: "Te declareren tarief per tijdseenheid in euro's; leeg = geen vast tarief (bv. meerzorg)"
+      - name: tariefbestand
+        description: "Naam van de seed waar het tarief vandaan komt"

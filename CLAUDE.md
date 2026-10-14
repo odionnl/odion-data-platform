@@ -121,3 +121,21 @@ Tests en beschrijvingen staan in YAML-bestanden naast de modellen:
 - `models/intermediate/_int__models.yml`
 - `models/intermediate/verantwoording/_verantwoording__models.yml`
 - `models/marts/_marts__models.yml`
+- `seeds/tarieven/_tarieven__seeds.yml` + `models/intermediate/tarieven/_tarieven__models.yml`
+- `models/marts/interne_controle/_interne_controle__models.yml`
+
+## Tarievenlijsten (tariefcontrole)
+
+Tarievenlijsten van zorgkantoor/gemeenten staan als seeds in `seeds/tarieven/` (geen persoonsgegevens) en
+worden in `int_tarieven` samengevoegd; `mart_tariefcontrole` vergelijkt daarmee de factuurregels.
+Naamgeving: `tarieven_<financiering>_<jaar>[_<gemeente>].csv`. Nieuwe lijst toevoegen:
+
+```bash
+poetry run python scripts/tarieven_naar_seed.py "<pad naar xlsx>" --financieringstype Zorgzwaartepakket     --geldig-vanaf 2027-01-01 --geldig-tot 2027-12-31 --uit seeds/tarieven/tarieven_wlz_2027.csv
+# seed-naam toevoegen aan de lijst in models/intermediate/tarieven/int_tarieven.sql
+poetry run dbt seed --select tarieven
+poetry run dbt run --select int_tarieven mart_tariefcontrole
+```
+
+`--financieringstype` moet exact gelijk zijn aan `financieringstype_naam` (Wlz = `Zorgzwaartepakket`).
+Wmo: per gemeente een bestand met `--debiteurnummer`. Wijkt de Excel-layout af, voeg dan een mapping toe aan `LAYOUTS` in het script.

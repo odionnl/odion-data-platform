@@ -1,0 +1,68 @@
+version: 2
+
+models:
+  - name: mart_tariefcontrole
+    description: >
+      Tariefcontrole: gedeclareerd tarief per factuurregel vergeleken met de tarievenlijsten
+      (int_tarieven, seeds in seeds/tarieven/). Eén rij per factuurregel, alle jaren; jaarselectie
+      in Power BI op startdatum. Koppeling op financieringstype, product_code = prestatiecode,
+      startdatum binnen de geldigheid en (bij Wmo) debiteur; een debiteur-specifiek tarief gaat voor.
+      Overige regelgegevens via factuurregel_id → mart_factuurregels.
+    columns:
+      - name: factuurregel_id
+        description: "Unieke identifier van de factuurregel; relatie met mart_factuurregels"
+        tests: [unique, not_null]
+      - name: factuur_id
+        description: "Verwijzing naar de factuur"
+      - name: factuurnummer
+        description: "Factuurnummer van de bijbehorende factuur"
+      - name: factuur_type
+        description: "Omschrijving van het factuurtype (bijv. AW319 Wet Langdurige Zorg)"
+      - name: debiteurnummer
+        description: "Debiteurnummer van de factuur; gebruikt voor tarieven per gemeente (Wmo)"
+      - name: debiteur_naam
+        description: "Organisatienaam van de debiteur (leeg bij cliënt-debiteuren)"
+      - name: startdatum
+        description: "Begindatum van de factuurregel; bepaalt welke tarievenlijst geldt"
+      - name: einddatum
+        description: "Einddatum van de factuurregel"
+      - name: client_id
+        description: "Verwijzing naar de client"
+      - name: product_code
+        description: "Korte code van het product; koppelt op prestatiecode"
+      - name: product_omschrijving
+        description: "Omschrijving van het product"
+      - name: financieringstype_naam
+        description: "Financieringstype van het product (Wlz = 'Zorgzwaartepakket')"
+      - name: aantal
+        description: "Gefactureerde hoeveelheid eenheden"
+      - name: tarief
+        description: "Gedeclareerd tarief per eenheid in euro's"
+      - name: tarief_eenheid
+        description: "Eenheid van het gedeclareerde tarief"
+      - name: totaalbedrag
+        description: "Totaal berekend bedrag inclusief btw, in euro's"
+      - name: status
+        description: "Goedgekeurd / Afgekeurd / Nog niet beoordeeld"
+      - name: tariefbestand
+        description: "Seed (tarievenlijst) waaruit het verwachte tarief komt"
+      - name: prestatienaam
+        description: "Omschrijving van de prestatie volgens de tarievenlijst"
+      - name: verwacht_tarief
+        description: "Te declareren tarief per tijdseenheid volgens de tarievenlijst, in euro's"
+      - name: verwachte_tijdseenheid
+        description: "Tijdseenheid van het verwachte tarief (bv. Etmaal, Dagdeel (4 uur), Minuut)"
+      - name: tariefverschil
+        description: "tarief - verwacht_tarief, in euro's"
+      - name: bedragsverschil
+        description: "aantal * tariefverschil, in euro's"
+      - name: tariefcontrole
+        description: >
+          Akkoord / Afwijkend tarief (verschil >= 0,01) / Geen vast tarief (code staat in de lijst
+          zonder tarief, bv. meerzorg) / Niet in tarievenlijst (lijst geladen, code ontbreekt) /
+          Geen tarievenlijst (geen lijst geladen voor dit financieringstype en deze periode).
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Akkoord', 'Afwijkend tarief', 'Geen vast tarief', 'Niet in tarievenlijst', 'Geen tarievenlijst']

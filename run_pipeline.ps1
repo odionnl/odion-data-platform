@@ -39,7 +39,13 @@ if ($LASTEXITCODE -ne 0) {
 }
 Log "Stap 2 klaar."
 
-# Stap 3: dbt run (alle modellen)
+# Stap 3: dbt seed (tarievenlijsten) + dbt run (alle modellen)
+Log "Stap 3: dbt seed starten..."
+Run-Step "poetry run dbt seed"
+if ($LASTEXITCODE -ne 0) {
+    Log "FOUT: dbt seed mislukt."
+    exit 1
+}
 Log "Stap 3: dbt run starten..."
 Run-Step "poetry run dbt run"
 if ($LASTEXITCODE -ne 0) {

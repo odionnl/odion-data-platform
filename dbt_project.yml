@@ -45,3 +45,17 @@ models:
     rpa:
       +materialized: table
       +schema: rpa
+
+seeds:
+  odion_data_platform:
+    tarieven:
+      +schema: seeds
+      +column_types:
+        financieringstype_naam: nvarchar(100)
+        debiteurnummer: nvarchar(50)
+        geldig_vanaf: date
+        geldig_tot: date
+        prestatiecode: nvarchar(20)
+        prestatienaam: nvarchar(255)
+        tijdseenheid: nvarchar(50)
+        tarief: nvarchar(20)
