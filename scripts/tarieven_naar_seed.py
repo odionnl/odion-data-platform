@@ -3,7 +3,7 @@
 Voorbeeld (Wlz 2026):
 
     poetry run python scripts/tarieven_naar_seed.py "<pad>/tarievenlijst2026.xlsx" \
-        --financieringstype Zorgzwaartepakket \
+        --factuurtype "AW319 Wet Langdurige Zorg" \
         --geldig-vanaf 2026-01-01 --geldig-tot 2026-12-31 \
         --uit seeds/tarieven/tarieven_wlz_2026.csv
 
@@ -34,7 +34,7 @@ LAYOUTS = {
 }
 
 SEED_KOLOMMEN = [
-    "financieringstype_naam",
+    "factuur_type",
     "debiteurnummer",
     "geldig_vanaf",
     "geldig_tot",
@@ -100,7 +100,7 @@ def ontdubbel(tarieven: list[dict]) -> list[dict]:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("excel", type=Path)
-    parser.add_argument("--financieringstype", required=True, help="Exact zoals financieringstype_naam in de marts")
+    parser.add_argument("--factuurtype", required=True, help="Exact zoals factuur_type in mart_facturen")
     parser.add_argument("--geldig-vanaf", required=True, type=date.fromisoformat)
     parser.add_argument("--geldig-tot", required=True, type=date.fromisoformat)
     parser.add_argument("--debiteurnummer", default="", help="Alleen bij tarieven per gemeente/debiteur (Wmo)")
@@ -118,7 +118,7 @@ def main() -> None:
         writer.writeheader()
         for t in uniek:
             writer.writerow({
-                "financieringstype_naam": args.financieringstype,
+                "factuur_type": args.factuurtype,
                 "debiteurnummer": args.debiteurnummer,
                 "geldig_vanaf": args.geldig_vanaf.isoformat(),
                 "geldig_tot": args.geldig_tot.isoformat(),

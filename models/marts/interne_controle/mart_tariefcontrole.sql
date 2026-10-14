@@ -1,6 +1,6 @@
 -- Tariefcontrole: gedeclareerd tarief per factuurregel vs. de tarievenlijsten (int_tarieven).
 -- Eén rij per factuurregel (alle jaren; jaarselectie in Power BI op startdatum).
--- Koppeling op financieringstype, product_code = prestatiecode, startdatum binnen de
+-- Koppeling op factuurtype (mart_facturen), product_code = prestatiecode, startdatum binnen de
 -- geldigheid en (bij Wmo) debiteur. Testcliënten zijn al uitgesloten in mart_factuurregels.
 -- Overige regelgegevens via factuurregel_id → mart_factuurregels.
 
@@ -49,10 +49,10 @@ regels as (
 
 ),
 
--- Is er voor financieringstype + periode (+ debiteur) een tarievenlijst geladen?
+-- Is er voor factuurtype + periode (+ debiteur) een tarievenlijst geladen?
 tarievenlijsten as (
 
-    select distinct financieringstype_naam, debiteurnummer, geldig_vanaf, geldig_tot
+    select distinct factuur_type, debiteurnummer, geldig_vanaf, geldig_tot
     from tarieven
 
 ),
@@ -62,8 +62,8 @@ regels_met_lijst as (
     select distinct regels.factuurregel_id
     from regels
     inner join tarievenlijsten lijsten
-        on lijsten.financieringstype_naam collate database_default
-         = regels.financieringstype_naam collate database_default
+        on lijsten.factuur_type collate database_default
+         = regels.factuur_type collate database_default
         and cast(regels.startdatum as date) between lijsten.geldig_vanaf and lijsten.geldig_tot
         and (lijsten.debiteurnummer is null
             or lijsten.debiteurnummer collate database_default
@@ -87,8 +87,8 @@ tariefmatch as (
 
     from regels
     inner join tarieven
-        on tarieven.financieringstype_naam collate database_default
-         = regels.financieringstype_naam collate database_default
+        on tarieven.factuur_type collate database_default
+         = regels.factuur_type collate database_default
         and tarieven.prestatiecode collate database_default
           = regels.product_code collate database_default
         and cast(regels.startdatum as date) between tarieven.geldig_vanaf and tarieven.geldig_tot

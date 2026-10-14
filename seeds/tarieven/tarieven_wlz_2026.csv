@@ -1,280 +1,280 @@
-financieringstype_naam,debiteurnummer,geldig_vanaf,geldig_tot,prestatiecode,prestatienaam,tijdseenheid,tarief
-Zorgzwaartepakket,,2026-01-01,2026-12-31,D430,DTV 3 VG excl. bh excl. db,Etmaal,157.3
-Zorgzwaartepakket,,2026-01-01,2026-12-31,D440,DTV 4 VG excl. bh excl. db,Etmaal,206.25
-Zorgzwaartepakket,,2026-01-01,2026-12-31,D454,DTV 5 VG excl. bh excl. db,Etmaal,247.81
-Zorgzwaartepakket,,2026-01-01,2026-12-31,D460,DTV 6 VG excl. bh excl. db,Etmaal,224.91
-Zorgzwaartepakket,,2026-01-01,2026-12-31,D470,DTV 7 VG excl. bh excl. db,Etmaal,360.44
-Zorgzwaartepakket,,2026-01-01,2026-12-31,D480,DTV 8 VG excl. bh excl. db,Etmaal,310.87
-Zorgzwaartepakket,,2026-01-01,2026-12-31,D624,DTV 2 LG excl. db,Etmaal,176.11
-Zorgzwaartepakket,,2026-01-01,2026-12-31,D640,DTV 4 LG excl. bh excl. db,Etmaal,233.9
-Zorgzwaartepakket,,2026-01-01,2026-12-31,D650,DTV 5 LG excl. bh excl. db,Etmaal,336.17
-Zorgzwaartepakket,,2026-01-01,2026-12-31,D660,DTV 6 LG excl. bh excl. db,Etmaal,369.84
-Zorgzwaartepakket,,2026-01-01,2026-12-31,D670,DTV 7 LG excl. bh excl. db,Etmaal,361.61
-Zorgzwaartepakket,,2026-01-01,2026-12-31,D720,DTV 2 ZG-aud excl. bh excl. db,Etmaal,277.35
-Zorgzwaartepakket,,2026-01-01,2026-12-31,D730,DTV 3 ZG-aud excl. bh excl. db,Etmaal,438.91
-Zorgzwaartepakket,,2026-01-01,2026-12-31,D740,DTV 4 ZG-aud excl. bh excl. db,Etmaal,243.7
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H001G,Dagbesteding ggz wonen-1,Dagdeel (4 uur),70.08
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H002G,Dagbesteding ggz wonen-2,Dagdeel (4 uur),80.06
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H003G,Dagbesteding ggz wonen-3,Dagdeel (4 uur),68.54
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H104,Verpleging,Minuut,1.56
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H117,Huishoudelijke hulp,Minuut,0.71
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H126,Persoonlijke verzorging,Minuut,1.2
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H127,Pv incl. beschikbaarheid,Minuut,1.28
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H150,Begeleiding incl. beschikbaarheid,Minuut,1.47
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H153,Begeleiding speciaal 2 (psy),Minuut,2.34
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H300,Begeleiding,Minuut,1.37
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H301,Begeleiding zg visueel,Minuut,2.41
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H303,Begeleiding zg auditief,Minuut,2.01
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H329,Behandeling gedragswetenschapper,Minuut,2.93
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H330,Behandeling paramedisch,Minuut,1.99
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H334,Behandeling IOG (j)lvg,Minuut,2.54
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H335,"Behandeling som, pg, vg, lg, zg (SO)",Minuut,4.7
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H336,"Behandeling som, pg, vg, lg, zg (AVG)",Minuut,4.4
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H420,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 0,Etmaal,10.78
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H421,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 1,Etmaal,24.46
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H422,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 2,Etmaal,33.46
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H423,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 3,Etmaal,46.16
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H424,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 4,Etmaal,64.48
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H425,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 5,Etmaal,89.25
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H426,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 6,Etmaal,132.14
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H800,Dagbesteding somatisch  ondersteunend,Dagdeel (4 uur),70.66
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H811,Dagbesteding vg licht,Dagdeel (4 uur),48.99
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H812,Dagbesteding vg midden,Dagdeel (4 uur),69.04
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H813,Dagbesteding vg zwaar,Dagdeel (4 uur),117.82
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H814,Dagbesteding vg kind licht,Dagdeel (4 uur),92.56
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H815,Dagbesteding vg kind midden,Dagdeel (4 uur),113.81
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H816,Dagbesteding vg kind zwaar,Dagdeel (4 uur),169.23
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H817,Dagbehandeling vg kind emg,Dagdeel (4 uur),197.16
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H819,Dagbehandeling vg emg volwassenen,Dagdeel (4 uur),197.16
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H821,Dagbehandeling vg kind zwaar,Dagdeel (4 uur),197.16
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H822,Dagbehandeling vg kind gedrag,Dagdeel (4 uur),234.5
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H831,Dagbesteding lg licht,Dagdeel (4 uur),70.06
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H832,Dagbesteding lg midden,Dagdeel (4 uur),82.13
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H833,Dagbesteding lg zwaar,Dagdeel (4 uur),90.04
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H835,Dagbesteding lg kind midden,Dagdeel (4 uur),116.83
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H836,Dagbesteding lg kind zwaar,Dagdeel (4 uur),140.46
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H851,Dagbesteding zg auditief licht,Dagdeel (4 uur),71.06
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H852,Dagbesteding zg auditief midden,Dagdeel (4 uur),85.64
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H853,Dagbesteding zg auditief zwaar,Dagdeel (4 uur),120.69
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H854,Dagbesteding zg kind auditief licht,Dagdeel (4 uur),133.85
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H855,Dagbesteding zg kind auditief midden,Dagdeel (4 uur),162.79
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H871,Dagbesteding zg visueel licht,Dagdeel (4 uur),64.35
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H872,Dagbesteding zg visueel midden,Dagdeel (4 uur),69.42
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H874,Dagbesteding zg kind visueel licht,Dagdeel (4 uur),75.53
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H875,Dagbesteding zg kind visueel midden,Dagdeel (4 uur),86.53
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H881,Vervoer dagbesteding/dagbehandeling ghz - categorie 1,Etmaal,24.39
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H882,Vervoer dagbesteding/dagbehandeling ghz - categorie 2,Etmaal,33.35
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H883,Vervoer dagbesteding/dagbehandeling ghz - categorie 3,Etmaal,46.02
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H884,Vervoer dagbesteding/dagbehandeling ghz - categorie 4,Etmaal,64.28
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H885,Vervoer dagbesteding/dagbehandeling ghz - categorie 5,Etmaal,88.97
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H886,Vervoer dagbesteding/dagbehandeling ghz - categorie 0,Etmaal,10.74
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H887,Vervoer dagbesteding/dagbehandeling ghz - categorie 6,Etmaal,131.73
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H900,Dagbesteding vg licht (vg1-vg4),Dagdeel (4 uur),41.87
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H902,Dagbesteding vg zwaar (vg7),Dagdeel (4 uur),111.46
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H903,Dagbesteding vg midden (vg5),Dagdeel (4 uur),63.14
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H904,Dagbesteding vg midden (vg6),Dagdeel (4 uur),63.23
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H906,Dagbesteding vg zwaar (vg8),Dagdeel (4 uur),113.16
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H910,Dagbesteding lg licht (lg7),Dagdeel (4 uur),62.52
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H913,Dagbesteding lg midden (lg2 en lg4),Dagdeel (4 uur),71.04
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H914,Dagbesteding lg midden (lg6),Dagdeel (4 uur),74.46
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H915,Dagbesteding lg zwaar (lg1 en lg3),Dagdeel (4 uur),78.86
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H916,Dagbesteding lg zwaar (lg5),Dagdeel (4 uur),79.82
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H920,Dagbesteding zg aud licht (zg aud1 en zg aud4),Dagdeel (4 uur),55.9
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H921,Dagbesteding zg aud midden (zg aud2),Dagdeel (4 uur),71.86
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H922,Dagbesteding zg aud zwaar (zg aud3),Dagdeel (4 uur),92.68
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H930,Dagbesteding zg vis licht (zg vis2 en zg vis3),Dagdeel (4 uur),58.95
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H931,Dagbesteding zg vis midden (zg vis1),Dagdeel (4 uur),54.18
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H940,Toeslag kind dagbesteding vg licht,Dagdeel (4 uur),53.15
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H941,Toeslag kind dagbesteding vg midden,Dagdeel (4 uur),59.86
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H942,Toeslag kind dagbesteding vg5/ vg8 midden emg,Dagdeel (4 uur),115.35
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H943,Toeslag kind dagbesteding vg zwaar,Dagdeel (4 uur),78.02
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H951,Toeslag kind dagbesteding lg midden,Dagdeel (4 uur),59.39
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H952,Toeslag kind dagbesteding lg zwaar,Dagdeel (4 uur),77.32
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H960,Toeslag kind dagbesteding zg auditief licht,Dagdeel (4 uur),52.77
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H961,Toeslag kind dagbesteding zg auditief midden,Dagdeel (4 uur),59.39
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H963,Vervoer dagbesteding/dagbehandeling ghz - categorie 0,Etmaal,10.74
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H964,Vervoer dagbesteding/dagbehandeling ghz - categorie 6,Etmaal,131.73
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H965,Vervoer dagbesteding/dagbehandeling ghz - categorie 1,Etmaal,24.39
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H966,Vervoer dagbesteding/dagbehandeling ghz - categorie 2,Etmaal,33.35
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H967,Vervoer dagbesteding/dagbehandeling ghz - categorie 3,Etmaal,46.02
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H968,Vervoer dagbesteding/dagbehandeling ghz - categorie 4,Etmaal,64.28
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H969,Vervoer dagbesteding/dagbehandeling ghz - categorie 5,Etmaal,88.97
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H970,Toeslag kind dagbesteding zg visueel licht,Dagdeel (4 uur),52.77
-Zorgzwaartepakket,,2026-01-01,2026-12-31,H971,Toeslag kind dagbesteding zg visueel midden,Dagdeel (4 uur),59.39
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V101,VPT 10vv excl.bh incl.db,Etmaal,570.04
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V210G,VPT 1 ggz wonen met intensieve begeleiding excl. BH excl. DB - modulair bekostigingsmodel,Etmaal,162.76
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V211G,VPT 1 ggz wonen met intensieve begeleiding excl. BH incl. DB - modulair bekostigingsmodel,Etmaal,212.75
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V220G,VPT 2 ggz wonen met intensieve begeleiding en verzorging excl. BH excl. DB - modulair bekostigingsmodel,Etmaal,195.65
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V221G,VPT 2 ggz wonen met intensieve begeleiding en verzorging excl. BH incl. DB - modulair bekostigingsmodel,Etmaal,235.66
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V230G,VPT 3 ggz wonen met intensieve begeleiding en gedragsregulering excl. BH excl. DB - modulair bekostigingsmodel,Etmaal,206.77
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V231G,VPT 3 ggz wonen met intensieve begeleiding en gedragsregulering excl. BH incl. DB - modulair bekostigingsmodel,Etmaal,249.63
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V240G,VPT 4 ggz wonen met intensieve begeleiding en intensieve verpleging en verzorging excl. BH excl. DB - modulair bekostigingsmodel,Etmaal,317.32
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V241G,VPT 4 ggz wonen met intensieve begeleiding en intensieve verpleging en verzorging excl. BH incl. DB - modulair bekostigingsmodel,Etmaal,350.5
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V414,VPT 1vg excl.bh excl.db,Etmaal,67.85
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V415,VPT 1vg excl.bh incl.db,Etmaal,122.15
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V424,VPT 2vg excl.bh excl.db,Etmaal,84.92
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V425,VPT 2vg excl.bh incl.db,Etmaal,129.03
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V430,VPT 3vg excl.bh excl.db,Etmaal,116.41
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V431,VPT 3vg excl.bh incl.db,Etmaal,189.56
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V432,VPT 3vg incl.bh excl.db,Etmaal,139.36
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V433,VPT 3vg incl.bh incl.db,Etmaal,208.36
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V440,VPT 4vg excl.bh excl.db,Etmaal,165.42
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V441,VPT 4vg excl.bh incl.db,Etmaal,231.9
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V442,VPT 4vg incl.bh excl.db,Etmaal,195.73
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V443,VPT 4vg incl.bh incl.db,Etmaal,251.83
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V454,VPT 5vg excl.bh excl.db,Etmaal,201.83
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V455,VPT 5vg excl.bh incl.db,Etmaal,287.42
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V456,VPT 5vg incl.bh excl.db,Etmaal,243.97
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V457,VPT 5vg incl.bh incl.db,Etmaal,313.6
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V460,VPT 6vg excl.bh excl.db,Etmaal,182.65
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V461,VPT 6vg excl.bh incl.db,Etmaal,251.46
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V462,VPT 6vg incl.bh excl.db,Etmaal,215.33
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V463,VPT 6vg incl.bh incl.db,Etmaal,279.51
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V472,VPT 7vg incl.bh excl.db,Etmaal,355.32
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V473,VPT 7vg incl.bh incl.db,Etmaal,441.43
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V481,VPT 8vg excl.bh incl.db,Etmaal,358.38
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V482,VPT 8vg incl.bh excl.db,Etmaal,304.79
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V483,VPT 8vg incl.bh incl.db,Etmaal,397.23
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V614,VPT 1lg excl.bh excl.db,Etmaal,62.27
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V615,VPT 1lg excl.bh incl.db,Etmaal,114.59
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V624,VPT 2lg excl.bh excl.db,Etmaal,133.84
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V625,VPT 2lg excl.bh incl.db,Etmaal,173.58
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V630,VPT 3lg excl.bh excl.db,Etmaal,175.15
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V631,VPT 3lg excl.bh incl.db,Etmaal,232.82
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V632,VPT 3lg incl.bh excl.db,Etmaal,194.37
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V633,VPT 3lg incl.bh incl.db,Etmaal,249.61
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V640,VPT 4lg excl.bh excl.db,Etmaal,191.64
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V641,VPT 4lg excl.bh incl.db,Etmaal,257.76
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V642,VPT 4lg incl.bh excl.db,Etmaal,224.06
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V643,VPT 4lg incl.bh incl.db,Etmaal,287.04
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V650,VPT 5lg excl.bh excl.db,Etmaal,287.15
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V651,VPT 5lg excl.bh incl.db,Etmaal,343.31
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V652,VPT 5lg incl.bh excl.db,Etmaal,318.37
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V653,VPT 5lg incl.bh incl.db,Etmaal,381.67
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V660,VPT 6lg excl.bh excl.db,Etmaal,312.84
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V661,VPT 6lg excl.bh incl.db,Etmaal,398.79
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V662,VPT 6lg incl.bh excl.db,Etmaal,350.76
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V663,VPT 6lg incl.bh incl.db,Etmaal,440.9
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V670,VPT 7lg excl.bh excl.db,Etmaal,304.72
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V671,VPT 7lg excl.bh incl.db,Etmaal,398.05
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V672,VPT 7lg incl.bh excl.db,Etmaal,343.1
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V673,VPT 7lg incl.bh incl.db,Etmaal,437.38
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V710,VPT 1zg-auditief excl.bh excl.db,Etmaal,134.78
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V720,VPT 2zg-auditief excl.bh excl.db,Etmaal,228.9
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V721,VPT 2zg-auditief excl.bh incl.db,Etmaal,319.17
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V722,VPT 2zg-auditief incl.bh excl.db,Etmaal,295.86
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V723,VPT 2zg-auditief incl.bh incl.db,Etmaal,391.41
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V730,VPT 3zg-auditief excl.bh excl.db,Etmaal,392.75
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V732,VPT 3zg-auditief incl.bh excl.db,Etmaal,533.16
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V733,VPT 3zg-auditief incl.bh incl.db,Etmaal,633.62
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V742,VPT 4zg-auditief incl.bh excl.db,Etmaal,244.7
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V743,VPT 4zg-auditief incl.bh incl.db,Etmaal,311.8
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V824,VPT 2zg-visueel excl.bh excl.db,Etmaal,142.51
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V825,VPT 2zg-visueel excl.bh incl.db,Etmaal,178.63
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V830,VPT 3zg-visueel excl.bh excl.db,Etmaal,173.13
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V831,VPT 3zg-visueel excl.bh incl.db,Etmaal,253.31
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V913,Toeslag dagbesteding ghz kind - licht,Dagdeel (4 uur),29.82
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V914,Toeslag dagbesteding ghz kind - midden,Dagdeel (4 uur),36.53
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V918B,Toeslag chronische ademhalingsondersteuning laag,Etmaal,79.33
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V923B,Toeslag chronische ademhalingsondersteuning midden,Etmaal,182.06
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V940,Vervoer dagbesteding/dagbehandeling ghz - categorie 0,Etmaal,10.74
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V940G,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 0,Etmaal,11
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V941,Vervoer dagbesteding/dagbehandeling ghz - categorie 1,Etmaal,24.39
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V941G,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 1,Etmaal,24.97
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V942,Vervoer dagbesteding/dagbehandeling ghz - categorie 2,Etmaal,33.35
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V942G,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 2,Etmaal,34.15
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V943,Vervoer dagbesteding/dagbehandeling ghz - categorie 3,Etmaal,46.02
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V943G,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 3,Etmaal,47.11
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V944,Vervoer dagbesteding/dagbehandeling ghz - categorie 4,Etmaal,64.28
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V944G,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 4,Etmaal,65.81
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V945,Vervoer dagbesteding/dagbehandeling ghz - categorie 5,Etmaal,88.97
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V945G,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 5,Etmaal,91.09
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V946,Vervoer dagbesteding/dagbehandeling ghz - categorie 6,Etmaal,131.73
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V946G,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 6,Etmaal,134.87
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V978,Toeslag woonzorg ghz kind,Etmaal,45.66
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V979,Toeslag woonzorg ghz jeugd,Etmaal,27.81
-Zorgzwaartepakket,,2026-01-01,2026-12-31,V980,Toeslag woonzorg ghz jong volwassen,Etmaal,22.89
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z1000,Logeren ghz-lg,Etmaal,430.57
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z1001,Logeren ghz-lvg,Etmaal,419.01
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z1002,Logeren ghz-zg,Etmaal,628.49
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z101,ZZP 10vv excl.bh incl.db,Etmaal,611.68
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z210G,ZZP 1 ggz wonen met intensieve begeleiding excl. BH excl. DB - modulair bekostigingsmodel,Etmaal,194.51
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z211G,ZZP 1 ggz wonen met intensieve begeleiding excl. BH incl. DB - modulair bekostigingsmodel,Etmaal,242.82
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z220G,ZZP 2 ggz wonen met intensieve begeleiding en verzorging excl. BH excl. DB - modulair bekostigingsmodel,Etmaal,228.03
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z221G,ZZP 2 ggz wonen met intensieve begeleiding en verzorging excl. BH incl. DB - modulair bekostigingsmodel,Etmaal,266.74
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z230G,ZZP 3 ggz wonen met intensieve begeleiding en gedragsregulering excl. BH excl. DB - modulair bekostigingsmodel,Etmaal,243.63
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z231G,ZZP 3 ggz wonen met intensieve begeleiding en gedragsregulering excl. BH incl. DB - modulair bekostigingsmodel,Etmaal,285.64
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z240G,ZZP 4 ggz wonen met intensieve begeleiding en intensieve verpleging en verzorging excl. BH excl. DB - modulair bekostigingsmodel,Etmaal,352.24
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z241G,ZZP 4 ggz wonen met intensieve begeleiding en intensieve verpleging en verzorging excl. BH incl. DB - modulair bekostigingsmodel,Etmaal,384.73
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z414,ZZP 1vg excl.db,Etmaal,102.76
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z415,ZZP 1vg incl.db,Etmaal,157.05
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z424,ZZP 2vg excl.db,Etmaal,119.7
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z425,ZZP 2vg incl.db,Etmaal,163.85
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z430,ZZP 3vg excl.bh excl.db,Etmaal,151.14
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z431,ZZP 3vg excl.bh incl.db,Etmaal,224.35
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z440,ZZP 4vg excl.bh excl.db,Etmaal,200.11
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z441,ZZP 4vg excl.bh incl.db,Etmaal,266.65
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z454,ZZP 5vg excl.bh excl.db,Etmaal,240.61
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z455,ZZP 5vg excl.bh incl.db,Etmaal,326.26
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z460,ZZP 6vg excl.bh excl.db,Etmaal,218.42
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z461,ZZP 6vg excl.bh incl.db,Etmaal,287.22
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z470,ZZP 7vg excl.bh excl.db,Etmaal,353.08
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z471,ZZP 7vg excl.bh incl.db,Etmaal,434.79
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z480,ZZP 8vg excl.bh excl.db,Etmaal,301.87
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z481,ZZP 8vg excl.bh incl.db,Etmaal,407.27
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z513,ZZP 1lvg incl.bh incl.db,Etmaal,333.14
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z523,ZZP 2lvg incl.bh incl.db,Etmaal,369.83
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z533,ZZP 3lvg incl.bh incl.db,Etmaal,403.76
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z614,ZZP 1lg excl.db,Etmaal,98.13
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z615,ZZP 1lg incl.db,Etmaal,150.49
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z624,ZZP 2lg excl.db,Etmaal,169.72
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z625,ZZP 2lg incl.db,Etmaal,209.39
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z630,ZZP 3lg excl.bh excl.db,Etmaal,211.11
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z631,ZZP 3lg excl.bh incl.db,Etmaal,268.74
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z640,ZZP 4lg excl.bh excl.db,Etmaal,227.53
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z641,ZZP 4lg excl.bh incl.db,Etmaal,293.55
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z650,ZZP 5lg excl.bh excl.db,Etmaal,328.53
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z651,ZZP 5lg excl.bh incl.db,Etmaal,384.65
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z653,ZZP 5lg incl.bh incl.db,Etmaal,431.64
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z660,ZZP 6lg excl.bh excl.db,Etmaal,361.05
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z661,ZZP 6lg excl.bh incl.db,Etmaal,446.78
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z670,ZZP 7lg excl.bh excl.db,Etmaal,352.84
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z671,ZZP 7lg excl.bh incl.db,Etmaal,446.02
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z710,ZZP 1zg-auditief excl.bh excl.db,Etmaal,175.73
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z711,ZZP 1zg-auditief excl.bh incl.db,Etmaal,224.88
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z720,ZZP 2zg-auditief excl.bh excl.db,Etmaal,269.91
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z721,ZZP 2zg-auditief excl.bh incl.db,Etmaal,360.26
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z730,ZZP 3zg-auditief excl.bh excl.db,Etmaal,431.85
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z731,ZZP 3zg-auditief excl.bh incl.db,Etmaal,554.45
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z740,ZZP 4zg-auditief excl.bh excl.db,Etmaal,236.16
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z741,ZZP 4zg-auditief excl.bh incl.db,Etmaal,297.37
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z814,ZZP 1zg-visueel excl.db,Etmaal,136.32
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z815,ZZP 1zg-visueel incl.db,Etmaal,207.86
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z824,ZZP 2zg-visueel excl.db,Etmaal,183.96
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z825,ZZP 2zg-visueel incl.db,Etmaal,220.21
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z830,ZZP 3zg-visueel excl.bh excl.db,Etmaal,214.62
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z831,ZZP 3zg-visueel excl.bh incl.db,Etmaal,294.94
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z913,Toeslag dagbesteding ghz kind - licht,Dagdeel (4 uur),29.82
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z914,Toeslag dagbesteding ghz kind - midden,Dagdeel (4 uur),36.53
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z918B,Toeslag chronische ademhalingsondersteuning laag,Etmaal,79.33
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z940,Vervoer dagbesteding/dagbehandeling ghz - categorie 0,Etmaal,10.74
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z940G,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 0,Etmaal,10.78
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z941,Vervoer dagbesteding/dagbehandeling ghz - categorie 1,Etmaal,24.39
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z941G,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 1,Etmaal,24.46
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z942,Vervoer dagbesteding/dagbehandeling ghz - categorie 2,Etmaal,33.35
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z942G,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 2,Etmaal,33.46
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z943,Vervoer dagbesteding/dagbehandeling ghz - categorie 3,Etmaal,46.02
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z943G,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 3,Etmaal,46.16
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z944,Vervoer dagbesteding/dagbehandeling ghz - categorie 4,Etmaal,64.28
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z944G,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 4,Etmaal,64.48
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z945,Vervoer dagbesteding/dagbehandeling ghz - categorie 5,Etmaal,88.97
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z945G,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 5,Etmaal,89.25
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z946,Vervoer dagbesteding/dagbehandeling ghz - categorie 6,Etmaal,131.73
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z946G,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 6,Etmaal,132.14
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z978,Toeslag woonzorg ghz kind,Etmaal,45.66
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z979,Toeslag woonzorg ghz jeugd,Etmaal,27.81
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z980,Toeslag woonzorg ghz jong volwassen,Etmaal,22.89
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z997,Verblijfscomponent niet-geïndiceerde partner ghz: vg en lg,Etmaal,83.29
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z998,Verblijfscomponent niet-geïndiceerde partner ghz: zg,Etmaal,107.76
-Zorgzwaartepakket,,2026-01-01,2026-12-31,Z999,Logeren ghz-vg,Etmaal,399.17
-Zorgzwaartepakket,,2026-01-01,2026-12-31,ZMZ01,zzp-meerzorg,Etmaal,
+factuur_type,debiteurnummer,geldig_vanaf,geldig_tot,prestatiecode,prestatienaam,tijdseenheid,tarief
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,D430,DTV 3 VG excl. bh excl. db,Etmaal,157.3
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,D440,DTV 4 VG excl. bh excl. db,Etmaal,206.25
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,D454,DTV 5 VG excl. bh excl. db,Etmaal,247.81
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,D460,DTV 6 VG excl. bh excl. db,Etmaal,224.91
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,D470,DTV 7 VG excl. bh excl. db,Etmaal,360.44
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,D480,DTV 8 VG excl. bh excl. db,Etmaal,310.87
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,D624,DTV 2 LG excl. db,Etmaal,176.11
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,D640,DTV 4 LG excl. bh excl. db,Etmaal,233.9
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,D650,DTV 5 LG excl. bh excl. db,Etmaal,336.17
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,D660,DTV 6 LG excl. bh excl. db,Etmaal,369.84
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,D670,DTV 7 LG excl. bh excl. db,Etmaal,361.61
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,D720,DTV 2 ZG-aud excl. bh excl. db,Etmaal,277.35
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,D730,DTV 3 ZG-aud excl. bh excl. db,Etmaal,438.91
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,D740,DTV 4 ZG-aud excl. bh excl. db,Etmaal,243.7
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H001G,Dagbesteding ggz wonen-1,Dagdeel (4 uur),70.08
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H002G,Dagbesteding ggz wonen-2,Dagdeel (4 uur),80.06
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H003G,Dagbesteding ggz wonen-3,Dagdeel (4 uur),68.54
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H104,Verpleging,Minuut,1.56
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H117,Huishoudelijke hulp,Minuut,0.71
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H126,Persoonlijke verzorging,Minuut,1.2
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H127,Pv incl. beschikbaarheid,Minuut,1.28
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H150,Begeleiding incl. beschikbaarheid,Minuut,1.47
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H153,Begeleiding speciaal 2 (psy),Minuut,2.34
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H300,Begeleiding,Minuut,1.37
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H301,Begeleiding zg visueel,Minuut,2.41
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H303,Begeleiding zg auditief,Minuut,2.01
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H329,Behandeling gedragswetenschapper,Minuut,2.93
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H330,Behandeling paramedisch,Minuut,1.99
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H334,Behandeling IOG (j)lvg,Minuut,2.54
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H335,"Behandeling som, pg, vg, lg, zg (SO)",Minuut,4.7
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H336,"Behandeling som, pg, vg, lg, zg (AVG)",Minuut,4.4
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H420,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 0,Etmaal,10.78
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H421,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 1,Etmaal,24.46
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H422,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 2,Etmaal,33.46
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H423,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 3,Etmaal,46.16
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H424,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 4,Etmaal,64.48
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H425,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 5,Etmaal,89.25
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H426,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 6,Etmaal,132.14
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H800,Dagbesteding somatisch  ondersteunend,Dagdeel (4 uur),70.66
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H811,Dagbesteding vg licht,Dagdeel (4 uur),48.99
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H812,Dagbesteding vg midden,Dagdeel (4 uur),69.04
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H813,Dagbesteding vg zwaar,Dagdeel (4 uur),117.82
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H814,Dagbesteding vg kind licht,Dagdeel (4 uur),92.56
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H815,Dagbesteding vg kind midden,Dagdeel (4 uur),113.81
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H816,Dagbesteding vg kind zwaar,Dagdeel (4 uur),169.23
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H817,Dagbehandeling vg kind emg,Dagdeel (4 uur),197.16
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H819,Dagbehandeling vg emg volwassenen,Dagdeel (4 uur),197.16
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H821,Dagbehandeling vg kind zwaar,Dagdeel (4 uur),197.16
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H822,Dagbehandeling vg kind gedrag,Dagdeel (4 uur),234.5
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H831,Dagbesteding lg licht,Dagdeel (4 uur),70.06
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H832,Dagbesteding lg midden,Dagdeel (4 uur),82.13
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H833,Dagbesteding lg zwaar,Dagdeel (4 uur),90.04
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H835,Dagbesteding lg kind midden,Dagdeel (4 uur),116.83
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H836,Dagbesteding lg kind zwaar,Dagdeel (4 uur),140.46
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H851,Dagbesteding zg auditief licht,Dagdeel (4 uur),71.06
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H852,Dagbesteding zg auditief midden,Dagdeel (4 uur),85.64
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H853,Dagbesteding zg auditief zwaar,Dagdeel (4 uur),120.69
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H854,Dagbesteding zg kind auditief licht,Dagdeel (4 uur),133.85
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H855,Dagbesteding zg kind auditief midden,Dagdeel (4 uur),162.79
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H871,Dagbesteding zg visueel licht,Dagdeel (4 uur),64.35
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H872,Dagbesteding zg visueel midden,Dagdeel (4 uur),69.42
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H874,Dagbesteding zg kind visueel licht,Dagdeel (4 uur),75.53
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H875,Dagbesteding zg kind visueel midden,Dagdeel (4 uur),86.53
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H881,Vervoer dagbesteding/dagbehandeling ghz - categorie 1,Etmaal,24.39
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H882,Vervoer dagbesteding/dagbehandeling ghz - categorie 2,Etmaal,33.35
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H883,Vervoer dagbesteding/dagbehandeling ghz - categorie 3,Etmaal,46.02
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H884,Vervoer dagbesteding/dagbehandeling ghz - categorie 4,Etmaal,64.28
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H885,Vervoer dagbesteding/dagbehandeling ghz - categorie 5,Etmaal,88.97
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H886,Vervoer dagbesteding/dagbehandeling ghz - categorie 0,Etmaal,10.74
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H887,Vervoer dagbesteding/dagbehandeling ghz - categorie 6,Etmaal,131.73
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H900,Dagbesteding vg licht (vg1-vg4),Dagdeel (4 uur),41.87
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H902,Dagbesteding vg zwaar (vg7),Dagdeel (4 uur),111.46
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H903,Dagbesteding vg midden (vg5),Dagdeel (4 uur),63.14
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H904,Dagbesteding vg midden (vg6),Dagdeel (4 uur),63.23
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H906,Dagbesteding vg zwaar (vg8),Dagdeel (4 uur),113.16
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H910,Dagbesteding lg licht (lg7),Dagdeel (4 uur),62.52
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H913,Dagbesteding lg midden (lg2 en lg4),Dagdeel (4 uur),71.04
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H914,Dagbesteding lg midden (lg6),Dagdeel (4 uur),74.46
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H915,Dagbesteding lg zwaar (lg1 en lg3),Dagdeel (4 uur),78.86
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H916,Dagbesteding lg zwaar (lg5),Dagdeel (4 uur),79.82
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H920,Dagbesteding zg aud licht (zg aud1 en zg aud4),Dagdeel (4 uur),55.9
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H921,Dagbesteding zg aud midden (zg aud2),Dagdeel (4 uur),71.86
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H922,Dagbesteding zg aud zwaar (zg aud3),Dagdeel (4 uur),92.68
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H930,Dagbesteding zg vis licht (zg vis2 en zg vis3),Dagdeel (4 uur),58.95
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H931,Dagbesteding zg vis midden (zg vis1),Dagdeel (4 uur),54.18
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H940,Toeslag kind dagbesteding vg licht,Dagdeel (4 uur),53.15
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H941,Toeslag kind dagbesteding vg midden,Dagdeel (4 uur),59.86
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H942,Toeslag kind dagbesteding vg5/ vg8 midden emg,Dagdeel (4 uur),115.35
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H943,Toeslag kind dagbesteding vg zwaar,Dagdeel (4 uur),78.02
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H951,Toeslag kind dagbesteding lg midden,Dagdeel (4 uur),59.39
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H952,Toeslag kind dagbesteding lg zwaar,Dagdeel (4 uur),77.32
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H960,Toeslag kind dagbesteding zg auditief licht,Dagdeel (4 uur),52.77
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H961,Toeslag kind dagbesteding zg auditief midden,Dagdeel (4 uur),59.39
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H963,Vervoer dagbesteding/dagbehandeling ghz - categorie 0,Etmaal,10.74
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H964,Vervoer dagbesteding/dagbehandeling ghz - categorie 6,Etmaal,131.73
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H965,Vervoer dagbesteding/dagbehandeling ghz - categorie 1,Etmaal,24.39
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H966,Vervoer dagbesteding/dagbehandeling ghz - categorie 2,Etmaal,33.35
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H967,Vervoer dagbesteding/dagbehandeling ghz - categorie 3,Etmaal,46.02
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H968,Vervoer dagbesteding/dagbehandeling ghz - categorie 4,Etmaal,64.28
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H969,Vervoer dagbesteding/dagbehandeling ghz - categorie 5,Etmaal,88.97
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H970,Toeslag kind dagbesteding zg visueel licht,Dagdeel (4 uur),52.77
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,H971,Toeslag kind dagbesteding zg visueel midden,Dagdeel (4 uur),59.39
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V101,VPT 10vv excl.bh incl.db,Etmaal,570.04
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V210G,VPT 1 ggz wonen met intensieve begeleiding excl. BH excl. DB - modulair bekostigingsmodel,Etmaal,162.76
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V211G,VPT 1 ggz wonen met intensieve begeleiding excl. BH incl. DB - modulair bekostigingsmodel,Etmaal,212.75
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V220G,VPT 2 ggz wonen met intensieve begeleiding en verzorging excl. BH excl. DB - modulair bekostigingsmodel,Etmaal,195.65
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V221G,VPT 2 ggz wonen met intensieve begeleiding en verzorging excl. BH incl. DB - modulair bekostigingsmodel,Etmaal,235.66
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V230G,VPT 3 ggz wonen met intensieve begeleiding en gedragsregulering excl. BH excl. DB - modulair bekostigingsmodel,Etmaal,206.77
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V231G,VPT 3 ggz wonen met intensieve begeleiding en gedragsregulering excl. BH incl. DB - modulair bekostigingsmodel,Etmaal,249.63
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V240G,VPT 4 ggz wonen met intensieve begeleiding en intensieve verpleging en verzorging excl. BH excl. DB - modulair bekostigingsmodel,Etmaal,317.32
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V241G,VPT 4 ggz wonen met intensieve begeleiding en intensieve verpleging en verzorging excl. BH incl. DB - modulair bekostigingsmodel,Etmaal,350.5
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V414,VPT 1vg excl.bh excl.db,Etmaal,67.85
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V415,VPT 1vg excl.bh incl.db,Etmaal,122.15
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V424,VPT 2vg excl.bh excl.db,Etmaal,84.92
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V425,VPT 2vg excl.bh incl.db,Etmaal,129.03
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V430,VPT 3vg excl.bh excl.db,Etmaal,116.41
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V431,VPT 3vg excl.bh incl.db,Etmaal,189.56
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V432,VPT 3vg incl.bh excl.db,Etmaal,139.36
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V433,VPT 3vg incl.bh incl.db,Etmaal,208.36
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V440,VPT 4vg excl.bh excl.db,Etmaal,165.42
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V441,VPT 4vg excl.bh incl.db,Etmaal,231.9
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V442,VPT 4vg incl.bh excl.db,Etmaal,195.73
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V443,VPT 4vg incl.bh incl.db,Etmaal,251.83
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V454,VPT 5vg excl.bh excl.db,Etmaal,201.83
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V455,VPT 5vg excl.bh incl.db,Etmaal,287.42
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V456,VPT 5vg incl.bh excl.db,Etmaal,243.97
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V457,VPT 5vg incl.bh incl.db,Etmaal,313.6
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V460,VPT 6vg excl.bh excl.db,Etmaal,182.65
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V461,VPT 6vg excl.bh incl.db,Etmaal,251.46
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V462,VPT 6vg incl.bh excl.db,Etmaal,215.33
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V463,VPT 6vg incl.bh incl.db,Etmaal,279.51
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V472,VPT 7vg incl.bh excl.db,Etmaal,355.32
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V473,VPT 7vg incl.bh incl.db,Etmaal,441.43
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V481,VPT 8vg excl.bh incl.db,Etmaal,358.38
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V482,VPT 8vg incl.bh excl.db,Etmaal,304.79
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V483,VPT 8vg incl.bh incl.db,Etmaal,397.23
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V614,VPT 1lg excl.bh excl.db,Etmaal,62.27
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V615,VPT 1lg excl.bh incl.db,Etmaal,114.59
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V624,VPT 2lg excl.bh excl.db,Etmaal,133.84
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V625,VPT 2lg excl.bh incl.db,Etmaal,173.58
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V630,VPT 3lg excl.bh excl.db,Etmaal,175.15
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V631,VPT 3lg excl.bh incl.db,Etmaal,232.82
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V632,VPT 3lg incl.bh excl.db,Etmaal,194.37
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V633,VPT 3lg incl.bh incl.db,Etmaal,249.61
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V640,VPT 4lg excl.bh excl.db,Etmaal,191.64
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V641,VPT 4lg excl.bh incl.db,Etmaal,257.76
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V642,VPT 4lg incl.bh excl.db,Etmaal,224.06
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V643,VPT 4lg incl.bh incl.db,Etmaal,287.04
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V650,VPT 5lg excl.bh excl.db,Etmaal,287.15
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V651,VPT 5lg excl.bh incl.db,Etmaal,343.31
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V652,VPT 5lg incl.bh excl.db,Etmaal,318.37
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V653,VPT 5lg incl.bh incl.db,Etmaal,381.67
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V660,VPT 6lg excl.bh excl.db,Etmaal,312.84
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V661,VPT 6lg excl.bh incl.db,Etmaal,398.79
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V662,VPT 6lg incl.bh excl.db,Etmaal,350.76
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V663,VPT 6lg incl.bh incl.db,Etmaal,440.9
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V670,VPT 7lg excl.bh excl.db,Etmaal,304.72
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V671,VPT 7lg excl.bh incl.db,Etmaal,398.05
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V672,VPT 7lg incl.bh excl.db,Etmaal,343.1
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V673,VPT 7lg incl.bh incl.db,Etmaal,437.38
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V710,VPT 1zg-auditief excl.bh excl.db,Etmaal,134.78
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V720,VPT 2zg-auditief excl.bh excl.db,Etmaal,228.9
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V721,VPT 2zg-auditief excl.bh incl.db,Etmaal,319.17
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V722,VPT 2zg-auditief incl.bh excl.db,Etmaal,295.86
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V723,VPT 2zg-auditief incl.bh incl.db,Etmaal,391.41
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V730,VPT 3zg-auditief excl.bh excl.db,Etmaal,392.75
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V732,VPT 3zg-auditief incl.bh excl.db,Etmaal,533.16
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V733,VPT 3zg-auditief incl.bh incl.db,Etmaal,633.62
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V742,VPT 4zg-auditief incl.bh excl.db,Etmaal,244.7
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V743,VPT 4zg-auditief incl.bh incl.db,Etmaal,311.8
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V824,VPT 2zg-visueel excl.bh excl.db,Etmaal,142.51
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V825,VPT 2zg-visueel excl.bh incl.db,Etmaal,178.63
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V830,VPT 3zg-visueel excl.bh excl.db,Etmaal,173.13
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V831,VPT 3zg-visueel excl.bh incl.db,Etmaal,253.31
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V913,Toeslag dagbesteding ghz kind - licht,Dagdeel (4 uur),29.82
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V914,Toeslag dagbesteding ghz kind - midden,Dagdeel (4 uur),36.53
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V918B,Toeslag chronische ademhalingsondersteuning laag,Etmaal,79.33
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V923B,Toeslag chronische ademhalingsondersteuning midden,Etmaal,182.06
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V940,Vervoer dagbesteding/dagbehandeling ghz - categorie 0,Etmaal,10.74
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V940G,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 0,Etmaal,11
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V941,Vervoer dagbesteding/dagbehandeling ghz - categorie 1,Etmaal,24.39
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V941G,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 1,Etmaal,24.97
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V942,Vervoer dagbesteding/dagbehandeling ghz - categorie 2,Etmaal,33.35
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V942G,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 2,Etmaal,34.15
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V943,Vervoer dagbesteding/dagbehandeling ghz - categorie 3,Etmaal,46.02
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V943G,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 3,Etmaal,47.11
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V944,Vervoer dagbesteding/dagbehandeling ghz - categorie 4,Etmaal,64.28
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V944G,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 4,Etmaal,65.81
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V945,Vervoer dagbesteding/dagbehandeling ghz - categorie 5,Etmaal,88.97
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V945G,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 5,Etmaal,91.09
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V946,Vervoer dagbesteding/dagbehandeling ghz - categorie 6,Etmaal,131.73
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V946G,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 6,Etmaal,134.87
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V978,Toeslag woonzorg ghz kind,Etmaal,45.66
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V979,Toeslag woonzorg ghz jeugd,Etmaal,27.81
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,V980,Toeslag woonzorg ghz jong volwassen,Etmaal,22.89
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z1000,Logeren ghz-lg,Etmaal,430.57
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z1001,Logeren ghz-lvg,Etmaal,419.01
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z1002,Logeren ghz-zg,Etmaal,628.49
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z101,ZZP 10vv excl.bh incl.db,Etmaal,611.68
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z210G,ZZP 1 ggz wonen met intensieve begeleiding excl. BH excl. DB - modulair bekostigingsmodel,Etmaal,194.51
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z211G,ZZP 1 ggz wonen met intensieve begeleiding excl. BH incl. DB - modulair bekostigingsmodel,Etmaal,242.82
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z220G,ZZP 2 ggz wonen met intensieve begeleiding en verzorging excl. BH excl. DB - modulair bekostigingsmodel,Etmaal,228.03
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z221G,ZZP 2 ggz wonen met intensieve begeleiding en verzorging excl. BH incl. DB - modulair bekostigingsmodel,Etmaal,266.74
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z230G,ZZP 3 ggz wonen met intensieve begeleiding en gedragsregulering excl. BH excl. DB - modulair bekostigingsmodel,Etmaal,243.63
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z231G,ZZP 3 ggz wonen met intensieve begeleiding en gedragsregulering excl. BH incl. DB - modulair bekostigingsmodel,Etmaal,285.64
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z240G,ZZP 4 ggz wonen met intensieve begeleiding en intensieve verpleging en verzorging excl. BH excl. DB - modulair bekostigingsmodel,Etmaal,352.24
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z241G,ZZP 4 ggz wonen met intensieve begeleiding en intensieve verpleging en verzorging excl. BH incl. DB - modulair bekostigingsmodel,Etmaal,384.73
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z414,ZZP 1vg excl.db,Etmaal,102.76
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z415,ZZP 1vg incl.db,Etmaal,157.05
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z424,ZZP 2vg excl.db,Etmaal,119.7
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z425,ZZP 2vg incl.db,Etmaal,163.85
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z430,ZZP 3vg excl.bh excl.db,Etmaal,151.14
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z431,ZZP 3vg excl.bh incl.db,Etmaal,224.35
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z440,ZZP 4vg excl.bh excl.db,Etmaal,200.11
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z441,ZZP 4vg excl.bh incl.db,Etmaal,266.65
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z454,ZZP 5vg excl.bh excl.db,Etmaal,240.61
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z455,ZZP 5vg excl.bh incl.db,Etmaal,326.26
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z460,ZZP 6vg excl.bh excl.db,Etmaal,218.42
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z461,ZZP 6vg excl.bh incl.db,Etmaal,287.22
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z470,ZZP 7vg excl.bh excl.db,Etmaal,353.08
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z471,ZZP 7vg excl.bh incl.db,Etmaal,434.79
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z480,ZZP 8vg excl.bh excl.db,Etmaal,301.87
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z481,ZZP 8vg excl.bh incl.db,Etmaal,407.27
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z513,ZZP 1lvg incl.bh incl.db,Etmaal,333.14
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z523,ZZP 2lvg incl.bh incl.db,Etmaal,369.83
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z533,ZZP 3lvg incl.bh incl.db,Etmaal,403.76
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z614,ZZP 1lg excl.db,Etmaal,98.13
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z615,ZZP 1lg incl.db,Etmaal,150.49
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z624,ZZP 2lg excl.db,Etmaal,169.72
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z625,ZZP 2lg incl.db,Etmaal,209.39
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z630,ZZP 3lg excl.bh excl.db,Etmaal,211.11
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z631,ZZP 3lg excl.bh incl.db,Etmaal,268.74
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z640,ZZP 4lg excl.bh excl.db,Etmaal,227.53
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z641,ZZP 4lg excl.bh incl.db,Etmaal,293.55
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z650,ZZP 5lg excl.bh excl.db,Etmaal,328.53
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z651,ZZP 5lg excl.bh incl.db,Etmaal,384.65
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z653,ZZP 5lg incl.bh incl.db,Etmaal,431.64
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z660,ZZP 6lg excl.bh excl.db,Etmaal,361.05
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z661,ZZP 6lg excl.bh incl.db,Etmaal,446.78
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z670,ZZP 7lg excl.bh excl.db,Etmaal,352.84
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z671,ZZP 7lg excl.bh incl.db,Etmaal,446.02
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z710,ZZP 1zg-auditief excl.bh excl.db,Etmaal,175.73
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z711,ZZP 1zg-auditief excl.bh incl.db,Etmaal,224.88
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z720,ZZP 2zg-auditief excl.bh excl.db,Etmaal,269.91
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z721,ZZP 2zg-auditief excl.bh incl.db,Etmaal,360.26
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z730,ZZP 3zg-auditief excl.bh excl.db,Etmaal,431.85
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z731,ZZP 3zg-auditief excl.bh incl.db,Etmaal,554.45
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z740,ZZP 4zg-auditief excl.bh excl.db,Etmaal,236.16
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z741,ZZP 4zg-auditief excl.bh incl.db,Etmaal,297.37
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z814,ZZP 1zg-visueel excl.db,Etmaal,136.32
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z815,ZZP 1zg-visueel incl.db,Etmaal,207.86
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z824,ZZP 2zg-visueel excl.db,Etmaal,183.96
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z825,ZZP 2zg-visueel incl.db,Etmaal,220.21
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z830,ZZP 3zg-visueel excl.bh excl.db,Etmaal,214.62
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z831,ZZP 3zg-visueel excl.bh incl.db,Etmaal,294.94
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z913,Toeslag dagbesteding ghz kind - licht,Dagdeel (4 uur),29.82
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z914,Toeslag dagbesteding ghz kind - midden,Dagdeel (4 uur),36.53
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z918B,Toeslag chronische ademhalingsondersteuning laag,Etmaal,79.33
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z940,Vervoer dagbesteding/dagbehandeling ghz - categorie 0,Etmaal,10.74
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z940G,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 0,Etmaal,10.78
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z941,Vervoer dagbesteding/dagbehandeling ghz - categorie 1,Etmaal,24.39
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z941G,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 1,Etmaal,24.46
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z942,Vervoer dagbesteding/dagbehandeling ghz - categorie 2,Etmaal,33.35
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z942G,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 2,Etmaal,33.46
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z943,Vervoer dagbesteding/dagbehandeling ghz - categorie 3,Etmaal,46.02
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z943G,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 3,Etmaal,46.16
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z944,Vervoer dagbesteding/dagbehandeling ghz - categorie 4,Etmaal,64.28
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z944G,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 4,Etmaal,64.48
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z945,Vervoer dagbesteding/dagbehandeling ghz - categorie 5,Etmaal,88.97
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z945G,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 5,Etmaal,89.25
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z946,Vervoer dagbesteding/dagbehandeling ghz - categorie 6,Etmaal,131.73
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z946G,Vervoer dagbesteding/dagbehandeling ggz wonen - categorie 6,Etmaal,132.14
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z978,Toeslag woonzorg ghz kind,Etmaal,45.66
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z979,Toeslag woonzorg ghz jeugd,Etmaal,27.81
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z980,Toeslag woonzorg ghz jong volwassen,Etmaal,22.89
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z997,Verblijfscomponent niet-geïndiceerde partner ghz: vg en lg,Etmaal,83.29
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z998,Verblijfscomponent niet-geïndiceerde partner ghz: zg,Etmaal,107.76
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,Z999,Logeren ghz-vg,Etmaal,399.17
+AW319 Wet Langdurige Zorg,,2026-01-01,2026-12-31,ZMZ01,zzp-meerzorg,Etmaal,

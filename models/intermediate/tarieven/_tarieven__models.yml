@@ -9,13 +9,13 @@ models:
       - dbt_utils.unique_combination_of_columns:
           arguments:
             combination_of_columns:
-              - financieringstype_naam
+              - factuur_type
               - debiteurnummer
               - prestatiecode
               - geldig_vanaf
     columns:
-      - name: financieringstype_naam
-        description: "Financieringstype, exact zoals in mart_factuurregels / mart_tariefcontrole (bv. 'Zorgzwaartepakket' voor Wlz)"
+      - name: factuur_type
+        description: "Factuurtype, exact zoals in mart_facturen (bv. 'AW319 Wet Langdurige Zorg')"
         tests: [not_null]
       - name: debiteurnummer
         description: "Debiteur (gemeente) waarvoor het tarief geldt; leeg = alle debiteuren"

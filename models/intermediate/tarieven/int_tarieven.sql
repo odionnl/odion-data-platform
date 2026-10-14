@@ -1,5 +1,5 @@
 -- Alle tarievenlijsten (seeds in seeds/tarieven/) samengevoegd.
--- Eén rij per financieringstype + debiteur + prestatiecode + geldigheidsperiode.
+-- Eén rij per factuurtype + debiteur + prestatiecode + geldigheidsperiode.
 -- Nieuwe tarievenlijst: seed genereren met scripts/tarieven_naar_seed.py en hieronder toevoegen.
 
 {% set tariefbestanden = [
@@ -10,7 +10,7 @@ with tarieven as (
 
     {% for tariefbestand in tariefbestanden %}
     select
-        financieringstype_naam,
+        factuur_type,
         nullif(trim(debiteurnummer), '')    as debiteurnummer,
         geldig_vanaf,
         geldig_tot,

@@ -5,7 +5,7 @@ models:
     description: >
       Tariefcontrole: gedeclareerd tarief per factuurregel vergeleken met de tarievenlijsten
       (int_tarieven, seeds in seeds/tarieven/). Eén rij per factuurregel, alle jaren; jaarselectie
-      in Power BI op startdatum. Koppeling op financieringstype, product_code = prestatiecode,
+      in Power BI op startdatum. Koppeling op factuurtype, product_code = prestatiecode,
       startdatum binnen de geldigheid en (bij Wmo) debiteur; een debiteur-specifiek tarief gaat voor.
       Overige regelgegevens via factuurregel_id → mart_factuurregels.
     columns:
@@ -17,7 +17,7 @@ models:
       - name: factuurnummer
         description: "Factuurnummer van de bijbehorende factuur"
       - name: factuur_type
-        description: "Omschrijving van het factuurtype (bijv. AW319 Wet Langdurige Zorg)"
+        description: "Omschrijving van het factuurtype (bijv. AW319 Wet Langdurige Zorg); koppelt op de tarievenlijst"
       - name: debiteurnummer
         description: "Debiteurnummer van de factuur; gebruikt voor tarieven per gemeente (Wmo)"
       - name: debiteur_naam
@@ -33,7 +33,7 @@ models:
       - name: product_omschrijving
         description: "Omschrijving van het product"
       - name: financieringstype_naam
-        description: "Financieringstype van het product (Wlz = 'Zorgzwaartepakket')"
+        description: "Financieringstype van het product"
       - name: aantal
         description: "Gefactureerde hoeveelheid eenheden"
       - name: tarief
@@ -60,7 +60,7 @@ models:
         description: >
           Akkoord / Afwijkend tarief (verschil >= 0,01) / Geen vast tarief (code staat in de lijst
           zonder tarief, bv. meerzorg) / Niet in tarievenlijst (lijst geladen, code ontbreekt) /
-          Geen tarievenlijst (geen lijst geladen voor dit financieringstype en deze periode).
+          Geen tarievenlijst (geen lijst geladen voor dit factuurtype en deze periode).
         tests:
           - not_null
           - accepted_values:
