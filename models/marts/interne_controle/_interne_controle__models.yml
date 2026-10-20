@@ -18,6 +18,8 @@ models:
         description: "Factuurnummer van de bijbehorende factuur"
       - name: factuur_type
         description: "Omschrijving van het factuurtype (bijv. AW319 Wet Langdurige Zorg); koppelt op de tarievenlijst"
+      - name: factuurdatum
+        description: "Aanmaakmoment van de factuur"
       - name: debiteurnummer
         description: "Debiteurnummer van de factuur; gebruikt voor tarieven per gemeente (Wmo)"
       - name: debiteur_naam

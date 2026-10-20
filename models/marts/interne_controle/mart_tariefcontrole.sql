@@ -29,6 +29,7 @@ regels as (
         factuurregels.factuur_id,
         factuurregels.factuurnummer,
         facturen.factuur_type,
+        facturen.factuurdatum,
         facturen.debiteurnummer,
         facturen.debiteur_naam,
         factuurregels.startdatum,
