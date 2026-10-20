@@ -1,6 +1,6 @@
 -- Tariefcontrole: gedeclareerd tarief per factuurregel vs. de tarievenlijsten (int_tarieven).
 -- Eén rij per factuurregel (alle jaren; jaarselectie in Power BI op startdatum).
--- Koppeling op factuurtype (mart_facturen), product_code = prestatiecode, startdatum binnen de
+-- Koppeling op factuurtype (mart_facturen), vektiscode = prestatiecode, startdatum binnen de
 -- geldigheid en (bij Wmo) debiteur. Testcliënten zijn al uitgesloten in mart_factuurregels.
 -- Overige regelgegevens via factuurregel_id → mart_factuurregels.
 
@@ -36,6 +36,7 @@ regels as (
         factuurregels.client_id,
         factuurregels.product_code,
         factuurregels.product_omschrijving,
+        factuurregels.vektiscode,
         factuurregels.financieringstype_naam,
         factuurregels.aantal,
         factuurregels.tarief,
@@ -90,7 +91,7 @@ tariefmatch as (
         on tarieven.factuur_type collate database_default
          = regels.factuur_type collate database_default
         and tarieven.prestatiecode collate database_default
-          = regels.product_code collate database_default
+          = regels.vektiscode collate database_default
         and cast(regels.startdatum as date) between tarieven.geldig_vanaf and tarieven.geldig_tot
         and (tarieven.debiteurnummer is null
             or tarieven.debiteurnummer collate database_default

@@ -30,6 +30,8 @@ models:
         description: "Korte code van het product"
       - name: product_omschrijving
         description: "Omschrijving van het product"
+      - name: vektiscode
+        description: "Vektiscode van het product (prestatiecode); koppeling met de tarievenlijsten"
       - name: financieringstype_naam
         description: "Financieringstype van het product"
       - name: aantal

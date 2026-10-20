@@ -260,6 +260,8 @@ models:
         description: "Korte weergave / code van het product"
       - name: product_omschrijving
         description: "Beschrijving van het product"
+      - name: vektiscode
+        description: "Vektiscode van het product; bij Wlz de prestatiecode zoals in de tarievenlijst"
       - name: financieringstype_id
         description: "Verwijzing naar het financieringstype van het product (financeTypeObjectId)"
 

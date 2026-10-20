@@ -5,7 +5,7 @@ models:
     description: >
       Tariefcontrole: gedeclareerd tarief per factuurregel vergeleken met de tarievenlijsten
       (int_tarieven, seeds in seeds/tarieven/). Eén rij per factuurregel, alle jaren; jaarselectie
-      in Power BI op startdatum. Koppeling op factuurtype, product_code = prestatiecode,
+      in Power BI op startdatum. Koppeling op factuurtype, vektiscode = prestatiecode,
       startdatum binnen de geldigheid en (bij Wmo) debiteur; een debiteur-specifiek tarief gaat voor.
       Overige regelgegevens via factuurregel_id → mart_factuurregels.
     columns:
@@ -29,9 +29,11 @@ models:
       - name: client_id
         description: "Verwijzing naar de client"
       - name: product_code
-        description: "Korte code van het product; koppelt op prestatiecode"
+        description: "Korte code van het product (products.id)"
       - name: product_omschrijving
         description: "Omschrijving van het product"
+      - name: vektiscode
+        description: "Vektiscode van het product; koppelt op prestatiecode in de tarievenlijst"
       - name: financieringstype_naam
         description: "Financieringstype van het product"
       - name: aantal

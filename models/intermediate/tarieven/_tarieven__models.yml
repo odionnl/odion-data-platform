@@ -26,7 +26,7 @@ models:
         description: "Einddatum geldigheid tarief (inclusief)"
         tests: [not_null]
       - name: prestatiecode
-        description: "Prestatiecode; koppelt op product_code"
+        description: "Prestatiecode; koppelt op vektiscode van het product"
         tests: [not_null]
       - name: prestatienaam
         description: "Omschrijving van de prestatie volgens de tarievenlijst"
