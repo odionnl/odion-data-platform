@@ -359,6 +359,64 @@ models:
       - name: clientnaam
         description: "Volledige naam van de toegewezen client"
 
+  - name: mart_jeugdhulp_trajecten_vergelijking
+    description: >
+      Vergelijking per Jeugdwet-client en hulpvorm tussen de verwachte jeugdhulptrajecten
+      (aaneengesloten perioden van locatiekoppelingen, zie int_jeugdhulp_locatieperiodes)
+      en de geregistreerde CBS-jeugdhulptrajecten. Koppeling op overlappende periode
+      (full outer join). Eén rij per locatieperiode × overlappend traject; locatieperioden
+      zonder traject en trajecten zonder locatieperiode krijgen een eigen rij.
+      All-time; gebruik mart_jeugdhulp_trajecten_vergelijking_actueel voor vandaag.
+    columns:
+      - name: client_id
+        description: "Verwijzing naar de client"
+        tests: [not_null]
+      - name: hulpvorm_omschrijving
+        description: "CBS-hulpvorm"
+        tests: [not_null]
+      - name: heeft_actieve_beschikking
+        description: "1 als de client vandaag een geldige Jeugdwet-zorglegitimatie heeft, anders 0"
+      - name: locatie_startdatum
+        description: "Startdatum van de locatieperiode (null = traject zonder locatie)"
+      - name: locatie_einddatum
+        description: "Einddatum van de laatste locatie in de periode (null = loopt nog)"
+      - name: aantal_locaties
+        description: "Aantal verschillende locaties in de locatieperiode"
+      - name: locaties
+        description: "Namen van de locaties in de periode, gescheiden door ' | '"
+      - name: jeugdhulptraject_id
+        description: "Verwijzing naar het CBS-jeugdhulptraject (null = traject ontbreekt)"
+      - name: hulpvorm_code
+        description: "CBS-hulpvormcode van het traject"
+      - name: traject_startdatum
+        description: "Datum aanvang van het traject"
+      - name: traject_einddatum
+        description: "Datum beëindiging van het traject (null = loopt nog)"
+      - name: reden_beeindiging_code
+        description: "CBS-code reden beëindiging"
+      - name: aantal_trajecten_in_periode
+        description: "Aantal trajecten dat overlapt met dezelfde locatieperiode"
+      - name: verschil_startdatum_dagen
+        description: "Traject_startdatum min locatie_startdatum in dagen (positief = traject start later)"
+      - name: verschil_einddatum_dagen
+        description: "Traject_einddatum min locatie_einddatum in dagen (null als één van beide nog loopt)"
+      - name: vergelijking_status
+        description: "Uitkomst van de vergelijking; de eerste passende regel wint"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - 'Traject ontbreekt'
+                  - 'Traject zonder locatie'
+                  - 'Meerdere trajecten voor één locatieperiode'
+                  - 'Traject loopt door na laatste locatie'
+                  - 'Traject gestopt terwijl locatie loopt'
+                  - 'Startdatum wijkt af'
+                  - 'Akkoord'
+      - name: is_actief
+        description: "1 als de locatieperiode of het traject vandaag (GETDATE()) nog loopt, anders 0"
+
   - name: mart_locatiekoppelingen
     description: >
       Bridge-mart voor de many-to-many relatie tussen cliënten en locaties.

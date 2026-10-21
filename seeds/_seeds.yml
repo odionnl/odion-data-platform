@@ -1,0 +1,22 @@
+version: 2
+
+seeds:
+  - name: locatie_hulpvorm_mapping
+    description: >
+      Referentietabel: welke CBS-hulpvorm hoort bij welke locatie. Locaties met
+      dezelfde hulpvorm vallen samen onder één jeugdhulptraject. Locaties die hier
+      niet in staan, tellen niet mee in de vergelijking locaties ↔ trajecten.
+      Bevat geen cliëntgegevens. Bestaan in OnsDB wordt gecontroleerd door de
+      singular tests assert_seed_locaties_bestaan_in_onsdb en
+      assert_seed_hulpvormen_bestaan_in_onsdb (relationships-tests werken niet
+      door het collation-verschil tussen seed en OnsDB).
+    columns:
+      - name: locatienaam
+        description: "Locatienaam, exact zoals in stg_onsdb__locations"
+        tests:
+          - unique
+          - not_null
+      - name: hulpvorm_omschrijving
+        description: "Omschrijving van de hulpvorm, exact zoals in stg_onsdb__cbsbj_hulpvormen"
+        tests:
+          - not_null

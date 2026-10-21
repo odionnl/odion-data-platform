@@ -984,6 +984,40 @@ models:
       - name: einddatum
         description: "Datum waarop het financieringstype verviel (null = nog actief)"
 
+  # -- CBS beleidsinformatie jeugd --
+  - name: stg_onsdb__cbsbj_jeugdhulps
+    description: >
+      CBS-jeugdhulptrajecten per client. Geen datumfilter (all-time).
+      Postcode, gemeente en tevredenheidscijfers zijn bewust weggelaten (dataminimalisatie).
+    columns:
+      - name: jeugdhulptraject_id
+        description: "Unieke identifier van het jeugdhulptraject"
+        tests: [unique, not_null]
+      - name: client_id
+        description: "Verwijzing naar de client"
+        tests: [not_null]
+      - name: startdatum
+        description: "Datum aanvang van het traject"
+      - name: einddatum
+        description: "Datum beëindiging van het traject (null = loopt nog)"
+      - name: hulpvorm_code
+        description: "CBS-hulpvormcode (zie stg_onsdb__cbsbj_hulpvormen)"
+      - name: leveringsvorm
+        description: "Leveringsvorm: 0 = zorg in natura, 1 = persoonsgebonden budget"
+      - name: reden_beeindiging_code
+        description: "CBS-code reden beëindiging"
+      - name: verwijzer_code
+        description: "CBS-code verwijzer"
+
+  - name: stg_onsdb__cbsbj_hulpvormen
+    description: "Codelijst CBS-hulpvormen."
+    columns:
+      - name: hulpvorm_code
+        description: "CBS-hulpvormcode"
+        tests: [unique, not_null]
+      - name: hulpvorm_omschrijving
+        description: "Omschrijving van de hulpvorm, bv. 'Jeugdhulp zonder verblijf, daghulp op locatie van de aanbieder'"
+
   # -- Vragenlijsten --
   - name: stg_onsdb__vragenlijsten
     description: "Vragenlijst-templates: definitie en configuratie van vragenlijsten in Nedap Ons. Geen datumfilter (all-time)."

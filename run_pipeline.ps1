@@ -39,6 +39,14 @@ if ($LASTEXITCODE -ne 0) {
 }
 Log "Stap 2 klaar."
 
+# Stap 3a: dbt seed (referentietabellen, bv. locatie_hulpvorm_mapping)
+Log "Stap 3a: dbt seed starten..."
+Run-Step "poetry run dbt seed"
+if ($LASTEXITCODE -ne 0) {
+    Log "FOUT: dbt seed mislukt."
+    exit 1
+}
+
 # Stap 3: dbt run (alle modellen)
 Log "Stap 3: dbt run starten..."
 Run-Step "poetry run dbt run"

@@ -52,3 +52,9 @@ models:
     description: >
       Snapshot: alleen actieve zorglegitimatie-producten.
       View op mart_zorglegitimatie_producten met filter is_actief = 1.
+
+  - name: mart_jeugdhulp_trajecten_vergelijking_actueel
+    description: >
+      Snapshot: vergelijkingsregels locaties ↔ CBS-jeugdhulptrajecten waarvan de
+      locatieperiode of het traject vandaag nog loopt.
+      View op mart_jeugdhulp_trajecten_vergelijking met filter is_actief = 1.

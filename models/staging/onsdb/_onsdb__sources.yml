@@ -287,6 +287,19 @@ sources:
           - name: objectId
             tests: [unique, not_null]
 
+      # -- CBS beleidsinformatie jeugd --
+      - name: cbsbj_jeugdhulps
+        description: "CBS-jeugdhulptrajecten per client (beleidsinformatie jeugd)."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: cbsbj_hulpvormen
+        description: "Codelijst CBS-hulpvormen (code + omschrijving)."
+        columns:
+          - name: code
+            tests: [unique, not_null]
+
       # -- Facturatie --
       - name: invoices
         description: "Aangemaakte facturen met factuurperiode, debiteur en retourstatus."

@@ -1,0 +1,73 @@
+version: 2
+
+models:
+  - name: int_jeugdwet_clienten
+    description: >
+      Cliënten met minstens één zorglegitimatie met financieringstype 'Jeugdwet'
+      (all-time). Testcliënten zijn uitgesloten. Eén rij per client.
+    columns:
+      - name: client_id
+        description: "Unieke identifier van de client"
+        tests: [unique, not_null]
+      - name: eerste_startdatum_beschikking
+        description: "Vroegste startdatum van een Jeugdwet-zorglegitimatie"
+      - name: laatste_einddatum_beschikking
+        description: "Laatste einddatum van een Jeugdwet-zorglegitimatie (null = minstens één loopt nog)"
+      - name: heeft_actieve_beschikking
+        description: "1 als de client vandaag (GETDATE()) een geldige Jeugdwet-zorglegitimatie heeft, anders 0"
+
+  - name: int_jeugdhulp_locatieperiodes
+    description: >
+      Verwachte jeugdhulptrajecten op basis van locatiekoppelingen (behalve WAITING)
+      van Jeugdwet-cliënten. Locaties krijgen een hulpvorm via de seed
+      locatie_hulpvorm_mapping. Overlappende en aansluitende koppelingen met dezelfde
+      hulpvorm zijn samengevoegd tot één periode. Eén rij per client × hulpvorm ×
+      aaneengesloten periode.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [client_id, hulpvorm_omschrijving, periode_nummer]
+    columns:
+      - name: client_id
+        description: "Verwijzing naar de client"
+        tests: [not_null]
+      - name: hulpvorm_omschrijving
+        description: "CBS-hulpvorm waar de locaties onder vallen"
+        tests: [not_null]
+      - name: periode_nummer
+        description: "Volgnummer van de aaneengesloten periode binnen client × hulpvorm"
+        tests: [not_null]
+      - name: startdatum
+        description: "Startdatum van de eerste locatiekoppeling in de periode"
+        tests: [not_null]
+      - name: einddatum
+        description: "Einddatum van de laatste locatiekoppeling in de periode (null = loopt nog)"
+      - name: aantal_locaties
+        description: "Aantal verschillende locaties in de periode"
+      - name: locaties
+        description: "Namen van de locaties in de periode, gescheiden door ' | '"
+
+  - name: int_jeugdhulp_trajecten
+    description: >
+      CBS-jeugdhulptrajecten van Jeugdwet-cliënten, verrijkt met hulpvorm-omschrijving.
+      Alleen hulpvormen die in de seed locatie_hulpvorm_mapping voorkomen.
+      Eén rij per traject.
+    columns:
+      - name: jeugdhulptraject_id
+        description: "Unieke identifier van het jeugdhulptraject"
+        tests: [unique, not_null]
+      - name: client_id
+        description: "Verwijzing naar de client"
+        tests: [not_null]
+      - name: hulpvorm_code
+        description: "CBS-hulpvormcode"
+      - name: hulpvorm_omschrijving
+        description: "Omschrijving van de hulpvorm"
+      - name: startdatum
+        description: "Datum aanvang van het traject"
+      - name: einddatum
+        description: "Datum beëindiging van het traject (null = loopt nog)"
+      - name: leveringsvorm
+        description: "0 = zorg in natura, 1 = persoonsgebonden budget"
+      - name: reden_beeindiging_code
+        description: "CBS-code reden beëindiging"

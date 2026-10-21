@@ -45,3 +45,11 @@ models:
     rpa:
       +materialized: table
       +schema: rpa
+
+seeds:
+  odion_data_platform:
+    +schema: staging
+    locatie_hulpvorm_mapping:
+      +column_types:
+        locatienaam: nvarchar(255)
+        hulpvorm_omschrijving: nvarchar(255)
