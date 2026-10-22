@@ -28,6 +28,7 @@ regels as (
         factuurregels.factuurregel_id,
         factuurregels.factuur_id,
         factuurregels.factuurnummer,
+        {{ ons_factuur_url('factuurregels.factuur_id') }}               as url_ons_factuur,
         facturen.factuur_type,
         facturen.factuurdatum,
         facturen.debiteurnummer,

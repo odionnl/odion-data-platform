@@ -16,6 +16,8 @@ models:
         description: "Verwijzing naar de factuur"
       - name: factuurnummer
         description: "Factuurnummer van de bijbehorende factuur"
+      - name: url_ons_factuur
+        description: "Deep-link naar de factuur in ONS administratie"
       - name: factuur_type
         description: "Omschrijving van het factuurtype (bijv. AW319 Wet Langdurige Zorg); koppelt op de tarievenlijst"
       - name: factuurdatum

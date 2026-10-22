@@ -95,6 +95,7 @@ Regel: gebruik altijd `GETDATE()` direct — **geen** dbt-variabelen of macros v
 | `ons_administratie_url(client_id)` | `ons_urls.sql` | Deep-link naar ONS-administratie |
 | `ons_medicatie_url(client_id)` | `ons_urls.sql` | Deep-link naar ONS-medicatie |
 | `ons_medicatie_dag_url(client_id, datum)` | `ons_urls.sql` | Deep-link naar ONS-medicatie toedienlijst op een dag |
+| `ons_factuur_url(factuur_id)` | `ons_urls.sql` | Deep-link naar een factuur in ONS-administratie |
 
 ## Naamgevingsconventies
 
