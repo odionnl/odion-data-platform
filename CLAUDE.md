@@ -95,6 +95,7 @@ Regel: gebruik altijd `GETDATE()` direct — **geen** dbt-variabelen of macros v
 | `ons_administratie_url(client_id)` | `ons_urls.sql` | Deep-link naar ONS-administratie |
 | `ons_medicatie_url(client_id)` | `ons_urls.sql` | Deep-link naar ONS-medicatie |
 | `ons_medicatie_dag_url(client_id, datum)` | `ons_urls.sql` | Deep-link naar ONS-medicatie toedienlijst op een dag |
+| `ons_factuur_url(factuur_id)` | `ons_urls.sql` | Deep-link naar een factuur in ONS-administratie |
 
 ## Naamgevingsconventies
 
@@ -121,3 +122,22 @@ Tests en beschrijvingen staan in YAML-bestanden naast de modellen:
 - `models/intermediate/_int__models.yml`
 - `models/intermediate/verantwoording/_verantwoording__models.yml`
 - `models/marts/_marts__models.yml`
+- `seeds/tarieven/_tarieven__seeds.yml` + `models/intermediate/tarieven/_tarieven__models.yml`
+- `models/marts/interne_controle/_interne_controle__models.yml`
+
+## Tarievenlijsten (tariefcontrole)
+
+Tarievenlijsten van zorgkantoor/gemeenten staan als seeds in `seeds/tarieven/` (geen persoonsgegevens) en
+worden in `int_tarieven` samengevoegd; `mart_tariefcontrole` vergelijkt daarmee de factuurregels.
+Naamgeving: `tarieven_<financiering>_<jaar>[_<gemeente>].csv`. Nieuwe lijst toevoegen:
+
+```bash
+poetry run python scripts/tarieven_naar_seed.py "<pad naar xlsx>" --factuurtype "AW319 Wet Langdurige Zorg" \
+    --geldig-vanaf 2027-01-01 --geldig-tot 2027-12-31 --uit seeds/tarieven/tarieven_wlz_2027.csv
+# seed-naam toevoegen aan de lijst in models/intermediate/tarieven/int_tarieven.sql
+poetry run dbt seed --select tarieven
+poetry run dbt run --select int_tarieven mart_tariefcontrole
+```
+
+`--factuurtype` moet exact gelijk zijn aan `factuur_type` in `mart_facturen` (Wlz = `AW319 Wet Langdurige Zorg`).
+Wmo: per gemeente een bestand met `--debiteurnummer`. Wijkt de Excel-layout af, voeg dan een mapping toe aan `LAYOUTS` in het script.

@@ -1,0 +1,12 @@
+version: 2
+
+# Eén seed per tarievenlijst (Wlz/Jeugdwet per jaar, Wmo per gemeente per jaar).
+# Genereren met scripts/tarieven_naar_seed.py en daarna toevoegen aan int_tarieven.
+
+seeds:
+  - name: tarieven_wlz_2026
+    description: >
+      Tarievenlijst Wlz 2026 (declareren via AW319), Stichting Odion (AGB 66661402).
+      Bron: 66661402_300224_tarievenlijst2026(aangepast)nieuw.xlsx, kolom 'Te declareren tarief
+      (per tijdseenheid)'. Dubbele prestatiecodes (H900, H906, H942) zijn ontdubbeld.
+      ZMZ01 (meerzorg) heeft geen vast tarief.
