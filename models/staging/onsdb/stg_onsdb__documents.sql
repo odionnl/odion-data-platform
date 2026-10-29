@@ -11,7 +11,7 @@ definitief as (
         clientObjectId      as client_id,
         employeeObjectId    as medewerker_id,
         cast(description as nvarchar(max)) as beschrijving,
-        filename            as bestandsnaam,
+        cast(filename as nvarchar(4000)) as bestandsnaam,
         status              as status_code,
         cast(case when confidential = 1 then 1 else 0 end as bit)
                             as is_vertrouwelijk,
