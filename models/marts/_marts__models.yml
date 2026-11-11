@@ -323,7 +323,9 @@ models:
       Alle kamers (locatietype = 'Kamer') met ouderlocatie en locatiekoppelingen
       (cliënten toegewezen aan de kamer) over alle tijd. Grain: één rij per
       (kamer × locatiekoppeling). Kamers zonder koppelingen krijgen één rij
-      met NULL voor client-/koppelingsvelden.
+      met NULL voor client-/koppelingsvelden. Koppelingen van testcliënten
+      (int_testclienten) zijn uitgesloten; kamers onder '99. Trainingslocatie'
+      zijn weggelaten.
     columns:
       - name: kamer_id
         description: "Locatie-ID van de kamer"
@@ -1097,6 +1099,8 @@ models:
         description: "Jaar * 100 + maand (bv. 202610); sorteerkolom voor jaar_maand"
       - name: jaar_maand
         description: "Jaar en maand als tekst (bv. 2026-10)"
+      - name: maand_jaar_kort
+        description: "Korte maandnaam en jaar (bv. 'okt 26'); sorteren op jaar_maand_sortering"
       - name: maand_start
         description: "Eerste dag van de maand"
       - name: dag_van_maand

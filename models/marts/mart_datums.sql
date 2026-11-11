@@ -63,6 +63,15 @@ definitief as (
         end                                                 as maandnaam_kort,
         jaar * 100 + maandnummer                            as jaar_maand_sortering,
         concat(jaar, '-', right(concat('0', maandnummer), 2)) as jaar_maand,
+        -- Bv. 'aug 26'; sorteren op jaar_maand_sortering
+        concat(
+            case maandnummer
+                when 1 then 'jan' when 2 then 'feb' when 3 then 'mrt' when 4 then 'apr'
+                when 5 then 'mei' when 6 then 'jun' when 7 then 'jul' when 8 then 'aug'
+                when 9 then 'sep' when 10 then 'okt' when 11 then 'nov' when 12 then 'dec'
+            end,
+            ' ', right(concat('0', jaar % 100), 2)
+        )                                                   as maand_jaar_kort,
         datefromparts(jaar, maandnummer, 1)                 as maand_start,
         dag_van_maand,
         iso_week,

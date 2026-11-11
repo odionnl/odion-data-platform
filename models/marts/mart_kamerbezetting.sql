@@ -4,6 +4,12 @@ with locaties as (
 
 ),
 
+testclienten as (
+
+    select * from {{ ref('int_testclienten') }}
+
+),
+
 kamers as (
 
     select
@@ -21,6 +27,8 @@ kamers as (
 
     from locaties
     where locatietype = 'Kamer'
+      -- Kamers op de trainingslocatie zijn geen echte woningen
+      and (niveau2 is null or niveau2 <> '99. Trainingslocatie')
 
 ),
 
@@ -36,7 +44,10 @@ ouders as (
 
 koppelingen as (
 
+    -- Koppelingen van testcliënten tellen niet als bezetting; de kamer blijft wel staan
     select * from {{ ref('stg_onsdb__location_assignments') }}
+    where client_id is null
+       or client_id not in (select client_id from testclienten)
 
 ),
 
