@@ -1101,6 +1101,8 @@ models:
         description: "Jaar en maand als tekst (bv. 2026-10)"
       - name: maand_jaar_kort
         description: "Korte maandnaam en jaar (bv. 'okt 26'); sorteren op jaar_maand_sortering"
+      - name: maand_jaar
+        description: "Volledige maandnaam en jaar (bv. 'oktober 2026'); sorteren op jaar_maand_sortering"
       - name: maand_start
         description: "Eerste dag van de maand"
       - name: dag_van_maand
