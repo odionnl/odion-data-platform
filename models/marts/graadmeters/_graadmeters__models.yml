@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: mart_graadmeters_clienten
+    description: >
+      Graadmeters cliënten voor de P&C-maandrapportage. Grain: één rij per maand
+      (vanaf januari 2024). Gemeten op maand-ultimo; voor de lopende maand op vandaag.
+      Alleen aantallen, geen cliëntgegevens. Testcliënten (int_testclienten) zijn uitgesloten.
+      Let op: historische maanden worden elke run opnieuw berekend uit Ons; terugwerkende
+      mutaties kunnen eerder gerapporteerde cijfers dus nog veranderen.
+    columns:
+      - name: maand_start
+        description: "Eerste dag van de maand (koppelsleutel naar Datumtabel)"
+        tests: [unique, not_null]
+      - name: jaar_maand
+        description: "Maand als tekst, bv. '2026-08'"
+      - name: jaar_maand_sortering
+        description: "Maand als getal (jjjjmm) voor sortering"
+      - name: peildatum
+        description: "Meetmoment: laatste dag van de maand, of vandaag voor de lopende maand"
+        tests: [not_null]
+      - name: aantal_clienten_in_zorg
+        description: "Aantal cliënten met een actieve zorgtoewijzing op de peildatum (# Cliënten)"
+        tests: [not_null]
+      - name: aantal_clienten_met_legitimatie
+        description: >
+          Aantal cliënten in zorg met minstens één actieve zorglegitimatie op de peildatum
+          (teller van % Legitimatie op orde)
+        tests: [not_null]
+      - name: aantal_clienten_zonder_legitimatie
+        description: "Aantal cliënten in zorg zonder actieve zorglegitimatie op de peildatum"
