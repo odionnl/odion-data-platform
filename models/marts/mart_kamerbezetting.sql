@@ -15,10 +15,6 @@ kamers as (
     select
         locatie_id              as kamer_id,
         locatienaam             as kamernaam,
-        case
-            when lower(locatienaam) like '%(logeer)%' then 'Logeren'
-            else 'Wonen'
-        end                     as kamertype,
         ouder_locatie_id,
         capaciteit,
         startdatum              as startdatum_kamer,
@@ -63,7 +59,6 @@ definitief as (
         -- Kamer
         kamers.kamer_id,
         kamers.kamernaam,
-        kamers.kamertype,
         kamers.capaciteit,
         kamers.startdatum_kamer,
         kamers.einddatum_kamer,
