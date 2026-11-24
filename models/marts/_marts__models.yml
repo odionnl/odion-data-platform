@@ -332,8 +332,6 @@ models:
         tests: [not_null]
       - name: kamernaam
         description: "Naam van de kamer"
-      - name: kamertype
-        description: "Afgeleid uit de kamernaam: 'Logeren' als de naam '(logeer)' bevat, anders 'Wonen'"
       - name: capaciteit
         description: "Capaciteit van de kamer"
       - name: startdatum_kamer
