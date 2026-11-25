@@ -1364,13 +1364,17 @@ models:
       - name: genodigde_id
         description: "Verwijzing naar onsagenda_employees/clients/locations/teams/groups (type wordt bepaald in int_agenda_genodigden)"
       - name: afspraak_id
-        description: "Verwijzing naar stg_onsdb__agenda_events"
+        description: >
+          Verwijzing naar stg_onsdb__agenda_events. Een klein aantal uitnodigingen verwijst naar een
+          afspraak die niet (meer) bestaat (hard verwijderd in Ons); die vallen in de marts weg via inner joins.
         tests:
           - not_null
           - relationships:
               arguments:
                 to: ref('stg_onsdb__agenda_events')
                 field: afspraak_id
+              config:
+                severity: warn
       - name: is_geaccepteerd
         description: "1 als de uitnodiging door de medewerker is geaccepteerd"
       - name: oorspronkelijke_genodigde_id
