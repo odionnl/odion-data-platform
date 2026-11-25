@@ -1,0 +1,75 @@
+version: 2
+
+models:
+  - name: int_agenda_genodigden
+    description: >
+      Genodigden van Ons Agenda-afspraken met het type (Medewerker/Cliënt/Locatie/Team/Groep) en het
+      bijbehorende Ons Administratie-ID. Eén rij per uitnodiging.
+    columns:
+      - name: uitnodiging_id
+        description: "Unieke identifier van de uitnodiging. Uniek = elke genodigde matcht hooguit één onsagenda_*-tabel."
+        tests: [unique, not_null]
+      - name: afspraak_id
+        description: "Verwijzing naar stg_onsdb__agenda_events"
+      - name: genodigde_id
+        description: "Interne Ons Agenda-ID van de genodigde"
+      - name: genodigde_type
+        description: "Medewerker, Cliënt, Locatie, Team of Groep. NULL = genodigde niet gevonden in onsagenda_*-tabellen."
+        tests:
+          - not_null:
+              config:
+                severity: warn
+          - accepted_values:
+              arguments:
+                values: ['Medewerker', 'Cliënt', 'Locatie', 'Team', 'Groep']
+      - name: medewerker_id
+        description: "Gevuld als genodigde_type = Medewerker (→ stg_onsdb__employees)"
+      - name: client_id
+        description: "Gevuld als genodigde_type = Cliënt (→ stg_onsdb__clients)"
+      - name: locatie_id
+        description: "Gevuld als genodigde_type = Locatie (→ stg_onsdb__locations)"
+      - name: team_id
+        description: "Gevuld als genodigde_type = Team (→ stg_onsdb__teams)"
+      - name: groepszorg_groep_id
+        description: "Gevuld als genodigde_type = Groep (→ stg_onsdb__groupcare_groups)"
+      - name: is_geaccepteerd
+        description: "1 als de uitnodiging is geaccepteerd"
+      - name: oorspronkelijke_medewerker_id
+        description: "Medewerker die oorspronkelijk was uitgenodigd (bij vervanging)"
+      - name: is_vervangen
+        description: "1 als de oorspronkelijke genodigde afwijkt van de huidige genodigde"
+      - name: agenda_uursoort_id
+        description: "Uursoort van de uitnodiging, anders die van de afspraak"
+      - name: activiteit_id
+        description: "Uursoort in Ons Administratie (→ stg_onsdb__activities)"
+      - name: zorglegitimatie_id
+        description: "Gekoppelde zorglegitimatie (care_order) in Ons Administratie"
+
+  - name: int_agenda_afspraak_momenten
+    description: >
+      Ons Agenda-afspraken uitgevouwen tot losse momenten: één rij per afspraak per datum.
+      Bewuste afwijking van de all-time-conventie: venster van 2 jaar terug t/m 3 maanden vooruit
+      t.o.v. GETDATE(), omdat herhalende reeksen geen natuurlijk einde hebben.
+      Ondersteunt herhalingstype single, daily, weekly (interval + weekdagen), monthly_on_day (vaste dag),
+      monthly_on_week (n-de weekdag, week 5 = laatste) en yearly; onbekende types → eenmalig.
+      Uitzonderingen (is_uitzondering) schrappen het moment van de reeks op die datum.
+    columns:
+      - name: afspraak_moment_id
+        description: "Sleutel: <afspraak_id>-<yyyymmdd>"
+        tests: [unique, not_null]
+      - name: afspraak_id
+        description: "Verwijzing naar stg_onsdb__agenda_events"
+        tests: [not_null]
+      - name: reeks_id
+        description: "timelineId van de reeks"
+      - name: datum
+        description: "Datum van het afspraakmoment"
+        tests: [not_null]
+      - name: starttijd
+        description: "Begin van het afspraakmoment (datum + starttijd)"
+      - name: eindtijd
+        description: "Einde van het afspraakmoment (starttijd + duur)"
+      - name: duur_minuten
+        description: "Duur van het afspraakmoment in minuten"
+      - name: is_herhalend
+        description: "1 als het moment voortkomt uit een herhalende reeks"

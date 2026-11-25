@@ -1,0 +1,194 @@
+version: 2
+
+# Sterschema Ons Agenda:
+#   mart_agenda_afspraken          (dimensie, 1 rij per afspraak/reeks, all-time)
+#     └─ mart_agenda_afspraak_momenten  (feit, 1 rij per afspraak per datum, venster −2 jaar t/m +3 maanden)
+#          └─ mart_agenda_deelnames      (feit, 1 rij per moment × genodigde)
+# Afspraken met een testcliënt als genodigde zijn in alle drie uitgesloten.
+
+models:
+  - name: mart_agenda_afspraken
+    description: >
+      Ons Agenda-afspraken op reeksniveau: één rij per afspraak (eenmalig of herhalende reeks), all-time.
+      Dimensie met titel, uursoort, labels en herhalingskenmerken; koppel via afspraak_id aan
+      mart_agenda_afspraak_momenten en mart_agenda_deelnames.
+      Uitzonderingsrijen uit Ons (geschrapte datums) zijn geen afspraken; ze worden geteld in aantal_uitzonderingen.
+      AVG: titel is leeg bij privé-afspraken, de opmerking is niet opgenomen, geen namen.
+      Afspraken met een testcliënt als genodigde zijn uitgesloten.
+    columns:
+      - name: afspraak_id
+        description: "Ons Agenda-afspraak (objectId van agenda_events)"
+        tests: [unique, not_null]
+      - name: reeks_id
+        description: "timelineId: een gesplitste reeks of losse aangepaste afspraak deelt de reeks_id met de oorspronkelijke reeks"
+      - name: titel
+        description: "Titel van de afspraak (vrije tekst); NULL bij privé-afspraken"
+      - name: is_prive
+        description: "1 als de afspraak als privé gemarkeerd is"
+      - name: is_client_aanwezig
+        description: "1 als de cliënt aanwezig moet zijn"
+      - name: locatie_omschrijving
+        description: "Vrije locatieomschrijving"
+      - name: bron_applicatie
+        description: "Applicatie waaruit de afspraak is aangemaakt"
+      - name: starttijd
+        description: "Starttijd op de dag (time)"
+      - name: eindtijd
+        description: "Eindtijd op de dag (time; loopt door na middernacht)"
+      - name: duur_minuten
+        description: "Duur van één afspraakmoment in minuten"
+      - name: herhalingstype
+        description: "Soort herhaling uit Ons Agenda (recurrenceType): single, daily, weekly, monthly_on_day, monthly_on_week, yearly"
+      - name: herhaling_omschrijving
+        description: "Leesbare herhaling: Eenmalig, Dagelijks, Wekelijks, Maandelijks (vaste dag), Maandelijks (vaste week), Jaarlijks"
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['Eenmalig', 'Dagelijks', 'Wekelijks', 'Maandelijks (vaste dag)', 'Maandelijks (vaste week)', 'Jaarlijks']
+              config:
+                severity: warn
+      - name: is_herhalend
+        description: "1 bij een herhalende reeks (alle types behalve single)"
+      - name: startdatum
+        description: "Datum van de (eerste) afspraak"
+      - name: einddatum
+        description: "Laatste datum van de reeks; bij eenmalige afspraken gelijk aan startdatum; NULL = geen einddatum"
+      - name: is_zonder_einddatum
+        description: "1 bij een herhalende reeks zonder einddatum"
+      - name: herhaling_interval
+        description: "Interval van de herhaling (bv. 2 bij wekelijks = om de week); NULL bij eenmalig"
+      - name: weekdagen
+        description: "Weekdagen van een wekelijkse reeks, bv. 'ma, wo, vr'"
+      - name: aantal_uitzonderingen
+        description: "Aantal geschrapte datums binnen de looptijd van deze reeks"
+      - name: is_actief
+        description: "1 als de afspraak nog niet afgelopen is (lopende reeks of toekomstige afspraak), berekend op GETDATE()"
+      - name: activiteit_id
+        description: "Uursoort van de afspraak in Ons Administratie (→ stg_onsdb__activities)"
+      - name: uursoort_beschrijving
+        description: "Omschrijving van de uursoort"
+      - name: labels
+        description: "Labels van de afspraak, gescheiden door ' | ' (gesorteerd op prioriteit)"
+      - name: aantal_medewerkers
+        description: "Aantal unieke uitgenodigde medewerkers"
+      - name: aantal_clienten
+        description: "Aantal unieke uitgenodigde cliënten"
+      - name: aantal_genodigden
+        description: "Totaal aantal uitnodigingen (alle typen)"
+      - name: aangemaakt_door_medewerker_id
+        description: "Medewerker die de afspraak aanmaakte (→ mart_medewerkers)"
+      - name: aangemaakt_op
+        description: "Moment van aanmaken (UTC)"
+      - name: gewijzigd_op
+        description: "Moment van laatste wijziging (UTC)"
+
+  - name: mart_agenda_afspraak_momenten
+    description: >
+      Ons Agenda-afspraakmomenten: één rij per afspraak per datum, herhalende reeksen uitgevouwen.
+      Venster: 2 jaar terug t/m 3 maanden vooruit t.o.v. de laatste run.
+      Kenmerken van de afspraak staan in mart_agenda_afspraken (join op afspraak_id).
+      Koppel aan mart_agenda_deelnames via afspraak_moment_id en aan mart_datums via datum.
+    columns:
+      - name: afspraak_moment_id
+        description: "Sleutel: <afspraak_id>-<yyyymmdd>"
+        tests: [unique, not_null]
+      - name: afspraak_id
+        description: "Verwijzing naar mart_agenda_afspraken"
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('mart_agenda_afspraken')
+                field: afspraak_id
+      - name: reeks_id
+        description: "timelineId: koppelt momenten uit dezelfde reeks"
+      - name: datum
+        description: "Datum van het afspraakmoment"
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('mart_datums')
+                field: datum
+      - name: starttijd
+        description: "Begin van het afspraakmoment"
+      - name: eindtijd
+        description: "Einde van het afspraakmoment"
+      - name: duur_minuten
+        description: "Duur in minuten"
+      - name: duur_uren
+        description: "Duur in uren (2 decimalen)"
+      - name: is_herhalend
+        description: "1 als het moment voortkomt uit een herhalende reeks"
+
+  - name: mart_agenda_deelnames
+    description: >
+      Deelnames aan Ons Agenda-afspraakmomenten: één rij per afspraakmoment × uitnodiging.
+      Feitentabel voor uren per medewerker, cliënt, team, locatie of uursoort.
+      Venster: 2 jaar terug t/m 3 maanden vooruit. Geen namen, alleen ID's.
+    columns:
+      - name: deelname_id
+        description: "Sleutel: <uitnodiging_id>-<yyyymmdd>"
+        tests: [unique, not_null]
+      - name: afspraak_moment_id
+        description: "Verwijzing naar mart_agenda_afspraak_momenten"
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('mart_agenda_afspraak_momenten')
+                field: afspraak_moment_id
+      - name: afspraak_id
+        description: "Verwijzing naar mart_agenda_afspraken"
+      - name: uitnodiging_id
+        description: "Ons Agenda-uitnodiging"
+      - name: datum
+        description: "Datum van het afspraakmoment"
+      - name: starttijd
+        description: "Begin van het afspraakmoment"
+      - name: eindtijd
+        description: "Einde van het afspraakmoment"
+      - name: duur_uren
+        description: "Duur van het afspraakmoment in uren"
+      - name: genodigde_type
+        description: "Medewerker, Cliënt, Locatie, Team of Groep"
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['Medewerker', 'Cliënt', 'Locatie', 'Team', 'Groep']
+      - name: medewerker_id
+        description: "Uitgenodigde medewerker (→ mart_medewerkers)"
+        tests:
+          - relationships:
+              arguments:
+                to: ref('mart_medewerkers')
+                field: medewerker_id
+              config:
+                severity: warn
+      - name: client_id
+        description: "Uitgenodigde cliënt (→ mart_clienten)"
+        tests:
+          - relationships:
+              arguments:
+                to: ref('mart_clienten')
+                field: client_id
+              config:
+                severity: warn
+      - name: locatie_id
+        description: "Uitgenodigde locatie (→ mart_locaties)"
+      - name: team_id
+        description: "Uitgenodigd team"
+      - name: groepszorg_groep_id
+        description: "Uitgenodigde groep (Groepsplanning)"
+      - name: is_geaccepteerd
+        description: "1 als de uitnodiging is geaccepteerd"
+      - name: is_vervangen
+        description: "1 als de oorspronkelijke genodigde is vervangen"
+      - name: oorspronkelijke_medewerker_id
+        description: "Oorspronkelijk uitgenodigde medewerker (bij vervanging)"
+      - name: activiteit_id
+        description: "Uursoort (uitnodiging gaat voor afspraak) in Ons Administratie"
+      - name: uursoort_beschrijving
+        description: "Omschrijving van de uursoort"
+      - name: zorglegitimatie_id
+        description: "Gekoppelde zorglegitimatie (→ mart_zorglegitimaties)"

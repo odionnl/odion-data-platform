@@ -409,3 +409,64 @@ sources:
 
       - name: groupcare_activity_timelines
         description: "Koppeltabel tussen groepszorg-afspraken (timeline_id) en groepszorg-activiteiten. Eén timeline kan in de tijd aan verschillende activiteiten gekoppeld zijn."
+
+      # -- Ons Agenda --
+      - name: agenda_events
+        description: "Ons Agenda: afspraken (eenmalig of herhalende reeks). Tijdzone Z."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: agenda_invitations
+        description: "Ons Agenda: genodigden (medewerker, cliënt, locatie, team of groep) per afspraak."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: agenda_labels
+        description: "Ons Agenda: labeldefinities voor afspraken."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: agenda_event_labels
+        description: "Ons Agenda: koppeltabel tussen afspraken en labels (M:N)."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: agenda_hour_types
+        description: "Ons Agenda: koppeling naar uursoorten in Ons Administratie (activities)."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: onsagenda_clients
+        description: "Ons Agenda: representatie van cliënten (externalObjectId = clients.objectId)."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: onsagenda_employees
+        description: "Ons Agenda: representatie van medewerkers (externalObjectId = employees.objectId)."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: onsagenda_locations
+        description: "Ons Agenda: representatie van locaties (externalObjectId = locations.objectId)."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: onsagenda_teams
+        description: "Ons Agenda: representatie van teams (externalObjectId = teams.objectId)."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
+
+      - name: onsagenda_groups
+        description: "Ons Agenda: representatie van groepen (externalObjectId = id in Groepsplanning)."
+        columns:
+          - name: objectId
+            tests: [unique, not_null]
