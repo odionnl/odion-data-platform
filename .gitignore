@@ -16,6 +16,9 @@ __pycache__/
 .env
 profiles.yml
 
+# Lokale incidentnotities (servergebonden, niet delen)
+docs/incidenten/
+
 # Claude Code
 .claude/settings.local.json
 
