@@ -1302,3 +1302,156 @@ models:
         description: "Verwijzing naar de groepszorg-afspraak (timeline_id) — joint met stg_onsdb__groupcare_registrations.groepszorg_afspraak_id"
       - name: groepszorg_activiteit_id
         description: "Verwijzing naar stg_onsdb__groupcare_activities.groepszorg_activiteit_id"
+
+  # -- Ons Agenda --
+  - name: stg_onsdb__agenda_events
+    description: >
+      Ons Agenda-afspraken. Eén rij per afspraak(reeks) of uitzondering. Herhalende reeksen worden
+      uitgevouwen in int_agenda_afspraak_momenten. De opmerking (comment) is bewust weggelaten (AVG).
+    columns:
+      - name: afspraak_id
+        description: "Unieke identifier van de afspraak (objectId)"
+        tests: [unique, not_null]
+      - name: reeks_id
+        description: "timelineId: koppelt afspraken binnen dezelfde reeks (inclusief uitzonderingen en gesplitste reeksen)"
+      - name: titel
+        description: "Titel van de afspraak (vrije tekst)"
+      - name: starttijd_seconden
+        description: "Starttijd in seconden vanaf middernacht"
+      - name: duur_seconden
+        description: "Duur van de afspraak in seconden"
+      - name: agenda_uursoort_id
+        description: "Verwijzing naar stg_onsdb__agenda_hour_types"
+      - name: locatie_omschrijving
+        description: "Vrije locatieomschrijving buiten vaste locaties om"
+      - name: is_client_aanwezig
+        description: "1 als de cliënt bij de afspraak aanwezig moet zijn"
+      - name: is_prive
+        description: "1 als de afspraak als privé gemarkeerd is"
+      - name: herhalingstype
+        description: >
+          Soort herhaling (recurrenceType): single, daily, weekly, monthly_on_day, monthly_on_week, yearly.
+          Waarschuwing bij onbekende waarden: die worden in int_agenda_afspraak_momenten als eenmalig behandeld.
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['single', 'daily', 'weekly', 'monthly_on_day', 'monthly_on_week', 'yearly']
+              config:
+                severity: warn
+      - name: geldig_vanaf
+        description: "Datum (eerste) afspraak; bij een uitzondering de datum die vervalt"
+      - name: geldig_tot
+        description: "Datum waarop de laatste afspraak in de reeks plaatsvindt"
+      - name: herhaling_basisdatum
+        description: "Basisdatum voor de herhalingscyclus (cycleBase)"
+      - name: herhaling_interval
+        description: "Herhalingsinterval (bv. 2 bij wekelijks = om de week)"
+      - name: is_uitzondering
+        description: "1 = de reeks (reeks_id) vindt op geldig_vanaf eenmalig níet plaats"
+      - name: bron_applicatie
+        description: "Applicatie van waaruit de afspraak is aangemaakt"
+      - name: aangemaakt_door_id
+        description: "Maker van de afspraak (→ stg_onsdb__onsagenda_employees)"
+      - name: gewijzigd_door_id
+        description: "Laatste wijziger van de afspraak (→ stg_onsdb__onsagenda_employees)"
+
+  - name: stg_onsdb__agenda_invitations
+    description: "Genodigden per Ons Agenda-afspraak. Eén rij per uitnodiging."
+    columns:
+      - name: uitnodiging_id
+        description: "Unieke identifier van de uitnodiging"
+        tests: [unique, not_null]
+      - name: genodigde_id
+        description: "Verwijzing naar onsagenda_employees/clients/locations/teams/groups (type wordt bepaald in int_agenda_genodigden)"
+      - name: afspraak_id
+        description: >
+          Verwijzing naar stg_onsdb__agenda_events. Een klein aantal uitnodigingen verwijst naar een
+          afspraak die niet (meer) bestaat (hard verwijderd in Ons); die vallen in de marts weg via inner joins.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_onsdb__agenda_events')
+                field: afspraak_id
+              config:
+                severity: warn
+      - name: is_geaccepteerd
+        description: "1 als de uitnodiging door de medewerker is geaccepteerd"
+      - name: oorspronkelijke_genodigde_id
+        description: "Medewerker die oorspronkelijk was uitgenodigd (→ stg_onsdb__onsagenda_employees)"
+      - name: agenda_uursoort_id
+        description: "Uursoort op de uitnodiging (→ stg_onsdb__agenda_hour_types); gaat voor die van de afspraak"
+      - name: zorglegitimatie_id
+        description: "Verwijzing naar care_orders (stg_onsdb__care_orders.zorglegitimatie_id)"
+
+  - name: stg_onsdb__agenda_labels
+    description: "Labeldefinities voor Ons Agenda-afspraken."
+    columns:
+      - name: label_id
+        tests: [unique, not_null]
+      - name: labelnaam
+        description: "Naam van het label"
+      - name: prioriteit
+        description: "Prioriteit van het label"
+      - name: startdatum
+        description: "Geldig vanaf"
+      - name: einddatum
+        description: "Geldig tot"
+
+  - name: stg_onsdb__agenda_event_labels
+    description: "M:N koppeltabel tussen Ons Agenda-afspraken en labels."
+    columns:
+      - name: afspraak_label_id
+        tests: [unique, not_null]
+      - name: afspraak_id
+        description: "Verwijzing naar stg_onsdb__agenda_events"
+      - name: label_id
+        description: "Verwijzing naar stg_onsdb__agenda_labels"
+
+  - name: stg_onsdb__agenda_hour_types
+    description: "Koppeling Ons Agenda-uursoort → activiteit (uursoort) in Ons Administratie."
+    columns:
+      - name: agenda_uursoort_id
+        tests: [unique, not_null]
+      - name: activiteit_id
+        description: "Verwijzing naar stg_onsdb__activities"
+
+  - name: stg_onsdb__onsagenda_clients
+    description: "Bridge-tabel: Ons Agenda-cliënt-ID → Ons Administratie client_id."
+    columns:
+      - name: agenda_client_id
+        tests: [unique, not_null]
+      - name: client_id
+        description: "Verwijzing naar stg_onsdb__clients"
+
+  - name: stg_onsdb__onsagenda_employees
+    description: "Bridge-tabel: Ons Agenda-medewerker-ID → Ons Administratie medewerker_id."
+    columns:
+      - name: agenda_medewerker_id
+        tests: [unique, not_null]
+      - name: medewerker_id
+        description: "Verwijzing naar stg_onsdb__employees"
+
+  - name: stg_onsdb__onsagenda_locations
+    description: "Bridge-tabel: Ons Agenda-locatie-ID → Ons Administratie locatie_id."
+    columns:
+      - name: agenda_locatie_id
+        tests: [unique, not_null]
+      - name: locatie_id
+        description: "Verwijzing naar stg_onsdb__locations"
+
+  - name: stg_onsdb__onsagenda_teams
+    description: "Bridge-tabel: Ons Agenda-team-ID → Ons Administratie team_id."
+    columns:
+      - name: agenda_team_id
+        tests: [unique, not_null]
+      - name: team_id
+        description: "Verwijzing naar stg_onsdb__teams"
+
+  - name: stg_onsdb__onsagenda_groups
+    description: "Bridge-tabel: Ons Agenda-groep-ID → Groepsplanning groepszorg_groep_id."
+    columns:
+      - name: agenda_groep_id
+        tests: [unique, not_null]
+      - name: groepszorg_groep_id
+        description: "Verwijzing naar stg_onsdb__groupcare_groups"

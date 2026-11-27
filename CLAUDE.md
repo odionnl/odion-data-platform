@@ -68,7 +68,7 @@ poetry run python -m ingestion.pipelines.ons_audits
 
 ### Databronnen
 
-- **`ons_plan_2`** (OnsDB via SQL Server `dbo`): alle zorgdata — 34 staging modellen
+- **`ons_plan_2`** (OnsDB via SQL Server `dbo`): alle zorgdata — 86 staging modellen (incl. Ons Agenda: `agenda_*` en `onsagenda_*`)
 - **`raw_ortec`**: dienstroosters ORTEC — geladen via `ingestion/pipelines/ortec.py`
 - **`raw_ons_audits`**: RPA-audits zorgplan-inzage — geladen via `ingestion/pipelines/ons_audits.py`
 
@@ -121,3 +121,4 @@ Tests en beschrijvingen staan in YAML-bestanden naast de modellen:
 - `models/intermediate/_int__models.yml`
 - `models/intermediate/verantwoording/_verantwoording__models.yml`
 - `models/marts/_marts__models.yml`
+- `models/intermediate/agenda/_agenda__models.yml` + `models/marts/agenda/_agenda__models.yml` (Ons Agenda: `mart_agenda_afspraken` = reeksen, all-time; `mart_agenda_afspraak_momenten` en `mart_agenda_deelnames` = uitgevouwen over venster −2 jaar t/m +3 maanden)
