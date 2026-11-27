@@ -21,6 +21,20 @@ function Run-Step($command) {
 
 Log "=== Start dagelijkse pipeline ==="
 
+# Stap 0: code bijwerken naar laatste versie van main
+Log "Stap 0: git main ophalen..."
+$codeActueel = $true
+Run-Step "git switch main"
+if ($LASTEXITCODE -eq 0) {
+    Run-Step "git pull --ff-only"
+}
+if ($LASTEXITCODE -ne 0) {
+    $codeActueel = $false
+    Log "WAARSCHUWING: kon main niet ophalen; pipeline draait met huidige code ($(git branch --show-current)), cleanup wordt overgeslagen."
+} else {
+    Log "Stap 0 klaar."
+}
+
 # Stap 1: ORTEC laden
 Log "Stap 1: ORTEC ingestion starten..."
 Run-Step "poetry run python -m ingestion.pipelines.ortec"
@@ -49,12 +63,17 @@ if ($LASTEXITCODE -ne 0) {
 Log "Stap 3 klaar."
 
 # Stap 4: opruimen van objecten die niet meer in het dbt-project staan
-Log "Stap 4: Cleanup stale modellen..."
-Run-Step "poetry run dbt run-operation clean_stale_models --args '{dryrun: false}'"
-if ($LASTEXITCODE -ne 0) {
-    Log "WAARSCHUWING: cleanup mislukt (niet fataal; data is intact)."
+# Alleen op actuele main, anders worden modellen die alleen op main bestaan weggegooid
+if (-not $codeActueel) {
+    Log "Stap 4 overgeslagen: code is niet actueel met main."
 } else {
-    Log "Stap 4 klaar."
+    Log "Stap 4: Cleanup stale modellen..."
+    Run-Step "poetry run dbt run-operation clean_stale_models --args '{dryrun: false}'"
+    if ($LASTEXITCODE -ne 0) {
+        Log "WAARSCHUWING: cleanup mislukt (niet fataal; data is intact)."
+    } else {
+        Log "Stap 4 klaar."
+    }
 }
 
 Log "=== Pipeline succesvol afgerond ==="
