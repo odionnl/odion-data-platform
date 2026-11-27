@@ -45,6 +45,8 @@ odion-data-platform/
 - [Poetry](https://python-poetry.org/docs/#installation)
 - Toegang tot de SQL Server-database
 
+Stapsgewijze installatie van de ontwikkeltools en componenten: zie [docs/installatie.md](docs/installatie.md).
+
 ### Setup
 
 ```bash
