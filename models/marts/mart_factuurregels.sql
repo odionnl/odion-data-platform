@@ -65,6 +65,7 @@ definitief as (
         regels.product_id,
         productdefinities.product_code,
         productdefinities.product_omschrijving,
+        productdefinities.vektiscode,
         financieringstypen.financieringstype_naam,
         regels.zorglegitimatie_product_id,
 

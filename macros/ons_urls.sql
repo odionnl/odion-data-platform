@@ -34,3 +34,12 @@ case
 ('https://odion.ons-medicatie.nl/clients/', {{ client_id }}, '/days/', convert(char(10), {{ datum }}, 23))
 end
 {%- endmacro %}
+
+{% macro ons_factuur_url
+(factuur_id) -%}
+case
+    when {{ factuur_id }} is not null
+    then concat
+('https://odion.ioservice.net/administration/invoices/show/', {{ factuur_id }})
+end
+{%- endmacro %}
